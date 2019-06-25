@@ -386,7 +386,7 @@
                    <field name="category_id" string="Tag" filter_domain="[('category_id','ilike', self)]"/>
                    <field name="user_id"/>
                    <field name="parent_id" domain="[('is_company','=',1)]" operator="child_of"/>
-                   <group expand="0" name="group_by" string="Group By">
+                   <group expand="0" name="group_by" string="Group by">
                        <filter name="salesperson" string="Salesperson" domain="[]" context="{'group_by' : 'user_id'}" />
                        <filter name="group_company" string="Company" context="{'group_by': 'parent_id'}"/>
                        <filter name="group_country" string="Country" context="{'group_by': 'country_id'}"/>
