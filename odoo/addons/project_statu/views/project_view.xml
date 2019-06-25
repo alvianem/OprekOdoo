@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<odoo>
+    <!-- form project information-->
+    <record id="project_form" model="ir.ui.view">
+        <field name="name">project.info.form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='misc']/.." position="before">
+                <page name="status" string="Project Information">
+                    <group>
+                        <field name="p_start_date" string="Start Date"/>
+                        <field name="revise_start_date" string="Revise Start Date"/>
+                        <field name="p_end_date" string="End Date"/>
+                        <field name="revise_end_date" string="Revise End Date"/>
+                        <field name="actual_end_date" string="Actual End Date"/>
+                        <field name="type_project" string="Type Project"/>
+                        <field name="p_status" string="Project Status"/>
+                        <field name="customer_group" string="Customer Group"/>
+                        <field name="description" string="Description"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- search view project information-->
+    <record id="project_search" model="ir.ui.view">
+        <field name="name">project.info.search</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_project_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="p_start_date" string="Start Date"/>
+                <field name="revise_start_date" string="Revise Start Date"/>
+                <field name="p_end_date" string="End Date"/>
+                <field name="revise_end_date" string="Revise End Date"/>
+                <field name="actual_end_date" string="Actual End Date"/>
+                <field name="type_project" string="Type Project"/>
+                <field name="p_status" string="Project Status"/>
+                <field name="customer_group" string="Customer Group"/>
+                <field name="project_no" string="Project No"/>
+                <field name="description" string="description"/>
+            </xpath>
+        </field>
+    </record>
+
+    
+        <!--TREE VIEW-->
+        <record id="view_project_tree" model="ir.ui.view">
+            <field name="name">project.project.tree.view</field>
+            <field name="model">project.project</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="project.view_project"/>
+            
+            <field name="arch" type="xml">
+                <xpath expr='//tree' position="attributes">
+                    <attribute name="editable">top</attribute>
+                    <attribute name="default_order">project_no</attribute>
+                </xpath>
+                <xpath expr='//field[@name="sequence"]' position="after">
+                    <!-- code -->
+                    <field name="project_no" string="Project No"/>
+                </xpath>
+                <xpath expr='//field[@name="sequence"]' position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!-- xpath field name di parent tree -->
+                <xpath expr='//field[@name="name"]' position="after">
+                    <field name="p_start_date" string="Start Date"/>
+                    <field name="revise_start_date" string="Revise Start Date"/>
+                    <field name="p_end_date" string="End Date"/>
+                    <field name="revise_end_date" string="Revise End Date"/>
+                    <field name="actual_end_date" string="Actual End Date"/>
+                    <field name="type_project" string="Type Project"/>
+                    <field name="p_status" string="Project Status"/>
+                    
+                </xpath>
+                <!-- xpath field user_id di parent tree -->
+                <xpath expr='//field[@name="user_id"]' position="after">
+                    <field name="customer_group" string="Customer Group"/>
+                    
+                </xpath>
+            </field>
+        </record>
+
+    <record id="view_project_kanban" model="ir.ui.view">
+        <field name="name">project.project.kanban.view</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[contains(@class, 'o_primary')]" position="after">
+                    <div class="oe_wbs_navigation parentheading oe_kanban_action_a">
+                        tes 
+                    </div>                    
+            </xpath>
+        </field>
+    </record>
+    <!-- action tombol ubah view -->
+    <record model="ir.actions.act_window" id="project_list_action">
+        <field name="name">Projects</field>
+        <field name="res_model">project.project</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+
+    <menuitem id="project_menu" name="Projects" action="project_list_action" parent="project.menu_projects"/>
+
+
+</odoo>
