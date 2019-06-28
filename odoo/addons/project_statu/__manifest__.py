@@ -6,7 +6,7 @@
     "website": "",
     "license": "AGPL-3",
     "depends": [
-        "project",
+        "project", "sale", "sale_timesheet", "web_timeline"
     ],
     "data": [
         "views/project_view.xml"

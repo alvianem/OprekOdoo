@@ -2,14 +2,16 @@
 
 
 <odoo>
-    <!-- form project information-->
+    <!-- form edit project information-->
     <record id="project_form" model="ir.ui.view">
         <field name="name">project.info.form</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.edit_project"/>
         <field name="arch" type="xml">
+                
             <xpath expr="//group[@name='misc']/.." position="before">
                 <page name="status" string="Project Information">
+                    
                     <group>
                         <field name="p_start_date" string="Start Date"/>
                         <field name="revise_start_date" string="Revise Start Date"/>
@@ -18,13 +20,142 @@
                         <field name="actual_end_date" string="Actual End Date"/>
                         <field name="type_project" string="Type Project"/>
                         <field name="p_status" string="Project Status"/>
+                        <field name="customer_project" string="Customer"/>
                         <field name="customer_group" string="Customer Group"/>
+                        <field name="project_code" string="Project Code"/>
+                        <field name="pmo_in_charge" string="PMO in Charge"/>
+                        <field name="sales_code" string="Sales Code"/>
+                        <field name="salesperson" string="salesperson"/>
                         <field name="description" string="Description"/>
+
                     </group>
                 </page>
             </xpath>
+            <xpath expr="//group[@name='misc']/.." position="after">
+                <page name="checklist" string="Project Checklist">
+                    <!--<group name="check">
+                        <group string="Request for IWO">
+                            <field name="project_check.iwodone" string="IWO"/>
+                        </group>
+                        <group string="Created">
+                            <field name="project_check.created" string="Project Created"/>
+                        </group>
+                        <group string="On Progress">
+                            <field name="project_check.charter" string="Project Charter"/>
+                            <field name="project_check.uat" string="UAT"/>
+                            <field name="project_check.kickoff" string="Kickoff Document"/>
+                        </group>
+                        <group string="Delivered">
+                            <field name="project_check.bast" string="BAST"/>
+                            <field name="project_check.handover" string="Hand Over Document"/>
+                        </group>
+                        <group string="Closed">
+                            <field name="project_check.closed" string="Project Closed"/>
+                        </group>
+                        <group string="On Hold">
+                            <field name="project_check.suratonhold" string="On Hold Notice"/>
+                        </group>
+                        <group string="Cancelled">
+                            <field name="project_check.suratcancel" string="Cancel Notice"/>
+                        </group>
+
+
+
+                    </group>-->
+                        <field name="project_check"> 
+                            
+                          <tree string="Project Check Detail" editable="top">
+                                <field name="iwodone" string = "IWO"/>
+                                <field name="created" string="Project Created"/>
+                                <field name="charter" string="Project Charter"/>
+                                <field name="uat" string="UAT"/>
+                                <field name="kickoff" string="Kickoff Document"/>
+                                <field name="bast" string="BAST"/>
+                                <field name="handover" string="Hand Over Document"/>
+                                <field name="closed" string="Project Closed"/>
+                                <field name="suratonhold" string="On Hold Notice"/>
+                                <field name="suratcancel" string="Cancel Notice"/>
+                          </tree>
+                          <!--<form string="Project Check Detail">
+                              <group>
+                                  
+                                  <field name="iwodone" string = "IWO"/>
+                              </group>
+                          </form>-->
+                      </field>
+                </page>
+            </xpath>
+            
         </field>
     </record>
+
+<!--
+one2many sama sale task history
+isinya sale task history : #order_id, sale_task_id, done
+task_history_id ada di sale_order
+-->
+
+<!--<record id="project_attachment_list_view" model="ir.ui.view">
+    <field name="name">project.attachment.list.view</field>
+    <field name="model">ir.attachment</field>
+    <field name="inherit_id" ref="project.edit_project"/>
+    <field name="arch" type="xml">
+        <xpath expr="//group[@name='misc']/.." position="after">
+            <page name="projectdocument" string="Project Document"> 
+                <group>
+                <tree string="Project Attachments">
+                    <field name="name"/>
+                    <field name="datas_fname"/>
+                    <field name="description"/>
+                    <field name="res_name"/>
+                    <field name="file_size"/>
+                </tree>
+                </group>
+            </page>
+        </xpath>
+        
+    </field>
+</record>-->
+
+
+
+  <!--<record id="project_attachment_list_view" model="ir.ui.view">
+    <field name="name">project.attachment.list.view</field>
+    <field name="model">ir.attachment</field>
+    <field name="arch" type="xml">
+        <tree string="Project Attachments">
+            <field name="name"/>
+            <field name="datas_fname"/>
+            <field name="description"/>
+            <field name="res_name"/>
+            <field name="file_size"/>
+        </tree>
+    </field>
+</record>
+
+
+  <record id="open_project_attachment_view" model="ir.actions.act_window">
+    <field name="name">All Files</field>
+    <field name="res_model">ir.attachment</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">kanban,tree,form</field>
+    <field name="domain">[('res_model', '=', 'project.project')]</field>
+    <field name="context">{}</field>
+    <field name="view_id" ref="project_attachment_list_view"/>
+    <field name="search_view_id" ref=""/>
+</record>
+
+<menuitem
+    name="All Files"
+    action="open_project_attachment_view"
+    id="menu_open_project_attachment_view"
+    sequence="20"
+    parent="project.menu_project_management">
+</menuitem>-->
+
+    <!-- form view project information-->
+    
+
 
     <!-- search view project information-->
     <record id="project_search" model="ir.ui.view">
@@ -57,7 +188,7 @@
             
             <field name="arch" type="xml">
                 <xpath expr='//tree' position="attributes">
-                    <attribute name="editable">top</attribute>
+                    
                     <attribute name="default_order">project_no</attribute>
                 </xpath>
                 <xpath expr='//field[@name="sequence"]' position="after">
@@ -86,24 +217,98 @@
             </field>
         </record>
 
-    <record id="view_project_kanban" model="ir.ui.view">
+   <!--<record id="view_project_kanban" model="ir.ui.view">
         <field name="name">project.project.kanban.view</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.view_project_kanban"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[contains(@class, 'o_primary')]" position="after">
-                    <div class="oe_wbs_navigation parentheading oe_kanban_action_a">
-                        tes 
-                    </div>                    
+            <xpath expr="//div[contains(@class, 'o_project_kanban_main')]" position="after">
+                    <div class="o_kanban_card_content o_visible">
+                        <div class="o_kanban_primary_left">
+                            <div class="o_primary">
+                                <span><t t-esc="record.name.value"/></span>
+                            </div>
+                            <div t-if="record.alias_name.value and record.alias_domain.value">
+                                <span><i class="fa fa-envelope"></i> <t t-esc="record.alias_id.value"/></span>
+                            </div>
+                        </div>
+                    </div>                 
             </xpath>
         </field>
+    </record>-->
+
+    <!--<record id="view_project_kanban_pipeline" model="ir.ui.view">
+        <field name="name">project.project.kanban.pipeline.view</field>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <kanban class="oe_background_grey o_kanban_dashboard o_project_kanban" on_create="project.open_create_project" default_group_by="p_status">
+                
+                    <field name="name"/>
+                    <field name="use_tasks"/>
+                    <field name="color"/>
+                    <field name="task_count"/>
+                    <field name="task_needaction_count"/>
+                    <field name="label_tasks"/>
+                    <field name="alias_id"/>
+                    <field name="alias_name"/>
+                    <field name="alias_domain"/>
+                    <field name="doc_count"/>
+                    <field name="is_favorite"/>
+                    <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                            <div class="o_project_kanban_main">
+                            <div class="o_kanban_card_content o_visible">
+                                <div class="o_kanban_primary_left">
+                                    <div class="o_primary">
+                                        <span><t t-esc="record.name.value"/></span>
+                                    </div>
+                                    <div t-if="record.alias_name.value and record.alias_domain.value">
+                                        <span><i class="fa fa-envelope"></i> <t t-esc="record.alias_id.value"/></span>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </t>
+                    </templates>
+                    
+                </kanban>
+        </field>
+    </record>-->
+
+    <record id="project_timeline_view" model="ir.ui.view">
+        <field name="model">project.project</field>
+        <field name="type">timeline</field>
+        <field name="arch" type="xml">
+            <timeline date_start="p_start_date"
+                      date_stop="p_end_date"
+                      default_group_by="project_id"
+                      event_open_popup="true"
+                      colors="#ec7063: user_id == false; #2ecb71: active == true;"
+            />
+        </field>
     </record>
+
+    <!--calendar view-->
+    <record id="view_project_calendar" model="ir.ui.view">
+        <field name="name">project.project.calendar.view</field>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <calendar string="Project Calendar" date_start="p_start_date" date_stop="p_end_date" color="name" mode="month">
+                <field name="name"/>
+            </calendar>
+        </field>
+    </record>
+
     <!-- action tombol ubah view -->
     <record model="ir.actions.act_window" id="project_list_action">
         <field name="name">Projects</field>
         <field name="res_model">project.project</field>
-        <field name="view_mode">tree,form,kanban</field>
+        <field name="view_mode">tree,form,pivot,graph,calendar,timeline</field>
     </record>
+
+
 
     <menuitem id="project_menu" name="Projects" action="project_list_action" parent="project.menu_projects"/>
 
