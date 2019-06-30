@@ -8,7 +8,19 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.edit_project"/>
         <field name="arch" type="xml">
-                
+            <xpath expr="/form/*" position="before">
+                <header>
+                    <button string="Request for IWO" type="object" name="iwo_progressbar"/>
+                    <button string="In Progress" type="object" name="progress_progressbar"/>
+                    <button string="Delivered" type="object" name="delivered_progressbar"/>
+                    <button string="Closed" type="object" name="closed_progressbar"/>
+                    <button string="On Hold" type="object" name="onhold_progressbar"/>
+                    <button string="Cancelled" type="object" name="cancelled_progressbar"/>
+                </header>
+            </xpath>
+            <xpath expr="//field[@name='name']/.." position="after">
+                <field name="p_status" string="Project Status"/>
+            </xpath>
             <xpath expr="//group[@name='misc']/.." position="before">
                 <page name="status" string="Project Information">
                     
@@ -19,7 +31,6 @@
                         <field name="revise_end_date" string="Revise End Date"/>
                         <field name="actual_end_date" string="Actual End Date"/>
                         <field name="type_project" string="Type Project"/>
-                        <field name="p_status" string="Project Status"/>
                         <field name="customer_project" string="Customer"/>
                         <field name="customer_group" string="Customer Group"/>
                         <field name="project_code" string="Project Code"/>
@@ -33,56 +44,29 @@
             </xpath>
             <xpath expr="//group[@name='misc']/.." position="after">
                 <page name="checklist" string="Project Checklist">
-                    <!--<group name="check">
+                    <group name="check">
                         <group string="Request for IWO">
-                            <field name="project_check.iwodone" string="IWO"/>
-                        </group>
-                        <group string="Created">
-                            <field name="project_check.created" string="Project Created"/>
+                            <field name="iwodone" string="IWO"/>
                         </group>
                         <group string="On Progress">
-                            <field name="project_check.charter" string="Project Charter"/>
-                            <field name="project_check.uat" string="UAT"/>
-                            <field name="project_check.kickoff" string="Kickoff Document"/>
+                            <field name="charter" string="Project Charter"/>
+                            <field name="uat" string="UAT"/>
+                            <field name="kickoff" string="Kickoff Document"/>
                         </group>
                         <group string="Delivered">
-                            <field name="project_check.bast" string="BAST"/>
-                            <field name="project_check.handover" string="Hand Over Document"/>
+                            <field name="bast" string="BAST"/>
+                            <field name="handover" string="Hand Over Document"/>
                         </group>
                         <group string="Closed">
-                            <field name="project_check.closed" string="Project Closed"/>
+                            <field name="closed" string="Project Closed"/>
                         </group>
                         <group string="On Hold">
-                            <field name="project_check.suratonhold" string="On Hold Notice"/>
+                            <field name="suratonhold" string="On Hold Notice"/>
                         </group>
                         <group string="Cancelled">
-                            <field name="project_check.suratcancel" string="Cancel Notice"/>
+                            <field name="suratcancel" string="Cancel Notice"/>
                         </group>
-
-
-
-                    </group>-->
-                        <field name="project_check"> 
-                            
-                          <tree string="Project Check Detail" editable="top">
-                                <field name="iwodone" string = "IWO"/>
-                                <field name="created" string="Project Created"/>
-                                <field name="charter" string="Project Charter"/>
-                                <field name="uat" string="UAT"/>
-                                <field name="kickoff" string="Kickoff Document"/>
-                                <field name="bast" string="BAST"/>
-                                <field name="handover" string="Hand Over Document"/>
-                                <field name="closed" string="Project Closed"/>
-                                <field name="suratonhold" string="On Hold Notice"/>
-                                <field name="suratcancel" string="Cancel Notice"/>
-                          </tree>
-                          <!--<form string="Project Check Detail">
-                              <group>
-                                  
-                                  <field name="iwodone" string = "IWO"/>
-                              </group>
-                          </form>-->
-                      </field>
+                    </group>
                 </page>
             </xpath>
             

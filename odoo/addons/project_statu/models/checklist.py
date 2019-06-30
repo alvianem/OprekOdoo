@@ -3,7 +3,7 @@ from odoo import fields, models, api
 class ProjectChecklist(models.Model):
     _name = "project.checklist"
 
-    projectcheck_id = fields.Many2one('project.project', string='Tasks')
+    projectcheck_id = fields.Many2one('project.project')
     #attach_task_id = fields.Many2one('sale.task', string='Sale Task')
     iwodone = fields.Boolean(string = 'IWO', default = False)
     

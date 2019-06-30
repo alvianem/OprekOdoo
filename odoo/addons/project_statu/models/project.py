@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 
 class ProjectProject(models.Model):
     _inherit = "project.project"
@@ -14,7 +14,7 @@ class ProjectProject(models.Model):
     customer_group = fields.Selection([('asyst', 'ASYST'),('ga_group', 'GA Group'),('non_ga_group', 'NON GA Group')], string="Customer Group")
     
     type_project = fields.Selection([('internal','Internal'),('external','External')], string='Type Project')
-    p_status = fields.Selection([('1iwo','Request For IWO'),('2created','Created'),('3progress','On Progress'),('4delivered','Delivered'),('5closed','Closed'),('6onhold','On Hold'),('7cancelled','Cancelled')], string='Project Status')
+    p_status = fields.Selection([('1iwo','Request For IWO'),('3progress','On Progress'),('4delivered','Delivered'),('5closed','Closed'),('6onhold','On Hold'),('7cancelled','Cancelled')], string='Project Status', readonly=True)
     
     #p_status = fields.Text(string='Project Status', compute='_get_project_status', readonly=True)
 
@@ -30,9 +30,23 @@ class ProjectProject(models.Model):
     pmo_in_charge = fields.Many2one('res.users', string='PMO in Charge')
 
     
-    project_check = fields.One2many('project.checklist', 'projectcheck_id', string='Project checklist')
-
+    
     description = fields.Html()
+
+    iwodone = fields.Boolean(string = 'IWO', default = False)
+    
+    charter = fields.Boolean(string = 'Project Charter', default = False)
+    uat = fields.Boolean(string = 'UAT', default = False)
+    kickoff = fields.Boolean(string = 'Kickoff', default = False)
+    
+    bast = fields.Boolean(string = 'BAST', default = False)
+    handover = fields.Boolean(string = 'Hand Over', default = False)
+    
+    suratonhold = fields.Boolean(string = 'On Hold Notice', default = False)
+    
+    suratcancel = fields.Boolean(string = 'Cancel Notice', default = False)
+    
+    closed = fields.Boolean(string = 'Closed', default = False)
 
     @api.depends('active')
     def _get_project_status(self):
@@ -54,3 +68,42 @@ class ProjectProject(models.Model):
             code="SO"
             rec.sales_code = code + str(rec.salesid)
 
+    @api.multi
+    def iwo_progressbar(self):
+        self.write({'p_status': '1iwo'})
+    
+    @api.multi
+    @api.depends('iwodone')
+    def progress_progressbar(self):
+        for rec in self:
+            if rec.iwodone == True:
+                self.write({'p_status': '3progress'})
+    
+    @api.multi
+    @api.depends('charter','uat','kickoff')
+    def delivered_progressbar(self):
+        for rec in self:
+            if rec.charter == True and rec.uat == True and rec.kickoff == True:
+                self.write({'p_status': '4delivered'})
+    
+    @api.multi
+    @api.depends('closed','bast','handover')
+    def closed_progressbar(self):
+        for rec in self:
+            if rec.closed == True and rec.bast == True and rec.handover == True:
+                self.write({'p_status': '5closed'})
+    
+    @api.multi
+    @api.depends('suratonhold')
+    def onhold_progressbar(self):
+        for rec in self:
+            if rec.suratonhold == True:
+                self.write({'p_status': '6onhold'})
+    
+    @api.multi
+    @api.depends('suratcancel')
+    def cancelled_progressbar(self):
+        for rec in self:
+            if rec.suratcancel == True:
+                self.write({'p_status': '7cancelled'})
+      
