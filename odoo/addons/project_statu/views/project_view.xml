@@ -47,24 +47,33 @@
                     <group name="check">
                         <group string="Request for IWO">
                             <field name="iwodone" string="IWO"/>
+                            <field name="iwoattach" widget="many2many_binary"/>
                         </group>
                         <group string="On Progress">
                             <field name="charter" string="Project Charter"/>
+                            <field name="charterattach" widget="many2many_binary"/>
                             <field name="uat" string="UAT"/>
+                            <field name="uatattach" widget="many2many_binary"/>
                             <field name="kickoff" string="Kickoff Document"/>
+                            <field name="kickoffattach" widget="many2many_binary"/>
                         </group>
                         <group string="Delivered">
                             <field name="bast" string="BAST"/>
+                            <field name="bastattach" widget="many2many_binary"/>
                             <field name="handover" string="Hand Over Document"/>
+                            <field name="handoverattach" widget="many2many_binary"/>
                         </group>
                         <group string="Closed">
                             <field name="closed" string="Project Closed"/>
+                            <field name="closedattach" widget="many2many_binary"/>
                         </group>
                         <group string="On Hold">
                             <field name="suratonhold" string="On Hold Notice"/>
+                            <field name="suratonholdattach" widget="many2many_binary"/>
                         </group>
                         <group string="Cancelled">
                             <field name="suratcancel" string="Cancel Notice"/>
+                            <field name="suratcancelattach" widget="many2many_binary"/>
                         </group>
                     </group>
                 </page>

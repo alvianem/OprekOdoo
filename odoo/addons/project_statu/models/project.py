@@ -48,6 +48,61 @@ class ProjectProject(models.Model):
     
     closed = fields.Boolean(string = 'Closed', default = False)
 
+    iwoattach= fields.Many2many(comodel_name="ir.attachment", 
+                                relation="m2m_ir_iwo_rel", 
+                                column1="m2m_id",
+                                column2="attachment_id",
+                                string="Document IWO")
+
+    charterattach= fields.Many2many(comodel_name="ir.attachment", 
+                                relation="m2m_ir_charter_rel", 
+                                column1="m2m_id",
+                                column2="attachment_id",
+                                string="Document Project Charter")
+
+    uatattach= fields.Many2many(comodel_name="ir.attachment", 
+                                relation="m2m_ir_uat_rel", 
+                                column1="m2m_id",
+                                column2="attachment_id",
+                                string="Document UAT")
+
+    kickoffattach= fields.Many2many(comodel_name="ir.attachment", 
+                                relation="m2m_ir_kickoff_rel", 
+                                column1="m2m_id",
+                                column2="attachment_id",
+                                string="Document Kickoff")
+
+    bastattach= fields.Many2many(comodel_name="ir.attachment", 
+                                relation="m2m_ir_bast_rel", 
+                                column1="m2m_id",
+                                column2="attachment_id",
+                                string="Document BAST")
+
+    handoverattach= fields.Many2many(comodel_name="ir.attachment", 
+                                relation="m2m_ir_handover_rel", 
+                                column1="m2m_id",
+                                column2="attachment_id",
+                                string="Document Hand Over")
+
+    suratonholdattach= fields.Many2many(comodel_name="ir.attachment", 
+                                relation="m2m_ir_onhold_rel", 
+                                column1="m2m_id",
+                                column2="attachment_id",
+                                string="Document On Hold Notice")
+
+    suratcancelattach= fields.Many2many(comodel_name="ir.attachment", 
+                                relation="m2m_ir_cancel_rel", 
+                                column1="m2m_id",
+                                column2="attachment_id",
+                                string="Document Cancel Notice")
+
+    closedattach= fields.Many2many(comodel_name="ir.attachment", 
+                                relation="m2m_ir_closed_rel", 
+                                column1="m2m_id",
+                                column2="attachment_id",
+                                string="Document Closed")
+    
+
     @api.depends('active')
     def _get_project_status(self):
         for rec in self:
@@ -106,4 +161,5 @@ class ProjectProject(models.Model):
         for rec in self:
             if rec.suratcancel == True:
                 self.write({'p_status': '7cancelled'})
-      
+    
+    
