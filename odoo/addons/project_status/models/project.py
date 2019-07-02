@@ -4,20 +4,18 @@ class ProjectProject(models.Model):
     _inherit = "project.project"
 
     p_start_date = fields.Date(string="Start Date")
-    revise_start_date = fields.Date(string='Revise Start Date')
+    revise_start_date = fields.Date(string='Revise Start Date', track_visibility='onchange')
     p_end_date = fields.Date(string='End Date')
-    revise_end_date = fields.Date(string='Revise End Date')
-    actual_end_date = fields.Date(string='Actual End Date')
+    revise_end_date = fields.Date(string='Revise End Date', track_visibility='onchange')
     
     #customer partner_id project di xml nya aja
     customer_project = fields.Many2one('res.partner', string="Customer", related='analytic_account_id.partner_id')
     customer_group = fields.Selection([('asyst', 'ASYST'),('ga_group', 'GA Group'),('non_ga_group', 'NON GA Group')], string="Customer Group")
     
     type_project = fields.Selection([('internal','Internal'),('external','External')], string='Type Project')
-    p_status = fields.Selection([('1iwo','Request For IWO'),('3progress','On Progress'),('4delivered','Delivered'),('5closed','Closed'),('6onhold','On Hold'),('7cancelled','Cancelled')], string='Project Status', readonly=True, default = '1iwo')
+    p_status = fields.Selection([('1iwo','Request For IWO'),('3progress','On Progress'),('4delivered','Delivered'),('5closed','Closed'),('6onhold','On Hold'),('7cancelled','Cancelled')], string='Project Status', default = '1iwo', track_visibility='onchange')
+    p_statusnow = fields.Selection(string='Status', related='p_status', readonly=True)
     
-    #p_status = fields.Text(string='Project Status', compute='_get_project_status', readonly=True)
-
     project_no = fields.Integer(string='Project No', related='id')
     project_code = fields.Text(string='Project Code', compute='_project_code_concat')
     #project_id = fields.Text(string='Project Status', readonly=True, compute='kasi kode') compute kasi code
@@ -163,3 +161,21 @@ class ProjectProject(models.Model):
                 self.write({'p_status': '7cancelled'})
     
     
+    #@api.multi
+    #@api.depends('iwodone', 'charter','uat','kickoff', 'closed','bast','handover', 'suratonhold', 'suratcancel', 'p_status')
+    #def statusbar_onchange(self):
+    #    for rec in self:
+    #        if rec.iwodone == True:
+                self.write({'p_status': '3progress'})
+    #        elif rec.charter == True and rec.uat == True and rec.kickoff == True:
+    #            self.write({'p_status': '4delivered'})
+    #        elif rec.closed == True and rec.bast == True and rec.handover == True:
+    #            self.write({'p_status': '5closed'})
+    #        elif rec.suratonhold == True:
+    #            self.write({'p_status': '6onhold'})        
+    #        elif rec.suratcancel == True:
+    #            self.write({'p_status': '7cancelled'})
+
+    
+            
+            

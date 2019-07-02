@@ -10,17 +10,13 @@
         <field name="arch" type="xml">
             <xpath expr="/form/*" position="before">
                 <header>
-                    <button string="Request for IWO" type="object" name="iwo_progressbar"/>
-                    <button string="In Progress" type="object" name="progress_progressbar"/>
-                    <button string="Delivered" type="object" name="delivered_progressbar"/>
-                    <button string="Closed" type="object" name="closed_progressbar"/>
-                    <button string="On Hold" type="object" name="onhold_progressbar"/>
-                    <button string="Cancelled" type="object" name="cancelled_progressbar"/>
+                    
+                    <field name="p_status" widget="statusbar" />
                 </header>
+
+                    
             </xpath>
-            <xpath expr="//field[@name='name']/.." position="after">
-                <field name="p_status" string="Project Status"/>
-            </xpath>
+            
             <xpath expr="//group[@name='misc']/.." position="before">
                 <page name="status" string="Project Information">
                     
@@ -29,7 +25,7 @@
                         <field name="revise_start_date" string="Revise Start Date"/>
                         <field name="p_end_date" string="End Date"/>
                         <field name="revise_end_date" string="Revise End Date"/>
-                        <field name="actual_end_date" string="Actual End Date"/>
+                        
                         <field name="type_project" string="Type Project"/>
                         <field name="customer_project" string="Customer"/>
                         <field name="customer_group" string="Customer Group"/>
@@ -48,36 +44,51 @@
                         <group string="Request for IWO">
                             <field name="iwodone" string="IWO"/>
                             <field name="iwoattach" widget="many2many_binary"/>
+                            <button string="Proceed to In Progress" type="object" name="progress_progressbar"/>
+                    
                         </group>
-                        <group string="On Progress">
+                        <group string="In Progress">
                             <field name="charter" string="Project Charter"/>
                             <field name="charterattach" widget="many2many_binary"/>
                             <field name="uat" string="UAT"/>
                             <field name="uatattach" widget="many2many_binary"/>
                             <field name="kickoff" string="Kickoff Document"/>
                             <field name="kickoffattach" widget="many2many_binary"/>
+                            <button string="Proceed to Project Delivered" type="object" name="delivered_progressbar"/>
+                    
                         </group>
                         <group string="Delivered">
                             <field name="bast" string="BAST"/>
                             <field name="bastattach" widget="many2many_binary"/>
                             <field name="handover" string="Hand Over Document"/>
                             <field name="handoverattach" widget="many2many_binary"/>
+                            <button string="Proceed to Project Closed" type="object" name="closed_progressbar"/>
+                    
                         </group>
                         <group string="Closed">
                             <field name="closed" string="Project Closed"/>
                             <field name="closedattach" widget="many2many_binary"/>
+                            
+                    
                         </group>
                         <group string="On Hold">
                             <field name="suratonhold" string="On Hold Notice"/>
                             <field name="suratonholdattach" widget="many2many_binary"/>
+                            <button string="Validate On Hold" type="object" name="onhold_progressbar"/>
+                    
                         </group>
                         <group string="Cancelled">
                             <field name="suratcancel" string="Cancel Notice"/>
                             <field name="suratcancelattach" widget="many2many_binary"/>
+                            <button string="Validate Cancel" type="object" name="cancelled_progressbar"/>
                         </group>
                     </group>
                 </page>
             </xpath>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
             
         </field>
     </record>
@@ -161,7 +172,7 @@ task_history_id ada di sale_order
                 <field name="revise_start_date" string="Revise Start Date"/>
                 <field name="p_end_date" string="End Date"/>
                 <field name="revise_end_date" string="Revise End Date"/>
-                <field name="actual_end_date" string="Actual End Date"/>
+                
                 <field name="type_project" string="Type Project"/>
                 <field name="p_status" string="Project Status"/>
                 <field name="customer_group" string="Customer Group"/>
@@ -197,7 +208,7 @@ task_history_id ada di sale_order
                     <field name="revise_start_date" string="Revise Start Date"/>
                     <field name="p_end_date" string="End Date"/>
                     <field name="revise_end_date" string="Revise End Date"/>
-                    <field name="actual_end_date" string="Actual End Date"/>
+                   
                     <field name="type_project" string="Type Project"/>
                     <field name="p_status" string="Project Status"/>
                     
