@@ -14,7 +14,7 @@ class ProjectProject(models.Model):
     customer_group = fields.Selection([('asyst', 'ASYST'),('ga_group', 'GA Group'),('non_ga_group', 'NON GA Group')], string="Customer Group")
     
     type_project = fields.Selection([('internal','Internal'),('external','External')], string='Type Project')
-    p_status = fields.Selection([('1iwo','Request For IWO'),('3progress','On Progress'),('4delivered','Delivered'),('5closed','Closed'),('6onhold','On Hold'),('7cancelled','Cancelled')], string='Project Status', readonly=True)
+    p_status = fields.Selection([('1iwo','Request For IWO'),('3progress','On Progress'),('4delivered','Delivered'),('5closed','Closed'),('6onhold','On Hold'),('7cancelled','Cancelled')], string='Project Status', readonly=True, default = '1iwo')
     
     #p_status = fields.Text(string='Project Status', compute='_get_project_status', readonly=True)
 
