@@ -38,8 +38,9 @@ class ProjectProject(models.Model):
 class ResUsersInherit(models.Model):
     _inherit = 'res.users'
 
-    projectmembers = fields.Many2many('project.project', 'project_team_user_rel',
-                                    'uid', 'team_id', 'Project User Members',
+    projectmembers = fields.Many2many('project.project', 'project_user_rel',
+                                    'uid', 'project_id', 'Project History',
                                     help="""Project's members are users who
                                      can have an access to the tasks related
                                      to this project.""")
+

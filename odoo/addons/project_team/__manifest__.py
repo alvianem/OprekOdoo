@@ -11,7 +11,7 @@
     'version': '10.0.1.0.0',
     'license': 'AGPL-3',
     'sequence': 1,
-    'depends': ['project', 'crm', 'web'],
+    'depends': ['project', 'crm', 'web', 'project_status'],
     'data': [
         'views/template.xml',
         'views/project_team_view.xml',

@@ -167,7 +167,12 @@
                 <page name="projectinfo" string="Project Information">
                     <group>
                         <group string="Project History">
-                            <field name="projectmembers"/>
+                            <field name="projectmembers">
+                                <tree>
+                                    <field name="name" string="Project Name"/>
+                                    <field name="p_status"/>
+                                </tree>
+                            </field>
                         </group>
                     </group>
                 </page>
