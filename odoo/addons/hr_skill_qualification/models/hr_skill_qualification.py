@@ -23,7 +23,7 @@ class HrEmployee(models.Model):
 class EmployeeTechSkills(models.Model):
 
     _name = 'emp.tech.skills'
-
+    #categoryTech = fields.Selection([('programming','Programming'),('desain','Desain')], string='Category')
     applicant_id = fields.Many2one('hr.applicant', 'applicant')
     employee_id = fields.Many2one('hr.employee', 'Employee')
     tech_id = fields.Many2one(
@@ -33,10 +33,12 @@ class EmployeeTechSkills(models.Model):
                                ('advance', 'Advance')], 'Levels')
 
 
+
 class TechTech(models.Model):
 
     _name = 'tech.tech'
 
+    categoryTech = fields.Selection([('programming','Programming'),('desain','Desain')], string='Category')
     name = fields.Char()
     sequence = fields.Integer("Sequence")
 
@@ -65,44 +67,65 @@ class TechTech(models.Model):
 class EmployeeNonTechSkills(models.Model):
 
     _name = 'emp.nontech.skills'
-
+    
+    #categorynonTech = fields.Selection([('communication','Communication'),('intelegent','Intelegent')], string='Category')
+    #categorynonTech2 = fields.Many2one('nontech.nontech', '')
     applicant_id = fields.Many2one('hr.applicant', 'Applicant')
     employee_id = fields.Many2one('hr.employee', 'Employee')
+    
+    #categoryChars = fields.One2many('nontech.nontech', 'categoryNonTechChar')
+    #categoryChars = fields.Many2one('nontech.nontech', 'Category')
+    categoryNonTechChar = fields.Many2one('category.nontech.skills', 'Category')
     nontech_id = fields.Many2one(
-        'nontech.nontech', 'Non-Technical Skills', ondelete="cascade")
+        'nontech.nontech', 'Non-Technical Skill', ondelete="cascade")
+        
     levels = fields.Selection([('basic', 'Basic'),
                                ('medium', 'Medium'),
                                ('advance', 'Advance')], 'Levels')
 
 
+class CategoryNontech (models.Model):
+
+    _name = 'category.nontech.skills'
+    _rec_name = 'categoryChar'
+    
+    categoryChar = fields.Char()
+    #catagoryChar = fields.One2many('nontech.nontech', 'categoryChar1') 
+    #categorynonTech = fields.One2many('nontech.nontech', 'categorynonTechChar', string="category")
+
 class NontechNontech(models.Model):
 
     _name = 'nontech.nontech'
-
+    #_rec_name = 'name'
+    
+    categoryNonTechChar = fields.Many2one('category.nontech.skills', 'Category')
+    #categoryChar2 = fields.One2many('emp.nontech.skills')
+    
+    contohchar = fields.Char()
     name = fields.Char()
-    sequence = fields.Integer("Sequence")
+    # sequence = fields.Integer("Sequence")
 
-    _sql_constraints = [
-        ('nontech_unique', 'unique (name)',
-         'The name of the Non Technical skills must be unique!'),
-        ('seq_uniq', 'unique (sequence)', "Sequence name already exists!")
-    ]
+    # _sql_constraints = [('','',''),
+        # ('nontech_unique', 'unique (name)',
+         # 'The name of the Non Technical skills must be unique!'),
+        # ('seq_uniq', 'unique (sequence)', "Sequence name already exists!")
+    # ]
 
-    @api.multi
-    def unlink(self):
-        """
-        This method is called user tries to delete a skill which
-        is already in use by an employee.
-        --------------------------------------------------------
-        @param self : object pointer
-        """
-        tech_skill = self.env['emp.nontech.skills'].search(
-            [('nontech_id', 'in', self.ids)])
-        if tech_skill:
-            raise UserError(
-                _('You are trying to delete a Skill \
-                    which is referenced by an Employee.'))
-        return super(NontechNontech, self).unlink()
+    # @api.multi
+    # def unlink(self):
+        # """
+        # This method is called user tries to delete a skill which
+        # is already in use by an employee.
+        # --------------------------------------------------------
+        # @param self : object pointer
+        # """
+        # tech_skill = self.env['emp.nontech.skills'].search(
+            # [('nontech_id', 'in', self.ids)])
+        # if tech_skill:
+            # raise UserError(
+                # _('You are trying to delete a Skill \
+                    # which is referenced by an Employee.'))
+        # return super(NontechNontech, self).unlink()
 
 
 class EmployeeEducation(models.Model):
@@ -154,6 +177,7 @@ class EmployeeCertification(models.Model):
     course_id = fields.Many2one('cert.cert', 'Course Name', ondelete="cascade")
     levels = fields.Char('Bands/Levels of Completion')
     year = fields.Date('Year of completion')
+    yearend = fields.Date('Expired Year')
     doc = fields.Binary('Certificates')
 
 
@@ -178,6 +202,10 @@ class EmployeeProfession(models.Model):
     applicant_id = fields.Many2one('hr.applicant', 'applicant')
     employee_id = fields.Many2one('hr.employee', 'Employee')
     job_id = fields.Many2one('hr.job', 'Job Title')
+    jobtitle = fields.Char('Job Title')
+    company = fields.Char('Company')
+    industry = fields.Selection([('it', 'IT'),('travel', 'Travel'), ('hr', 'Human Resources'), ('aviation', 'Aviation'), ('hotel',
+    'Hotel'), ('transportation','Transportation'), ('banking','Banking'), ('etc','etc.')], string="Industry")
     location = fields.Char()
     from_date = fields.Date('Start Date')
     to_date = fields.Date('End Date')
@@ -188,6 +216,10 @@ class EmployeeProfession(models.Model):
          'Start Date of Professional Experience \
          should be less than End Date!'),
     ]
+    
+    #integrasi dengan technical skill (custom)
+    tech_id2 = fields.Many2one(
+        'tech.tech', 'Related Skills', ondelete="cascade")
 
     @api.constrains('from_date', 'to_date')
     def check_from_date(self):
@@ -261,3 +293,4 @@ class HrApplicant(models.Model):
             dict_act_window['res_id'] = employee.id
         dict_act_window['view_mode'] = 'form,tree'
         return dict_act_window
+
