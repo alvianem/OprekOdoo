@@ -1,0 +1,28 @@
+<odoo>
+  <data>
+  	
+  	<!-- Menambahkan field pada view form partner -->
+  	
+	<record model="ir.ui.view" id="info_tambahan">
+		<field name="name">hr.employee.info_tambahan</field>
+		<field name="model">hr.employee</field>
+		<field name="inherit_id" ref="hr.view_employee_form"/>
+		<field name="arch" type="xml">
+			
+			<field name="country_id" position="before">
+                <field name="homeaddress"/>
+	            <field name="housephone"/>
+            </field>
+			
+			<field name="marital" position="before">
+                <field name="religion"/>
+            </field>
+			
+			<field name="work_email" position="after">
+                <field name="linklinkedin"/>
+            </field>
+		</field>
+	</record>
+				    	    
+  </data>
+</odoo>
