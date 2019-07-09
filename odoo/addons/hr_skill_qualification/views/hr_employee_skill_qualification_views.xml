@@ -10,12 +10,14 @@
 					<separator string="Technical Skills"/>
 					<field name="techskill_ids">
 					<tree editable="Top">
+					   <!-- <field name="categoryTech"/> -->
 					   <field name="tech_id" required="True"/>
                        <field name="levels" required="True"/>   
 					</tree>
 					<form>
 					   <group col="4">
-                           <field name="tech_id"/>
+                           <!-- <field name="categoryTech"/> -->
+						   <field name="tech_id"/>
                            <field name="levels"/>					    
 					   </group>
 					</form>
@@ -23,12 +25,14 @@
 					<separator string="Non Technical Skills"/>
 					<field name="nontechskill_ids">
 					   <tree editable="Top">
-					       <field name="nontech_id" required="True"/>
+					       <field name="categoryNonTechChar"/>
+						   <field name="nontech_id" required="True"/>
 					       <field name="levels" required="True"/>
 					   </tree>
 					   <form>
 					       <group col="4">
-					           <field name="nontech_id"/>
+					           <field name="categoryNonTechChar"/>
+							   <field name="nontech_id"/>
 					           <field name="levels"/>
 					       </group>
 					   </form>
@@ -60,6 +64,7 @@
 			                 <field name="course_id"/>
 			                 <field name="levels"/>
 			                 <field name="year"/>
+							 <field name="yearend"/>
 			                 <field name="doc"/>
 			             </tree>
 			             <form>
@@ -67,25 +72,36 @@
 			                     <field name="course_id" required="True"/>
 	                             <field name="levels" required="True"/>
 	                             <field name="year"/>
+								 <field name="yearend"/>
 	                             <field name="doc"/>
 			                 </group>
 			             </form>
 			         </field>
-			         <separator string="Professional Experience"/>
+			         <separator string="Job Experiences"/>
+			
+				
                      <field name="profession_ids">
                          <tree>
-                             <field name="job_id"/>
-                             <field name="location"/>
-                             <field name="from_date"/>
-                             <field name="to_date"/>
+                             <!-- <field name="job_id" required="True" invisible='1'/> -->
+							 <field name="jobtitle"/>
+							 <field name="company"/>
+							 <field name="industry"/>
+	                         <field name="location"/>
+	                         <field name="from_date"/>
+	                         <field name="to_date"/>
+							 <field name="tech_id2"/>
                              <field name="doc"/>
                          </tree>
                          <form>
                              <group col="4">
-                                 <field name="job_id" required="True"/>
+                                 <!--<field name="job_id" required="True" invisible='1'/>-->
+								 <field name="jobtitle"/>
+								 <field name="company"/>
+								 <field name="industry"/>
 	                             <field name="location"/>
 	                             <field name="from_date"/>
 	                             <field name="to_date"/>
+								 <field name="tech_id2"/>
 	                             <field name="doc"/>
                              </group>
                          </form>
@@ -103,8 +119,9 @@
         <field name="arch" type="xml">
             <form>
                 <group>
+					<field name="categoryTech"/>
                     <field name="name" required="True"/> 
-                    <field name="sequence"/>   
+                    <!-- <field name="sequence"/>    -->
                 </group>
             </form>
         </field>
@@ -116,8 +133,9 @@
         <field name="model">tech.tech</field>
         <field name="arch" type="xml">
             <tree>
+				<field name="categoryTech"/>
                 <field name="name"/>
-                <field name="sequence"/>
+                <!-- <field name="sequence"/> -->
             </tree>
         </field>
     </record>
@@ -138,8 +156,9 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                    <field name="name" required="True"/> 
-                    <field name="sequence"/>   
+					<field name="categoryNonTechChar"/>	
+                    <field name="name" required="True"/>
+                    <!-- <field name="sequence"/>    -->
                 </group>
             </form>
         </field>
@@ -151,8 +170,9 @@
         <field name="model">nontech.nontech</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name"/>
-                <field name="sequence"/>
+                <field name="categoryNonTechChar"/>
+				<field name="name"/>
+                <!-- <field name="sequence"/> -->
             </tree>
         </field>
     </record>
@@ -160,6 +180,7 @@
     <!-- Action of Non Technical Skills -->
     <record id="action_nontech_skills" model="ir.actions.act_window">
         <field name="name">Non Technical Skills</field>
+		<!-- <field name="categoryNonTechChar">Category</field> -->
         <field name="res_model">nontech.nontech</field>
         <field name="view_mode">tree,form</field>
         <field name="view_type">form</field>
