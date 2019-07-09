@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<odoo>
+<!-- form edit project information-->
+    <record id="project_form" model="ir.ui.view">
+        <field name="name">project.info.form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form/*" position="before">
+                <header>
+                    <field name="p_status" widget="statusbar" />
+                </header>
+            </xpath>
+            <xpath expr="//group[@name='misc']/.." position="before">
+                <page name="status" string="Project Information">
+                    <group>
+                        <field name="p_start_date" string="Start Date"/>
+                        <field name="revise_start_date" string="Revise Start Date"/>
+                        <field name="p_end_date" string="End Date"/>
+                        <field name="revise_end_date" string="Revise End Date"/>
+                        <field name="type_project" string="Type Project"/>
+                        <field name="customer_project" string="Customer"/>
+                        <field name="customer_group" string="Customer Group"/>
+                        <field name="project_code" string="Project Code"/>
+                        <field name="pmo_in_charge" string="PMO in Charge"/>
+                        <!--<field name="sales_code" string="Sales Code"/>-->
+
+                        <!-- <field name="refers_to" string="refer"/> -->
+
+                        <!-- <field name="salesperson" string="salesperson"/> -->
+                        <field name="salesnorelated" string="sales related"/>
+                        <field name="salesno" string="sales no input"/>
+                        <field name="deltadate" string="deltadate"/>
+                        <field name="description" string="Description"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//group[@name='misc']/.." position="after">
+                <page name="checklist" string="Project Checklist">
+                    <group name="check">
+                        <group string="Request for IWO">
+                            <field name="iwodone" string="IWO"/>
+                            <field name="iwoattach" widget="many2many_binary"/>
+                            <!--<button string="Proceed to In Progress" type="object" name="progress_progressbar"/>-->
+                    
+                        </group>
+                        <group string="In Progress">
+                            <field name="charter" string="Project Charter"/>
+                            <field name="charterattach" widget="many2many_binary"/>
+                            <field name="uat" string="UAT"/>
+                            <field name="uatattach" widget="many2many_binary"/>
+                            <field name="kickoff" string="Kickoff Document"/>
+                            <field name="kickoffattach" widget="many2many_binary"/>
+                            <!--<button string="Proceed to Project Delivered" type="object" name="delivered_progressbar"/>-->
+                    
+                        </group>
+                        <group string="Delivered">
+                            <field name="bast" string="BAST"/>
+                            <field name="bastattach" widget="many2many_binary"/>
+                            <field name="handover" string="Hand Over Document"/>
+                            <field name="handoverattach" widget="many2many_binary"/>
+                            <!--<button string="Proceed to Project Closed" type="object" name="closed_progressbar"/>-->
+                    
+                        </group>
+                        <group string="Closed">
+                            <field name="closed" string="Project Closed"/>
+                            <field name="closedattach" widget="many2many_binary"/>
+                            
+                    
+                        </group>
+                        <group string="On Hold">
+                            <field name="suratonhold" string="On Hold Notice"/>
+                            <field name="suratonholdattach" widget="many2many_binary"/>
+                            <!--<button string="Validate On Hold" type="object" name="onhold_progressbar"/>-->
+                    
+                        </group>
+                        <group string="Cancelled">
+                            <field name="suratcancel" string="Cancel Notice"/>
+                            <field name="suratcancelattach" widget="many2many_binary"/>
+                            <!--<button string="Validate Cancel" type="object" name="cancelled_progressbar"/>-->
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </field>
+    </record>    
+
+
+<!-- search view project information-->
+    <record id="project_search" model="ir.ui.view">
+        <field name="name">project.info.search</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_project_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="p_start_date" string="Start Date"/>
+                <field name="revise_start_date" string="Revise Start Date"/>
+                <field name="p_end_date" string="End Date"/>
+                <field name="revise_end_date" string="Revise End Date"/>
+                
+                <field name="type_project" string="Type Project"/>
+                <field name="p_status" string="Project Status"/>
+                <field name="customer_group" string="Customer Group"/>
+                <field name="project_no" string="Project No"/>
+                <field name="description" string="description"/>
+            </xpath>
+        </field>
+    </record>
+
+    
+<!--TREE VIEW-->
+        <record id="view_project_tree" model="ir.ui.view">
+            <field name="name">project.project.tree.view</field>
+            <field name="model">project.project</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="project.view_project"/>
+            
+            <field name="arch" type="xml">
+                <xpath expr='//tree' position="attributes">
+                    
+                    <attribute name="default_order">create_date desc</attribute>
+                    <attribute name="colors">
+
+                            grey:p_status in ('7cancelled','5closed');
+
+                            blue:p_status=='2iwo';
+
+                            green:p_status=='1created'
+
+                    </attribute>
+                </xpath>
+                <xpath expr='//field[@name="sequence"]' position="after">
+                    <!-- code -->
+                    <field name="project_code" string="Project No"/>
+                    <field name="salesno" string="Sales No"/>
+
+                </xpath>
+                <xpath expr='//field[@name="sequence"]' position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!-- xpath field name di parent tree -->
+                <xpath expr='//field[@name="name"]' position="after">
+                    <field name="p_start_date" string="Start Date"/>
+                    <field name="revise_start_date" string="Revise Start Date"/>
+                    <field name="p_end_date" string="End Date"/>
+                    <field name="revise_end_date" string="Revise End Date"/>
+                    
+                    <field name="type_project" string="Type Project"/>
+                    <field name="p_status" string="Project Status"/>
+                    
+                </xpath>
+                <!-- xpath field user_id di parent tree -->
+                <xpath expr='//field[@name="user_id"]' position="after">
+                    <field name="customer_group" string="Customer Group"/>
+                    
+                </xpath>
+            </field>
+        </record>
+
+
+<!--TIMELINE VIEW-->
+    <record id="project_timeline_view" model="ir.ui.view">
+        <field name="model">project.project</field>
+        <field name="type">timeline</field>
+        <field name="arch" type="xml">
+            <timeline date_start="revise_start_date"
+                      date_stop="revise_end_date"
+                      default_group_by="project_id"
+                      event_open_popup="true"
+                      mode="week"
+                      colors="
+                      #919191: p_status == '7cancelled';
+                      #919191: p_status == '5closed';
+                      #f20f0f: deltadate == 5;
+                      #f20f0f: deltadate == 4;
+                      #f20f0f: deltadate == 3;
+                      #f20f0f: deltadate == 2;
+                      #f20f0f: deltadate == 1" />
+        </field>
+    </record>
+
+<!--CALENDAR VIEW-->
+    <record id="view_project_calendar" model="ir.ui.view">
+        <field name="name">project.project.calendar.view</field>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <calendar string="Project Calendar" date_start="revise_start_date" date_stop="revise_end_date" color="p_status" mode="month">
+                <field name="name"/>
+            </calendar>
+        </field>
+    </record>
+
+<!--PROJECT TEAM ADD-->
+    <record id="project_project_inherit_form_view" model="ir.ui.view">
+        <field name="name">project.project.inherit.form.view</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='misc']/group" position="attributes">
+                <attribute name="colspan">4</attribute>
+                <attribute name="col">4</attribute>
+            </xpath>
+            <group name="misc" position="after">
+                <newline/>
+                <group string="Team" colspan="8">
+                    <field name="teamdone" string="Team Done"/>
+                    <field colspan="4" name="members" widget="many2many_kanban" nolabel="1"
+                           >
+                        <kanban quick_create="false" create="true" delete="true">
+                            <field name="name"/>
+                            <templates>
+                                <t t-name="kanban-box">
+                                    <div style="position: relative">
+                                        <a t-if="! read_only_mode" type="delete"
+                                           style="position: absolute; right: 0; padding: 4px; diplay: inline-block">
+                                            X
+                                        </a>
+                                        <div class="oe_module_vignette">
+                                            <img t-att-src="kanban_image('res.users', 'image_small', record.id.value)"
+                                                 class="oe_avatar oe_kanban_avatar_smallbox"/>
+                                            <div class="oe_module_desc">
+                                                <field name="name"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </templates>
+                        </kanban>
+                    </field>
+                </group>
+            </group>
+        </field>
+    </record>
+
+<!--PROJECT HISTORY IN EMPLOYEE-->
+    <record id="employee_employee_form_view" model="ir.ui.view">
+        <field name="name">user.project.form.view</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='public']" position="before">
+                <page name="projectinfo" string="Project Information">
+                    <group>
+                        <group string="Project History">
+                            <field name="projectmembers">
+                                <tree>
+                                    <field name="name" string="Project Name"/>
+                                    <field name="p_status"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            
+        </field>
+    </record>
+    <!--<record model="ir.actions.act_window" id="view_project_team_tree">
+            <field name="name">project team</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_type">form</field>
+            <field name="inherit_id" ref="project.view_project"/>
+        </record> -->
+
+<!-- action tombol ubah view -->
+    <record model="ir.actions.act_window" id="project_list_action">
+        <field name="name">Projects</field>
+        <field name="res_model">project.project</field>
+        <field name="view_mode">tree,form,calendar,timeline</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="project_report_action">
+        <field name="name">Projects</field>
+        <field name="res_model">project.project</field>
+        <field name="view_mode">pivot,graph</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="project_team_action">
+        <field name="name">Project Team</field>
+        <field name="model">project.project</field>
+        <!-- <field name="view_type">form</field>
+        <field name="view_mode">tree,form,pivot</field> -->
+        <field name="arch" type="xml">
+            <field name="name"/>
+            <field name="members" widget="x2many_counter"/>
+        </field>
+    </record>
+
+    
+
+    <!-- <menuitem id="project_team_menu" name="Project Team" action="project_team_action" parent="project.menu_projects"/> -->
+    <!--menuitem parent di home, project dan sales order-->
+    <menuitem id="project_menu" name="Projects" action="project_list_action" parent="project.menu_projects"/>
+    <menuitem id="project_sales_order" name="Sales Order" action="sale.action_orders" parent="project.menu_projects"/>
+    <!--menuitem parent di report, reports-->
+    <menuitem id="project_report" name="Reports" action="project_report_action" parent="project.menu_project_report"/>
+    
+
+<!--<menuitem id="menuitem_id"
+          name="Position/Of/The/Menu/Item/In/The/Tree"
+          action="action_id"
+          icon="NAME_FROM_LIST"
+          groups="groupname"
+          sequence="<integer>"/> -->
+
+</odoo>
