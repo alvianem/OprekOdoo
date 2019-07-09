@@ -2,7 +2,7 @@
     "name": "Project Information Status",
     "summary": "Add an Information Status to projects",
     "version": "10.0.1.0.0",
-    "category": "Project",
+    "category": "ASYST - Project",
     "website": "",
     "license": "AGPL-3",
     "depends": [
