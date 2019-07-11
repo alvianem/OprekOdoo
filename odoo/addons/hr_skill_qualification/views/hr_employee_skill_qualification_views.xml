@@ -6,36 +6,35 @@
 		<field name="inherit_id" ref="hr.view_employee_form"/>
 		<field name="arch" type="xml">
 			<xpath expr="//form/sheet/notebook/page[@name='hr_settings']" position="after">
-				<page name="hr_skills" string="Skills">
-					<separator string="Technical Skills"/>
+				<page name="hr_skills" string="Competency">
+					<separator string="Hard / Technical Competency"/>
 					<field name="techskill_ids">
-					<tree editable="Top">
-					   <!-- <field name="categoryTech"/> -->
-					   <field name="tech_id" required="True"/>
-                       <field name="levels" required="True"/>   
-					</tree>
-					<form>
-					   <group col="4">
-                           <!-- <field name="categoryTech"/> -->
-						   <field name="tech_id"/>
-                           <field name="levels"/>					    
-					   </group>
-					</form>
+						<tree editable="Top">
+							<field name='competency_tech_types' string='Competency Types'/>
+							<field name='competency_tech' string='Competency' required="True"/>
+							<field name='category_competency_tech' string='Competency Category'/>
+							<field name='levels_tech' string='Levels'/>					   
+						</tree>
+						<!-- <form> -->
+						   <!-- <group col="4"> -->
+							   <!-- <field name="categoryTech"/> --> 
+							   <!-- <field name="tech_id"/> -->
+							   <!-- <field name="levels"/> -->
+						   <!-- </group> -->
+						<!-- </form> -->
 					</field>
-					<separator string="Non Technical Skills"/>
+					<separator string="Soft / Behavior Competency"/>
 					<field name="nontechskill_ids">
-					   <tree editable="Top">
-					       <field name="categoryNonTechChar"/>
-						   <field name="nontech_id" required="True"/>
-					       <field name="levels" required="True"/>
-					   </tree>
-					   <form>
-					       <group col="4">
-					           <field name="categoryNonTechChar"/>
-							   <field name="nontech_id"/>
-					           <field name="levels"/>
-					       </group>
-					   </form>
+						<tree editable='top'>
+							<field name='competency_nontech' string='Competency' required="True"/>
+							<field name='category_competency_nontech' string='Competency Category'/>
+							<field name='levels_nontech' string='Levels'/>	
+						</tree>
+					    <!-- <form> -->
+					       <!-- <group col="4"> -->
+								<!-- <field name='levels' string='Levels' stored='True'/> -->
+					       <!-- </group> -->
+					   <!-- </form> -->
 					</field>
 			     </page>
 			     <page name="hr_qualification" string="Qualifications">
@@ -110,7 +109,21 @@
 			 </xpath>
 		</field>
 	</record>
-	
+    
+    <!-- Tree view of Technical Skills -->
+    <record id="view_tech_tech_tree" model="ir.ui.view">
+        <field name="name">view.tech.tech.tree</field>
+        <field name="model">tech.tech</field>
+        <field name="arch" type="xml">
+            <tree>
+				<field name="employee_id"/>
+				<field name="competency_tech_types" string='Competency Types'/>
+				<field name="competency_tech" string='Competency'/>
+				<field name="category_competency_tech" string='Category Competency'/>
+				<field name="levels_tech" string='Levels'/>
+            </tree>
+        </field>
+    </record>
 	
 	<!-- Form view of Technical Skills -->
     <record id="view_tech_tech_form" model="ir.ui.view">
@@ -119,24 +132,13 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-					<field name="categoryTech"/>
-                    <field name="name" required="True"/> 
-                    <!-- <field name="sequence"/>    -->
+					<field name="employee_id" required="True"/>
+					<field name="competency_tech_types" string='Competency Types' required="True"/>
+					<field name="competency_tech" string='Competency' required="True"/>
+					<field name="category_competency_tech" string='Category Competency' required="True"/>
+					<field name="levels_tech" string='Levels' required="True"/>
                 </group>
             </form>
-        </field>
-    </record>
-    
-    <!-- Tree view of Technical Skills -->
-    <record id="view_tech_tech_tree" model="ir.ui.view">
-        <field name="name">view.tech.tech.tree</field>
-        <field name="model">tech.tech</field>
-        <field name="arch" type="xml">
-            <tree>
-				<field name="categoryTech"/>
-                <field name="name"/>
-                <!-- <field name="sequence"/> -->
-            </tree>
         </field>
     </record>
     
@@ -148,7 +150,52 @@
         <field name="view_type">form</field>
     </record>
     
-    
+	<!-- Tree view of Category Non Technical Skills -->
+    <!-- <record id="view_category_nontech_skills_tree" model="ir.ui.view"> -->
+        <!-- <field name="name">view.category.nontech.skills.tree</field> -->
+        <!-- <field name="model">category.nontech.skills</field> -->
+        <!-- <field name="arch" type="xml"> -->
+			<!-- <tree> -->
+                <!-- <field name="penghubung0" string="Category" required="True" stored='True'/> -->
+				<!-- <field name="category" string="Category" required="True"/> -->
+			<!-- </tree> -->
+        <!-- </field> -->
+    <!-- </record> -->
+	
+	<!-- From view of Category Non Technical Skills -->
+    <!-- <record id="view_category_nontech_skills_form" model="ir.ui.view"> -->
+        <!-- <field name="name">view.category.nontech.skills.form</field> -->
+        <!-- <field name="model">category.nontech.skills</field> -->
+        <!-- <field name="arch" type="xml"> -->
+            <!-- <form> -->
+				<!-- <field name="penghubung0" string="Category" required="True" stored='True'/> -->
+				<!-- <field name="category" string="Category" required="True"/> -->
+            <!-- </form> -->
+        <!-- </field> -->
+    <!-- </record> -->
+	
+	<!-- Action of Category Non Technical Skills -->
+    <!-- <record id="action_category_nontech_skills" model="ir.actions.act_window"> -->
+        <!-- <field name="name">Category Non Technical Skills</field> -->
+        <!-- <field name="res_model">category.nontech.skills</field> -->
+        <!-- <field name="view_mode">tree,form</field> -->
+        <!-- <field name="view_type">form</field> -->
+    <!-- </record> -->
+	
+	<!-- Tree view of Non Technical Skills -->
+    <record id="view_nontech_nontech_tree" model="ir.ui.view">
+        <field name="name">view.nontech.nontech.tree</field>
+        <field name="model">nontech.nontech</field>
+        <field name="arch" type="xml">
+            <tree>
+				<field name="employee_id" required="True"/>
+				<field name="competency_nontech" string='Competency' required="True"/>
+				<field name="category_competency_nontech" string='Category Competency' required="True"/>
+				<field name="levels_nontech" string='Levels' required="True"/>
+            </tree>
+        </field>
+    </record>
+	
     <!-- Form view of Non Technical Skills -->
     <record id="view_nontech_nontech_form" model="ir.ui.view">
         <field name="name">view.nontech.nontech.form</field>
@@ -156,31 +203,18 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-					<field name="categoryNonTechChar"/>	
-                    <field name="name" required="True"/>
-                    <!-- <field name="sequence"/>    -->
+					<field name="employee_id" required="True"/>
+					<field name="competency_nontech" string='Competency' required="True"/>
+					<field name="category_competency_nontech" string='Category Competency' required="True"/>
+					<field name="levels_nontech" string='Levels' required="True"/>
                 </group>
             </form>
-        </field>
-    </record>
-    
-    <!-- Tree view of Non Technical Skills -->
-    <record id="view_nontech_nontech_tree" model="ir.ui.view">
-        <field name="name">view.nontech.nontech.tree</field>
-        <field name="model">nontech.nontech</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="categoryNonTechChar"/>
-				<field name="name"/>
-                <!-- <field name="sequence"/> -->
-            </tree>
         </field>
     </record>
     
     <!-- Action of Non Technical Skills -->
     <record id="action_nontech_skills" model="ir.actions.act_window">
         <field name="name">Non Technical Skills</field>
-		<!-- <field name="categoryNonTechChar">Category</field> -->
         <field name="res_model">nontech.nontech</field>
         <field name="view_mode">tree,form</field>
         <field name="view_type">form</field>
@@ -308,7 +342,11 @@
     <menuitem id="menu_tech_skills" parent="menu_skills" action="action_tech_skills" 
     groups="hr.group_hr_manager,hr.group_hr_user" sequence="2"/> 
     
-    <!-- Menu for Non-Technical Skills -->
+   <!-- Menu for Category Non-Technical Skills -->
+   <!-- <menuitem id="menu_category_nontech_skills" parent="menu_skills" -->
+     <!-- action="action_category_nontech_skills" groups="hr.group_hr_manager,hr.group_hr_user" sequence="8"/> -->
+   
+   <!-- Menu for Non-Technical Skills -->
     <menuitem id="menu_nontech_skills" parent="menu_skills"
      action="action_nontech_skills" groups="hr.group_hr_manager,hr.group_hr_user" sequence="3"/>
     
@@ -327,4 +365,5 @@
     <!-- Menu for Certifications -->
     <menuitem id="menu_emp_cert" parent="menu_qualifications" 
     action="action_emp_cert" groups="hr.group_hr_manager,hr.group_hr_user" sequence="7"/>
+	
 </odoo>

@@ -5,20 +5,18 @@ from odoo.exceptions import UserError, ValidationError
 
 
 class HrEmployee(models.Model):
-
     _inherit = 'hr.employee'
 
     techskill_ids = fields.One2many(
-        'emp.tech.skills', 'employee_id', 'Technical Skills')
-    nontechskill_ids = fields.One2many(
-        'emp.nontech.skills', 'employee_id', 'Non-Technical Skills')
+        'tech.tech', 'employee_id')
+    nontechskill_ids = fields.One2many('nontech.nontech', 'employee_id')
+    
     education_ids = fields.One2many(
         'employee.education', 'employee_id', 'Education')
     certification_ids = fields.One2many(
         'employee.certification', 'employee_id', 'Certification')
     profession_ids = fields.One2many(
         'employee.profession', 'employee_id', 'Professional Experience')
-
 
 class EmployeeTechSkills(models.Model):
 
@@ -35,74 +33,69 @@ class EmployeeTechSkills(models.Model):
 
 
 class TechTech(models.Model):
-
     _name = 'tech.tech'
-
-    categoryTech = fields.Selection([('programming','Programming'),('desain','Desain')], string='Category')
-    name = fields.Char()
-    sequence = fields.Integer("Sequence")
-
-    _sql_constraints = [
-        ('tech_unique', 'unique (name)',
-         'The name of the Technologies already exixts!'),
-        ('seq_uniq', 'unique (sequence)', "Sequence name already exists!")
-    ]
-
-    @api.multi
-    def unlink(self):
-        """
-        his method is called user tries to delete a skill which
-        is already in use by an employee.
-        --------------------------------------------------------
-        @param self : object pointer
-        """
-        tech_skill = self.env['emp.tech.skills'].search(
-            [('tech_id', 'in', self.ids)])
-        if tech_skill:
-            raise UserError(
-                _('You are trying to delete a Skill which is referenced by an Employee.'))
-        return super(TechTech, self).unlink()
-
-
-class EmployeeNonTechSkills(models.Model):
-
-    _name = 'emp.nontech.skills'
+    _rec_name = 'competency_tech'
     
-    #categorynonTech = fields.Selection([('communication','Communication'),('intelegent','Intelegent')], string='Category')
-    #categorynonTech2 = fields.Many2one('nontech.nontech', '')
-    applicant_id = fields.Many2one('hr.applicant', 'Applicant')
-    employee_id = fields.Many2one('hr.employee', 'Employee')
+    typecategori = fields.Selection([('industry','Industry Knowledge'),('fuctional','Fuctional Technical')], String='Category Competency')
     
-    #categoryChars = fields.One2many('nontech.nontech', 'categoryNonTechChar')
-    #categoryChars = fields.Many2one('nontech.nontech', 'Category')
-    categoryNonTechChar = fields.Many2one('category.nontech.skills', 'Category')
-    nontech_id = fields.Many2one(
-        'nontech.nontech', 'Non-Technical Skill', ondelete="cascade")
+    employee_id = fields.Many2one('hr.employee')
+    category_competency_tech = fields.Selection([('general','General Technical'),('fuctional','Fuctional Technical')], String='Competency Category')
+    competency_tech_types = fields.Char(String='Competency Types')
+    competency_tech = fields.Char(String='Competency')
+    levels_tech = fields.Selection([('fundamental', 'Fundamental Awareness'), ('novice', 'Novice'), ('intermediate', 'Intermediate'),('advance','Advance'),('expert','Expert')], 'Levels')
+
+    # _name = 'tech.tech'
+
+    # categoryTech = fields.Selection([('programming','Programming'),('desain','Desain')], string='Category')
+    # name = fields.Char()
+    # sequence = fields.Integer("Sequence")
+
+    # _sql_constraints = [
+        # ('tech_unique', 'unique (name)',
+         # 'The name of the Technologies already exixts!'),
+        # ('seq_uniq', 'unique (sequence)', "Sequence name already exists!")
+    # ]
+
+    # @api.multi
+    # def unlink(self):
+        # """
+        # his method is called user tries to delete a skill which
+        # is already in use by an employee.
+        # --------------------------------------------------------
+        # @param self : object pointer
+        # """
+        # tech_skill = self.env['emp.tech.skills'].search(
+            # [('tech_id', 'in', self.ids)])
+        # if tech_skill:
+            # raise UserError(
+                # _('You are trying to delete a Skill which is referenced by an Employee.'))
+        # return super(TechTech, self).unlink()
+
+# ------------------------------------------------------------------------------------------ #
+# class EmployeeNonTechSkills(models.Model):
+
+    # _name = 'emp.nontech.skills'
+    
+    # applicant_id = fields.Many2one('hr.applicant', 'Applicant')
+    # employee_id = fields.Many2one('hr.employee', 'Employee')
+    
+    # nontech_id = fields.Many2one(
+        # 'nontech.nontech', 'Non-Technical Skill', ondelete="cascade")
         
-    levels = fields.Selection([('basic', 'Basic'),
-                               ('medium', 'Medium'),
-                               ('advance', 'Advance')], 'Levels')
-
-
-class CategoryNontech (models.Model):
-
-    _name = 'category.nontech.skills'
-    _rec_name = 'categoryChar'
-    
-    categoryChar = fields.Char()
-    #catagoryChar = fields.One2many('nontech.nontech', 'categoryChar1') 
-    #categorynonTech = fields.One2many('nontech.nontech', 'categorynonTechChar', string="category")
+    # levels = fields.Selection([('basic', 'Basic'),
+                               # ('medium', 'Medium'),
+                               # ('advance', 'Advance')], 'Levels')
 
 class NontechNontech(models.Model):
 
     _name = 'nontech.nontech'
-    #_rec_name = 'name'
+    _rec_name = 'competency_nontech'
     
-    categoryNonTechChar = fields.Many2one('category.nontech.skills', 'Category')
-    #categoryChar2 = fields.One2many('emp.nontech.skills')
+    employee_id = fields.Many2one('hr.employee')
+    category_competency_nontech = fields.Selection([('core','Core Behavior'),('Basic','Basic Behavior')], String='Category Competency')
+    competency_nontech = fields.Char(String='Competency')
+    levels_nontech = fields.Selection([('fundamental', 'Fundamental Awareness'), ('novice', 'Novice'), ('intermediate', 'Intermediate'),('advance','Advance'),('expert','Expert')], 'Levels')
     
-    contohchar = fields.Char()
-    name = fields.Char()
     # sequence = fields.Integer("Sequence")
 
     # _sql_constraints = [('','',''),
@@ -241,8 +234,8 @@ class HrApplicant(models.Model):
 
     techskill_ids = fields.One2many(
         'emp.tech.skills', 'applicant_id', 'Technical Skills')
-    nontechskill_ids = fields.One2many(
-        'emp.nontech.skills', 'applicant_id', 'Non-Technical Skills')
+    # nontechskill_ids = fields.One2many(
+        # 'emp.nontech.skills', 'applicant_id', 'Non-Technical Skills')
     education_ids = fields.One2many(
         'employee.education', 'applicant_id', 'Education')
     certification_ids = fields.One2many(

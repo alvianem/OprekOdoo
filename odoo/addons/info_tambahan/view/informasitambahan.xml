@@ -21,6 +21,16 @@
 			<field name="work_email" position="after">
                 <field name="linklinkedin"/>
             </field>
+			
+			<xpath expr="//field[@name='company_id']" position="after">
+				<field name="tabelkarir">
+					<tree editable="Top">
+						<field name="jobposition"/>
+						<field name="tanggalawal"/>
+						<field name="tanggalakhir"/>
+					</tree>
+				</field>
+			</xpath>
 		</field>
 	</record>
 				    	    
