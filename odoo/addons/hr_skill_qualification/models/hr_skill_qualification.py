@@ -18,17 +18,17 @@ class HrEmployee(models.Model):
     profession_ids = fields.One2many(
         'employee.profession', 'employee_id', 'Professional Experience')
 
-class EmployeeTechSkills(models.Model):
+# class EmployeeTechSkills(models.Model):
 
-    _name = 'emp.tech.skills'
-    #categoryTech = fields.Selection([('programming','Programming'),('desain','Desain')], string='Category')
-    applicant_id = fields.Many2one('hr.applicant', 'applicant')
-    employee_id = fields.Many2one('hr.employee', 'Employee')
-    tech_id = fields.Many2one(
-        'tech.tech', 'Technical Skills', ondelete="cascade")
-    levels = fields.Selection([('basic', 'Basic'),
-                               ('medium', 'Medium'),
-                               ('advance', 'Advance')], 'Levels')
+    # _name = 'emp.tech.skills'
+    # #categoryTech = fields.Selection([('programming','Programming'),('desain','Desain')], string='Category')
+    # applicant_id = fields.Many2one('hr.applicant', 'applicant')
+    # employee_id = fields.Many2one('hr.employee', 'Employee')
+    # tech_id = fields.Many2one(
+        # 'tech.tech', 'Technical Skills', ondelete="cascade")
+    # levels = fields.Selection([('basic', 'Basic'),
+                               # ('medium', 'Medium'),
+                               # ('advance', 'Advance')], 'Levels')
 
 
 
@@ -38,7 +38,8 @@ class TechTech(models.Model):
     
     typecategori = fields.Selection([('industry','Industry Knowledge'),('fuctional','Fuctional Technical')], String='Category Competency')
     
-    employee_id = fields.Many2one('hr.employee')
+    applicant_id = fields.Many2one('hr.applicant', 'Applicant Id')
+    employee_id = fields.Many2one('hr.employee', 'Employee Id')
     category_competency_tech = fields.Selection([('general','General Technical'),('fuctional','Fuctional Technical')], String='Competency Category')
     competency_tech_types = fields.Char(String='Competency Types')
     competency_tech = fields.Char(String='Competency')
@@ -91,6 +92,7 @@ class NontechNontech(models.Model):
     _name = 'nontech.nontech'
     _rec_name = 'competency_nontech'
     
+    applicant_id = fields.Many2one('hr.applicant', 'applicant')
     employee_id = fields.Many2one('hr.employee')
     category_competency_nontech = fields.Selection([('core','Core Behavior'),('Basic','Basic Behavior')], String='Category Competency')
     competency_nontech = fields.Char(String='Competency')
@@ -233,9 +235,9 @@ class HrApplicant(models.Model):
     _inherit = 'hr.applicant'
 
     techskill_ids = fields.One2many(
-        'emp.tech.skills', 'applicant_id', 'Technical Skills')
-    # nontechskill_ids = fields.One2many(
-        # 'emp.nontech.skills', 'applicant_id', 'Non-Technical Skills')
+        'tech.tech', 'applicant_id', 'Technical Skills')
+    nontechskill_ids = fields.One2many(
+        'nontech.nontech', 'applicant_id', 'Non-Technical Skills')
     education_ids = fields.One2many(
         'employee.education', 'applicant_id', 'Education')
     certification_ids = fields.One2many(

@@ -7,33 +7,36 @@
 			<field name="arch" type="xml">
 				<xpath expr="//form/sheet/group" position="after">
 					<notebook>
-						<page name="hr_skills" string="Skills">
+						<page name="hr_skills" string="Competency">
 							<separator string="Technical Skills" />
 							<field name="techskill_ids">
 								<tree editable="Top">
-									<field name="tech_id" required="True"/>
-									<field name="levels" required="True"/>
+									<field name='competency_tech_types' string='Competency Types'/>
+									<field name='competency_tech' string='Competency' required="True"/>
+									<field name='category_competency_tech' string='Competency Category'/>
+									<field name='levels_tech' string='Levels'/>	
 								</tree>
-								<form>
-									<group col="4">
-										<field name="tech_id"/>
-										<field name="levels" />
-									</group>
-								</form>
+								<!-- <form> -->
+									<!-- <group col="4"> -->
+										<!-- <field name="tech_id"/> -->
+										<!-- <field name="levels" /> -->
+									<!-- </group> -->
+								<!-- </form> -->
 							</field>
 							<separator string="Non Technical Skills" />
-							<!-- <field name="nontechskill_ids"> -->
-								<!-- <tree editable="Top"> -->
-									<!-- <field name="nontech_id" required="True"/> -->
-									<!-- <field name="levels" required="True"/> -->
-								<!-- </tree> -->
+							<field name="nontechskill_ids">
+								<tree editable='top'>
+									<field name='competency_nontech' string='Competency' required="True"/>
+									<field name='category_competency_nontech' string='Competency Category'/>
+									<field name='levels_nontech' string='Levels'/>	
+								</tree>
 								<!-- <form> -->
 									<!-- <group col="4"> -->
 										<!-- <field name="nontech_id"/> -->
 										<!-- <field name="levels" /> -->
 									<!-- </group> -->
 								<!-- </form> -->
-							<!-- </field> -->
+							</field>
 						</page>
 						<page name="hr_qualification" string="Qualifications">
 							<separator string="Educational Qualification" />
@@ -61,6 +64,7 @@
 									<field name="course_id" />
 									<field name="levels" />
 									<field name="year" />
+									<field name="yearend"/>
 									<field name="doc" />
 								</tree>
 								<form>
@@ -68,6 +72,7 @@
 										<field name="course_id" required="True" />
 										<field name="levels" />
 										<field name="year" />
+										<field name="yearend"/>
 										<field name="doc" />
 									</group>
 								</form>
@@ -75,19 +80,27 @@
 							<separator string="Professional Experience" />
 							<field name="profession_ids">
 								<tree>
-									<field name="job_id" />
-									<field name="location" />
-									<field name="from_date" />
-									<field name="to_date" />
-									<field name="doc" />
+									<!-- <field name="job_id" required="True" invisible='1'/> -->
+									<field name="jobtitle"/>
+									<field name="company"/>
+									<field name="industry"/>
+									<field name="location"/>
+									<field name="from_date"/>
+									<field name="to_date"/>
+									<field name="tech_id2"/>
+									<field name="doc"/>
 								</tree>
 								<form>
 									<group col="4">
-										<field name="job_id" required="True" />
-										<field name="location" />
-										<field name="from_date" />
-										<field name="to_date" />
-										<field name="doc" />
+										<!--<field name="job_id" required="True" invisible='1'/>-->
+										<field name="jobtitle"/>
+										<field name="company"/>
+										<field name="industry"/>
+										<field name="location"/>
+										<field name="from_date"/>
+										<field name="to_date"/>
+										<field name="tech_id2"/>
+										<field name="doc"/>
 									</group>
 								</form>
 							</field>

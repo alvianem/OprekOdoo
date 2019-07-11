@@ -116,7 +116,8 @@
         <field name="model">tech.tech</field>
         <field name="arch" type="xml">
             <tree>
-				<field name="employee_id"/>
+				<field name="employee_id" string='Employee Id'/>
+				<field name="applicant_id" string="Applicant Id" readonly="True"/>
 				<field name="competency_tech_types" string='Competency Types'/>
 				<field name="competency_tech" string='Competency'/>
 				<field name="category_competency_tech" string='Category Competency'/>
@@ -132,7 +133,8 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-					<field name="employee_id" required="True"/>
+					<field name="employee_id" string='Employee Id' required="True"/>
+					<field name="applicant_id" string="Applicant Id" readonly="True"/>
 					<field name="competency_tech_types" string='Competency Types' required="True"/>
 					<field name="competency_tech" string='Competency' required="True"/>
 					<field name="category_competency_tech" string='Category Competency' required="True"/>

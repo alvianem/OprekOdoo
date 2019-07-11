@@ -86,6 +86,8 @@ class RecruitmentDegree(models.Model):
 
 class Applicant(models.Model):
     _name = "hr.applicant"
+    #kostumisasi _rec_name
+    _rec_name = "partner_name"
     _description = "Applicant"
     _order = "priority desc, id desc"
     _inherit = ['mail.thread', 'ir.needaction_mixin', 'utm.mixin']
@@ -147,6 +149,8 @@ class Applicant(models.Model):
     partner_name = fields.Char("Applicant's Name")
     partner_phone = fields.Char("Phone", size=32)
     partner_mobile = fields.Char("Mobile", size=32)
+    
+    #tempat taruh kostumisasi
     type_id = fields.Many2one('hr.recruitment.degree', "Degree")
     department_id = fields.Many2one('hr.department', "Department")
     reference = fields.Char("Referred By")
