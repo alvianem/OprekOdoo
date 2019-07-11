@@ -18,9 +18,9 @@ class HrEmployee(models.Model):
     profession_ids = fields.One2many(
         'employee.profession', 'employee_id', 'Professional Experience')
 
-# class EmployeeTechSkills(models.Model):
+class EmployeeTechSkills(models.Model):
 
-    # _name = 'emp.tech.skills'
+    _name = 'emp.tech.skills'
     # #categoryTech = fields.Selection([('programming','Programming'),('desain','Desain')], string='Category')
     # applicant_id = fields.Many2one('hr.applicant', 'applicant')
     # employee_id = fields.Many2one('hr.employee', 'Employee')
@@ -73,9 +73,9 @@ class TechTech(models.Model):
         # return super(TechTech, self).unlink()
 
 # ------------------------------------------------------------------------------------------ #
-# class EmployeeNonTechSkills(models.Model):
+class EmployeeNonTechSkills(models.Model):
 
-    # _name = 'emp.nontech.skills'
+    _name = 'emp.nontech.skills'
     
     # applicant_id = fields.Many2one('hr.applicant', 'Applicant')
     # employee_id = fields.Many2one('hr.employee', 'Employee')
