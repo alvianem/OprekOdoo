@@ -6,10 +6,12 @@
     "website": "",
     "license": "AGPL-3",
     "depends": [
-        "project", "sale", "sale_timesheet", "web_timeline", "document", "hr"
+        "project", "sale", "web_timeline", "document", "hr", "mail"
     ],
     "data": [
-        "views/project_view.xml"
+        "views/project_view.xml",
+        "security/project_security.xml",
+        "security/ir.model.access.csv"
     ],
     "installable": True,
 }

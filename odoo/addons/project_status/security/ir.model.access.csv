@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+project_mopm2,project.project,model_project_project,project.group_project_MOPM2,1,1,1,1
+account_analytic_account_mopm2,account.analytic.account,analytic.model_account_analytic_account,project.group_project_MOPM2,1,1,1,1
+account_analytic_line_mopm2,account.analytic.line,analytic.model_account_analytic_line,project.group_project_MOPM2,1,1,1,1
+mail_alias_mopm2,mail.alias,mail.model_mail_alias,project.group_project_MOPM2,1,1,1,1
+project_team_mopm2,project.team,model_project_team,project.group_project_MOPM2,1,0,0,0
+sale_order_mopm2,sale.order,sale.model_sale_order,project.group_project_MOPM2,1,1,0,0
+sale_order_line_mopm2,sale.order.line,sale.model_sale_order_line,project.group_project_MOPM2,1,0,0,0
+project_sale_mopm2,project.sale,model_project_sale,project.group_project_MOPM2,1,1,1,1
+project_mopm1,project.project,model_project_project,project.group_project_MOPM1,1,1,0,0
+account_analytic_account_mopm1,account.analytic.account,analytic.model_account_analytic_account,project.group_project_MOPM1,1,0,0,0
+account_analytic_line_mopm1,account.analytic.line,analytic.model_account_analytic_line,project.group_project_MOPM1,1,0,0,0
+mail_alias_mopm1,mail.alias,mail.model_mail_alias,project.group_project_MOPM1,1,0,0,0
+project_team_mopm1,project.team,model_project_team,project.group_project_MOPM1,1,1,1,1
+project_team_manager,project.team,model_project_team,project.group_project_manager,1,0,0,0
+project_team_user,project.team,model_project_team,project.group_project_user,1,0,0,0

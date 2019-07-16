@@ -4,21 +4,17 @@ from odoo import fields, models, api, _
 class ProjectProject(models.Model):
     _inherit = "project.project"
 
-    p_start_date = fields.Date(string="Start Date", track_visibility='onchange')
-    revise_start_date = fields.Date(string='Revise Start Date', track_visibility='onchange')
-    p_end_date = fields.Date(string='End Date', track_visibility='onchange')
-    revise_end_date = fields.Date(string='Revise End Date', track_visibility='onchange')
-    datenow = fields.Date(string='Date Now', compute='_datenow')
-    deltadate = fields.Integer(string="Selisih Deadline", compute='_itung_deadline')
-    #patokan = fields.Integer(string="Patokan", compute='_itung_patokan')
-    #customer partner_id project di xml nya aja
-    customer_project = fields.Many2one('res.partner', string="Customer", related='analytic_account_id.partner_id', track_visibility='onchange')
-    customer_group = fields.Selection([('asyst', 'ASYST'),('ga_group', 'GA Group'),('non_ga_group', 'NON GA Group')], string="Customer Group", track_visibility='onchange')
-    
-    type_project = fields.Selection([('internal','Internal'),('external','External')], string='Type Project', track_visibility='onchange')
+    p_start_date = fields.Date(string="Project Start Date", track_visibility='onchange', store=True)
+    revise_start_date = fields.Date(string='Revise Start Date', track_visibility='onchange', store=True)
+    p_end_date = fields.Date(string='Project End Date', track_visibility='onchange', store=True)
+    revise_end_date = fields.Date(string='Revise End Date', track_visibility='onchange', store=True)
+    deltadate = fields.Integer(string="Selisih Deadline", compute='_itung_deadline', store=True)
+    customer_project = fields.Many2one('res.partner', string="Customer", related='analytic_account_id.partner_id', track_visibility='onchange', store=True)
+    customer_group = fields.Selection([('asyst', 'ASYST'),('ga_group', 'GA Group'),('non_ga_group', 'NON GA Group')], string="Customer Group", track_visibility='onchange', store=True)
+    type_project = fields.Selection([('internal','Internal'),('external','External')], string='Type Project', track_visibility='onchange', store=True)
     p_status = fields.Selection([
-        ('2iwo','Request For IWO'),
         ('1created','Created'),
+        ('2iwo','Request For IWO'),
         ('proposeteam','Propose Team'),
         ('3progress','In Progress'),
         ('4delivered','Delivered'),
@@ -27,24 +23,15 @@ class ProjectProject(models.Model):
         ('7cancelled','Cancelled')],
         compute='_statuschange', 
         string='Project Status', 
-        default = '1created')
-    #p_statusnow = fields.Selection(string='Status', related='p_status', readonly=True)
-    
-    project_no = fields.Integer(string='Project No', related='id')
-    project_code = fields.Text(string='Project Code', compute='_project_code_concat')
-    salesid = fields.Integer(string='Sales Id', readonly=True, related='salesorder.id')
-    # sales_code = fields.Text(string='Project Code', compute='_sales_code_concat')
-    
-    salesorder = fields.One2many('sale.order', 'project_project_id', string='Sales order') #nampilin saleorder bersangkutan, dan bisa create disini
-    salesno = fields.Many2one('sale.order', string='Sales No') #ngerefer ngambil id nya sale order yang mana
-    salesnorelated = fields.Char(string='Sales No', related='salesorder.name')
-    # salesperson = fields.Many2one('res.users', string='Account Manager', readonly=False, related='salesorder.user_id', domain=[('project_project_id','=', 'id')]) 
-    pmo_in_charge = fields.Many2one('res.users', string='PMO in Charge')
-
-    
-    
+        default = '1created',store=True)
+    project_no = fields.Integer(string='Project No', related='id', store=False)
+    project_code = fields.Text(string='Project Code', compute='_project_code_concat', store=True)
+    pmo_in_charge = fields.Many2one('res.users', string='PMO in Charge', default=lambda self: self.env.uid, store=True)
     description = fields.Html()
 
+    partner_idi = fields.Many2one('res.partner', 'partnerr')
+    # user_idi = fields.Many2one('res.users', 'userr', related='teamo2mp.userem2o')
+# related='teamo2mp.userem2o'
     teamdone = fields.Boolean(string = 'Team Done', default = False)
 
     iwodone = fields.Boolean(string = 'IWO', default = False)
@@ -67,154 +54,91 @@ class ProjectProject(models.Model):
                                 column1="m2m_id",
                                 column2="attachment_id",
                                 string="Document IWO")
-
     charterattach= fields.Many2many(comodel_name="ir.attachment", 
                                 relation="m2m_ir_charter_rel", 
                                 column1="m2m_id",
                                 column2="attachment_id",
                                 string="Document Project Charter")
-
     uatattach= fields.Many2many(comodel_name="ir.attachment", 
                                 relation="m2m_ir_uat_rel", 
                                 column1="m2m_id",
                                 column2="attachment_id",
                                 string="Document UAT")
-
     kickoffattach= fields.Many2many(comodel_name="ir.attachment", 
                                 relation="m2m_ir_kickoff_rel", 
                                 column1="m2m_id",
                                 column2="attachment_id",
                                 string="Document Kickoff")
-
     bastattach= fields.Many2many(comodel_name="ir.attachment", 
                                 relation="m2m_ir_bast_rel", 
                                 column1="m2m_id",
                                 column2="attachment_id",
                                 string="Document BAST")
-
     handoverattach= fields.Many2many(comodel_name="ir.attachment", 
                                 relation="m2m_ir_handover_rel", 
                                 column1="m2m_id",
                                 column2="attachment_id",
                                 string="Document Hand Over")
-
     suratonholdattach= fields.Many2many(comodel_name="ir.attachment", 
                                 relation="m2m_ir_onhold_rel", 
                                 column1="m2m_id",
                                 column2="attachment_id",
                                 string="Document On Hold Notice")
-
     suratcancelattach= fields.Many2many(comodel_name="ir.attachment", 
                                 relation="m2m_ir_cancel_rel", 
                                 column1="m2m_id",
                                 column2="attachment_id",
                                 string="Document Cancel Notice")
-
     closedattach= fields.Many2many(comodel_name="ir.attachment", 
                                 relation="m2m_ir_closed_rel", 
                                 column1="m2m_id",
                                 column2="attachment_id",
                                 string="Document Closed")
     
-    members = fields.Many2many('hr.employee', 'project_user_rel', 'project_id',
-                               'uid', 'Project Members', help="""Project's
-                               members are users who can have an access to
-                               the tasks related to this project."""
-                               )
+    #members = fields.Many2many('hr.employee', 'project_user_rel', 'project_id',
+                               # 'uid', 'Project Members', help="""Project's
+                               # members are users who can have an access to
+                               # the tasks related to this project."""
+                               # )
 
-    # refers_to = fields.Reference(
-    # [('res.user', 'User'), ('res.partner', 'Partner')],
-    # 'Refers to')
+    teamo2mp = fields.One2many('project.team', 'projectm2o', string="Team Projects")
+    saleproject_o2m = fields.One2many('project.sale', 'projectm2os', string="Sale Projects")
+    salesidnya = fields.Many2one(string='Sales No', readonly=True, related='saleproject_o2m.salem2os',store=True)
 
-    @api.multi
-    def _datenow(self):
-        for each in self:
-            each.datenow = date.today()
+    # user_id = fields.Many2one('res.users',
+    #     string='Assigned to',
+    #     default=lambda self: self.env.uid,
+    #     index=True, track_visibility='always')
 
     # @api.multi
-    # def _itung_patokan(self):
+    # def _datenow(self):
     #     for each in self:
-    #         each.patokan = 6
+    #         each.datenow = date.today()
 
     @api.multi
-    @api.depends('datenow', 'revise_end_date', 'deltadate')
+    @api.depends('revise_end_date', 'deltadate')
     def _itung_deadline(self):
-        # result = {}
-        # if deltadate:
-        #     selisih = self.env['project.project'].search([('id', '=', deltadate)])
-        # if selisih:
-        #     result['deltatanggal'] = selisih.deltatanggal
-        # return {'value': result}
+        datenow = date.today()
         for each in self:
-            if each.datenow and each.revise_end_date:
+            if each.revise_end_date:
                 d1=datetime.strptime(str(each.revise_end_date),'%Y-%m-%d') 
-                d2=datetime.strptime(str(each.datenow),'%Y-%m-%d')
+                d2=datetime.strptime(str(datenow),'%Y-%m-%d')
                 d3=d1-d2
-                each.deltadate=str(d3.days)
-        
-
-
-    
+                if int(d3.days) < 0:
+                    each.deltadate= int(0)
+                else:
+                    each.deltadate=int(d3.days)
                 
     @api.depends('project_no')
     def _project_code_concat(self):
         for rec in self:
             code="PMO"
             rec.project_code = code + str(rec.project_no)
-
-    # @api.depends('salesid')
-    # def _sales_code_concat(self):
-    #     for rec in self:
-    #         code="IWO"
-    #         rec.sales_code = code + str(rec.salesid)
-
-    #@api.multi
-    #def iwo_progressbar(self):
-    #    self.write({'p_status': '1iwo'})
-
-    #@api.multi
-    #def created_progressbar(self):
-    #    self.write({'p_status': '2created'})    
     
-    #@api.multi
-    #@api.depends('iwodone')
-    #def progress_progressbar(self):
-    #    for rec in self:
-    #        if rec.iwodone == True:
-    #            self.write({'p_status': '3progress'})
-    
-    #@api.multi
-    #@api.depends('charter','uat','kickoff')
-    #def delivered_progressbar(self):
-    #    for rec in self:
-    #        if rec.uat == True:
-    #            self.write({'p_status': '4delivered'})
-    
-    #@api.multi
-    #@api.depends('closed','bast','handover')
-    #def closed_progressbar(self):
-    #    for rec in self:
-    #        if rec.closed == True and rec.bast == True and rec.handover == True:
-    #            self.write({'p_status': '5closed'})
-    
-    #@api.multi
-    #@api.depends('suratonhold')
-    #def onhold_progressbar(self):
-    #    for rec in self:
-    #        if rec.suratonhold == True:
-    #            self.write({'p_status': '6onhold'})
-    
-    #@api.multi
-    #@api.depends('suratcancel')
-    #def cancelled_progressbar(self):
-    #    for rec in self:
-    #        if rec.suratcancel == True:
-    #            self.write({'p_status': '7cancelled'})
-    
-    @api.depends('salesno', 'teamdone', 'iwodone', 'uat', 'closed', 'bast', 'handover', 'suratcancel', 'suratonhold')
+    @api.depends('salesidnya', 'teamdone', 'iwodone', 'uat', 'closed', 'bast', 'handover', 'suratcancel', 'suratonhold')
     def _statuschange(self):
         for rec in self:
-            if rec.salesno:
+            if rec.salesidnya:
                 rec.p_status='2iwo'
                 if rec.iwodone == True:
                     rec.p_status='proposeteam'
@@ -236,9 +160,9 @@ class ProjectProject(models.Model):
                     rec.p_status='6onhold'
                 elif rec.suratcancel == True:
                     rec.p_status='7cancelled'
-            elif not rec.salesno:
+            elif not rec.salesidnya:
                 rec.p_status='1created'
-                if rec.salesno:
+                if rec.salesidnya:
                     rec.p_status='2iwo'
                     if rec.iwodone == True:
                         rec.p_status='proposeteam'
@@ -264,29 +188,129 @@ class ProjectProject(models.Model):
                     rec.p_status='6onhold'
                 elif rec.suratcancel == True:
                     rec.p_status='7cancelled'
-    #@api.multi
-    #@api.depends('iwodone', 'charter','uat','kickoff', 'closed','bast','handover', 'suratonhold', 'suratcancel', 'p_status')
-    #def statusbar_onchange(self):
-    #    for rec in self:
-    #        if rec.iwodone == True:
-    #            self.write({'p_status': '3progress'})
-    #        elif rec.charter == True and rec.uat == True and rec.kickoff == True:
-    #            self.write({'p_status': '4delivered'})
-    #        elif rec.closed == True and rec.bast == True and rec.handover == True:
-    #            self.write({'p_status': '5closed'})
-    #        elif rec.suratonhold == True:
-    #            self.write({'p_status': '6onhold'})        
-    #        elif rec.suratcancel == True:
-    #            self.write({'p_status': '7cancelled'})
 
+    @api.multi
+    def action_follow(self):
+        # fetch the partner's id and subscribe the partner to the sale order
+        for rec in self:
+            if rec.partner_idi not in rec.message_partner_ids:
+                rec.message_subscribe([rec.partner_idi.id])
+        return True
 
-
-class ResUsersInherit(models.Model):
+class HrEmployeeInherit(models.Model):
     _inherit = 'hr.employee'
 
-    projectmembers = fields.Many2many('project.project', 'project_user_rel',
-                                    'uid', 'project_id', 'Project History',
-                                    help="""Project's members are users who
-                                     can have an access to the tasks related
-                                     to this project.""")
-            
+    #projectmembers = fields.Many2many('project.project', 'project_user_rel',
+    #                                 'uid', 'project_id', 'Project History',
+    #                                 help="""Project's members are users who
+    #                                  can have an access to the tasks related
+    #                                  to this project.""")
+    
+    # teamm2o = fields.Many2one('project.team', string="Project Team m2o")
+    teamo2me = fields.One2many(related="user_id.teamo2mu", string="Project Team")
+    countproject = fields.Integer(string="Jumlah All Project", compute="_compute_project")
+    currentproject = fields.Integer(string="Current Project", compute="_compute_current_project")
+    
+    def _compute_project(self):
+        for employee in self:
+            user = employee.user_id
+            if user:
+                current = self.env['project.team'].sudo().search([('userem2o','=',user.id)])
+                employee.countproject = str(len(current))
+
+    def _compute_current_project(self):
+        for employee in self:
+            user = employee.user_id
+            if user:
+                current = self.env['project.team'].sudo().search(['&',('userem2o','=',user.id),('status_assign','=','assigned')])
+                employee.currentproject = str(len(current))
+
+class ResUsersInherit(models.Model):
+    _inherit = 'res.users'
+
+    teamo2mu = fields.One2many('project.team', 'userem2o', string="Project Team")
+
+class ProjectTeam(models.Model):
+    _name = 'project.team'
+
+    # employeeo2m = fields.One2many('hr.employee', 'teamm2o', string="Employee team")
+    # user_id = fields.Many2one(related='employeeo2m.user_id')
+    partnerm2o = fields.Many2one('res.partner', string="related partner", related='userem2o.partner_id')
+    userem2o = fields.Many2one('res.users', string="Users")
+    projectm2o = fields.Many2one('project.project', string="Projects")
+    # employeem2o = fields.Many2one('hr.employee', string="Employees")
+    start_assign = fields.Datetime(string="Start Assigned Date", readonly=True)
+    end_assign = fields.Datetime(string="End Assigned Date", readonly=True)
+    status_assign = fields.Selection([('assigned','Assigned'),('unassigned','Unassigned')], string="Status", readonly=True)
+    message_partner = fields.Many2many(related="projectm2o.message_partner_ids")
+
+    @api.multi
+    def assign_person(self):
+        # partner = self.partnerm2o
+        # message_partner_proj = self.projectm2o.message_partner_ids
+        if not self.start_assign:
+            self.start_assign = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            self.status_assign = 'assigned'
+            # self.env['project.project'].action_follow()
+            # self.write({'projectm2o.partner_idi': self.partnerm2o})
+            # for rec in self:
+            #     if rec.partnerm2o not in message_partner_proj:
+            #         partner.message_subscribe([rec.partnerm2o.id])
+            # return True
+
+    @api.multi
+    def unassign_person(self):
+        if not self.end_assign:
+            self.end_assign = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            self.status_assign = 'unassigned'
+
+    # @api.multi
+    # def assign_person(self):
+    #     if not self.start_assign:
+    #         self.start_assign = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    #         self.status_assign = 'assigned'
+
+    # @api.one
+    # def auto_date(self):
+    #     if not self.start_assign:
+    #         self.start_assign = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        
+    # @api.multi
+    # @api.onchange('employeem2o')
+    # def auto_status(self):
+    #     for rec in self:
+    #         if rec.end_assign:
+    #             rec.status_assign = 'unassigned'
+    #         elif rec.start_assign:
+    #             rec.status_assign = 'assigned'
+
+class ProjectSaleInherit(models.Model):
+    _inherit = 'sale.order'
+
+    # projectconvert = fields.Boolean(string = "Convert to Project", compute="convert_project")
+    state = fields.Selection(selection_add=[('review', 'PMO Review'),('reviewed', 'PMO Reviewed')])
+    projectsale_o2ms = fields.One2many('project.sale', 'salem2os', string='Project salem2os')
+
+    # @api.multi
+    # @api.depends('project_project_id')
+    # def convert_project(self):
+    #     for rec in self:
+    #         if rec.project_project_id:
+    #             rec.projectconvert = True
+    #         else:
+    #             rec.projectconvert = False
+
+    @api.multi
+    def action_review(self):
+        return self.write({'state': 'review'})
+
+    @api.multi
+    def action_done_review(self):
+        return self.write({'state': 'reviewed'})
+
+
+class ProjectSale(models.Model):
+    _name = 'project.sale'
+
+    projectm2os = fields.Many2one('project.project', string="Projects")
+    salem2os = fields.Many2one('sale.order', string="Sales")

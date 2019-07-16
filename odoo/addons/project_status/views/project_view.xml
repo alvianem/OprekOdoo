@@ -10,13 +10,26 @@
         <field name="arch" type="xml">
             <xpath expr="/form/*" position="before">
                 <header>
+                    <button string="assign" type="object" name="action_follow"/>
                     <field name="p_status" widget="statusbar" />
                 </header>
             </xpath>
-            <xpath expr="//group[@name='misc']/.." position="before">
+            <xpath expr='//div[@name="options_active"]' position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr='//field[@name="task_count"]' position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr='//field[@name="user_id"]' position="replace">
+                <!-- <field name="partner_idi" string="Followers"/> -->
+            </xpath>
+            <xpath expr='//field[@name="partner_id"]' position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='misc']/.." position="after">
                 <page name="status" string="Project Information">
                     <group>
-                        <field name="p_start_date" string="Start Date"/>
+                        <field name="p_start_date" string="Start Date" />
                         <field name="revise_start_date" string="Revise Start Date"/>
                         <field name="p_end_date" string="End Date"/>
                         <field name="revise_end_date" string="Revise End Date"/>
@@ -28,16 +41,20 @@
                         <!--<field name="sales_code" string="Sales Code"/>-->
 
                         <!-- <field name="refers_to" string="refer"/> -->
-
+<!-- groups="project.group_project_MOPM2" -->
                         <!-- <field name="salesperson" string="salesperson"/> -->
-                        <field name="salesnorelated" string="sales related"/>
+                        <!-- <field name="salesnorelated" string="sales related salerorder.id"/>
                         <field name="salesno" string="sales no input"/>
-                        <field name="deltadate" string="deltadate"/>
+                        <field name="saleproject_m2o" string="sales project m2o"/> -->
+                        <field name="salesidnya" string="Sales No"/>
+                        
+                        
+                        <!-- <field name="deltadate" string="deltadate"/> -->
                         <field name="description" string="Description"/>
                     </group>
                 </page>
             </xpath>
-            <xpath expr="//group[@name='misc']/.." position="after">
+            <xpath expr="//notebook" position="inside">
                 <page name="checklist" string="Project Checklist">
                     <group name="check">
                         <group string="Request for IWO">
@@ -84,12 +101,121 @@
                     </group>
                 </page>
             </xpath>
-            <div class="oe_chatter">
-                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+            <!-- <xpath expr="//notebook" position="inside">
+                <page name="Sales Order" string="Project IWO" groups="project.group_project_MOPM2">
+                    <group name="IWO">
+                        <field name="saleproject_o2m"/>
+                    </group>
+                </page>
+            </xpath> -->
+            <xpath expr="//div[@class='oe_chatter']">
                 <field name="message_ids" widget="mail_thread"/>
-            </div>
+            </xpath>
         </field>
     </record>    
+
+<!--FORM VIEW For mopm1-->
+<record id="project_form_readonly" model="ir.ui.view">
+    <field name="name">project.info.form.readonly</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.edit_project"/>
+    <field name="groups_id" eval="[(6, 0, [ref('project.group_project_MOPM1')])]"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='privacy_visibility']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='name']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='p_start_date']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='revise_start_date']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='p_end_date']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='revise_end_date']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='type_project']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='customer_project']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='customer_group']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='project_code']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='pmo_in_charge']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='salesidnya']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='description']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='iwodone']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='iwoattach']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='charter']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='charterattach']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='uat']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='uatattach']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='kickoff']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='kickoffattach']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='bast']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='bastattach']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='handover']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='handoverattach']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='closed']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='closedattach']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='suratonhold']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='suratonholdattach']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='suratcancel']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='suratcancelattach']" position="attributes">
+            <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>                            
+    </field>
+</record>
 
 
 <!-- search view project information-->
@@ -138,7 +264,7 @@
                 <xpath expr='//field[@name="sequence"]' position="after">
                     <!-- code -->
                     <field name="project_code" string="Project No"/>
-                    <field name="salesno" string="Sales No"/>
+                    <field name="salesidnya" string="Sales No"/>
 
                 </xpath>
                 <xpath expr='//field[@name="sequence"]' position="attributes">
@@ -150,18 +276,24 @@
                     <field name="revise_start_date" string="Revise Start Date"/>
                     <field name="p_end_date" string="End Date"/>
                     <field name="revise_end_date" string="Revise End Date"/>
-                    
                     <field name="type_project" string="Type Project"/>
                     <field name="p_status" string="Project Status"/>
                     
                 </xpath>
+                <xpath expr='//field[@name="user_id"]' position="replace">
+                </xpath>
                 <!-- xpath field user_id di parent tree -->
-                <xpath expr='//field[@name="user_id"]' position="after">
+                <xpath expr='//tree' position="inside">
+                    <field name="customer_project" string="Customer"/>
                     <field name="customer_group" string="Customer Group"/>
                     
                 </xpath>
+                <xpath expr='//field[@name="partner_id"]' position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
             </field>
         </record>
+        <!-- {'active_test': False,} -->
 
 
 <!--TIMELINE VIEW-->
@@ -175,13 +307,16 @@
                       event_open_popup="true"
                       mode="week"
                       colors="
-                      #919191: p_status == '7cancelled';
-                      #919191: p_status == '5closed';
                       #f20f0f: deltadate == 5;
                       #f20f0f: deltadate == 4;
                       #f20f0f: deltadate == 3;
                       #f20f0f: deltadate == 2;
-                      #f20f0f: deltadate == 1" />
+                      #f20f0f: deltadate == 1;
+                      #f20f0f: deltadate == 0;
+                      #919191: p_status == '7cancelled';
+                      #919191: p_status == '5closed'
+                      "
+                      zoomKey="ctrlKey" />
         </field>
     </record>
 
@@ -190,11 +325,40 @@
         <field name="name">project.project.calendar.view</field>
         <field name="model">project.project</field>
         <field name="arch" type="xml">
-            <calendar string="Project Calendar" date_start="revise_start_date" date_stop="revise_end_date" color="p_status" mode="month">
+            <calendar string="Project Calendar" 
+                date_start="revise_start_date" 
+                date_stop="revise_end_date" 
+                color="p_status" 
+                mode="month"
+                >
                 <field name="name"/>
             </calendar>
         </field>
     </record>
+
+<!--PIVOT VIEW-->
+        <record id="view_project_pivot" model="ir.ui.view">
+            <field name="name">project.project.pivot</field>
+            <field name="model">project.project</field>
+            <field name="arch" type="xml">
+                <pivot string="Project Pivot Table">
+                    <field name="name" type="row"/>
+                </pivot>
+            </field>
+        </record>
+
+<!--GRAPH VIEW-->
+        <record id="view_project_graph" model="ir.ui.view">
+            <field name="name">project.project.graph</field>
+            <field name="model">project.project</field>
+            <field name="arch" type="xml">
+                <graph string="Project Graph">
+                    <field name="p_status"/>
+                    <field name="name"/>
+                </graph>
+            </field>
+        </record>
+
 
 <!--PROJECT TEAM ADD-->
     <record id="project_project_inherit_form_view" model="ir.ui.view">
@@ -208,7 +372,7 @@
             </xpath>
             <group name="misc" position="after">
                 <newline/>
-                <group string="Team" colspan="8">
+                <!-- <group string="Team" colspan="8">
                     <field name="teamdone" string="Team Done"/>
                     <field colspan="4" name="members" widget="many2many_kanban" nolabel="1"
                            >
@@ -233,6 +397,20 @@
                             </templates>
                         </kanban>
                     </field>
+                </group> -->
+                <group string="Team Project">
+                    <field name="teamdone" string="Team Done" groups="project.group_project_MOPM1"/>
+                    <field name="teamo2mp">
+                        <tree editable="top">
+                            <field name="userem2o"/>
+                            <!-- <field name="employeem2o"/> -->
+                            <field name="status_assign"/>
+                            <field name="start_assign"/>
+                            <field name="end_assign"/>
+                            <button string="Assign" type="object" name="assign_person" class="oe_highlight"/>
+                            <button string="Unassign" type="object" name="unassign_person" class="oe_highlight"/>
+                        </tree>
+                    </field>
                 </group>
             </group>
         </field>
@@ -244,35 +422,194 @@
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='public']" position="before">
+            <xpath expr="//notebook" position="inside">
                 <page name="projectinfo" string="Project Information">
-                    <group>
+                    <!-- <group>
                         <group string="Project History">
                             <field name="projectmembers">
                                 <tree>
+                                    <field name="salesno"/>
+                                    <field name="project_code"/>
                                     <field name="name" string="Project Name"/>
+                                    <field name="revise_start_date"/>
+                                    <field name="revise_end_date"/>
                                     <field name="p_status"/>
                                 </tree>
                             </field>
                         </group>
+                    </group> -->
+                    <group>
+                        <group string="Project team">
+                            <field name="teamo2me" />   
+                            <field name="countproject"/>
+                            <field name="currentproject"/>
+                        </group>
                     </group>
+
                 </page>
             </xpath>
             
         </field>
     </record>
+<!--PROJECT HISTORY COUNTER INHERIT EMPLOYEE TREE VIEW-->
+    <record id="employee_employee_tree_count_view" model="ir.ui.view">
+        <field name="name">user.project.tree.count.view</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="currentproject"/>
+            </xpath>
+        </field>
+    </record>
+<!--PROJECT HISTORY COUNTER INHERIT EMPLOYEE KANBAN VIEW-->
+    <record id="employee_employee_kanban_count_view" model="ir.ui.view">
+        <field name="name">user.project.kanban.count.view</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+        <field name="arch" type="xml">
+            <xpath expr="//ul" position="inside">
+                <li>Current Project : <field name="currentproject" string="Current Project"/></li>
+            </xpath>
+        </field>
+    </record>
+
     <!--<record model="ir.actions.act_window" id="view_project_team_tree">
             <field name="name">project team</field>
             <field name="res_model">hr.employee</field>
             <field name="view_type">form</field>
             <field name="inherit_id" ref="project.view_project"/>
         </record> -->
+<!--PROJECT TEAM TREE-->
+    <record id="view_project_team_tree" model="ir.ui.view">
+            <field name="name">project.team.tree.view</field>
+            <field name="model">project.team</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="userem2o"/>
+                    <field name="projectm2o"/>
+                    <!-- <field name="employeem2o"/> -->
+                    <field name="status_assign"/>
+                    <field name="start_assign"/>
+                    <field name="end_assign"/>
+                    <button string="Assign" type="object" name="assign_person"/>
+                    <button string="Unassign" type="object" name="unassign_person"/>
+                </tree>
+            </field>
+    </record>
+<!--PROJECT TEAM FORM-->
+    <record id="view_project_team_form" model="ir.ui.view">
+            <field name="name">project.team.form.view</field>
+            <field name="model">project.team</field>
+            <field name="arch" type="xml">
+                <form string="Project Team">
+                    <sheet>
+                        <group>
+                            <field name="userem2o"/>
+                            <field name="projectm2o"/>
+                            <!-- <field name="employeem2o"/> -->
+                            <field name="status_assign"/>
+                            <field name="start_assign"/>
+                            <field name="end_assign"/>
+                            <button string="Assign" type="object" name="assign_person" class="oe_highlight"/>
+                            <button string="Unassign" type="object" name="unassign_person" class="oe_highlight"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+    </record>
+<!--PROJECT TEAM PIVOT-->
+    <record id="view_project_team_pivot" model="ir.ui.view">
+            <field name="name">project.team.pivot</field>
+            <field name="model">project.team</field>
+            <field name="arch" type="xml">
+                <pivot string="Project Team Pivot Table">
+                    <field name="userem2o" type="row"/>
+                    <field name="status_assign"/>
+                </pivot>
+            </field>
+        </record>
+
+<!--PROJCET TEAM GRAPH-->
+        <record id="view_project_team_graph" model="ir.ui.view">
+            <field name="name">project.team.graph</field>
+            <field name="model">project.team</field>
+            <field name="arch" type="xml">
+                <graph string="Project Team Graph">
+                    <field name="userem2o"/>
+                    <field name="status_assign"/>
+                </graph>
+            </field>
+        </record>
+
+<!--SALE ORDER INHERIT TREE-->
+    <record id="sale_order_convert_view" model="ir.ui.view">
+        <field name="name">sale.order.convert.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_status']" position="after">
+                <field name="state" string="State"/>
+            </xpath>
+        </field>
+    </record>
+
+<!--SALE ORDER INHERIT FORM-->
+    <record id="sale_order_draft_view" model="ir.ui.view">
+        <field name="name">sale.order.draft.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_cancel']" position="before">
+                <button name="action_review" states="draft" string="PMO Review" type="object"/>
+                <button name="action_done_review" states="review" string="PMO Reviewed" type="object"/>
+                <button name="action_confirm" states="reviewed" string="Confirm Sale" class="o_sale_confirm" type="object"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Project Information">
+                    <group>
+                        <field name="projectsale_o2ms" string="Related Project">
+                            <field name="projectm2os"/>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+<!--PROJECT SALE TREE-->
+    <record id="view_project_sale_tree" model="ir.ui.view">
+            <field name="name">project.sale.tree.view</field>
+            <field name="model">project.sale</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="projectm2os"/>
+                </tree>
+            </field>
+    </record>
+
+<!--PROJECT SALE FORM-->
+    <!-- <record id="view_project_sale_form" model="ir.ui.view">
+            <field name="name">project.sale.form.view</field>
+            <field name="model">project.sale</field>
+            <field name="arch" type="xml">
+                <form string="Project Sale">
+                    <sheet>
+                        <group>
+                            <field name="projectm2os"/>
+                            <field name="salem2os"/>    
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+    </record> -->
 
 <!-- action tombol ubah view -->
     <record model="ir.actions.act_window" id="project_list_action">
         <field name="name">Projects</field>
         <field name="res_model">project.project</field>
-        <field name="view_mode">tree,form,calendar,timeline</field>
+        <field name="view_mode">tree,form,timeline</field>
+        <field name="context">{'default_is_sample': False}</field>
     </record>
 
     <record model="ir.actions.act_window" id="project_report_action">
@@ -281,25 +618,33 @@
         <field name="view_mode">pivot,graph</field>
     </record>
 
-    <record model="ir.actions.act_window" id="project_team_action">
+    <record model="ir.actions.act_window" id="project.project_team_action">
         <field name="name">Project Team</field>
-        <field name="model">project.project</field>
-        <!-- <field name="view_type">form</field>
-        <field name="view_mode">tree,form,pivot</field> -->
-        <field name="arch" type="xml">
-            <field name="name"/>
-            <field name="members" widget="x2many_counter"/>
-        </field>
+        <field name="res_model">project.team</field>
+        <field name="view_mode">tree,form</field>
     </record>
 
-    
+    <record model="ir.actions.act_window" id="project.project_teamreport_action">
+        <field name="name">Projects</field>
+        <field name="res_model">project.team</field>
+        <field name="view_mode">pivot,graph</field>
+    </record>
 
-    <!-- <menuitem id="project_team_menu" name="Project Team" action="project_team_action" parent="project.menu_projects"/> -->
+<!-- <record model="ir.actions.act_window" id="project_sale_action">
+        <field name="name">Project Sale</field>
+        <field name="res_model">project.sale</field>
+        <field name="view_mode">tree,form</field>
+    </record> -->
+
+<!-- <menuitem id="project_sale_menu" name="Project Sale" action="project_sale_action" parent="sales_team.menu_sales"/> --> -->
+
+    <menuitem id="project_team_menu" name="Project Team" action="project.project_team_action" parent="project.menu_projects" sequence="15"/>
     <!--menuitem parent di home, project dan sales order-->
-    <menuitem id="project_menu" name="Projects" action="project_list_action" parent="project.menu_projects"/>
-    <menuitem id="project_sales_order" name="Sales Order" action="sale.action_orders" parent="project.menu_projects"/>
-    <!--menuitem parent di report, reports-->
-    <menuitem id="project_report" name="Reports" action="project_report_action" parent="project.menu_project_report"/>
+    <menuitem id="project_menu" name="Projects" action="project_list_action" parent="project.menu_projects" sequence="10"/>
+    <menuitem id="project_sales_order" name="Sales Order" action="sale.action_orders" parent="project.menu_projects" sequence="13"/>
+    <!--menuitem parent di report, reports dan team report-->
+    <menuitem id="project_report" name="Project Reports" action="project_report_action" parent="project.menu_project_report"/>
+    <menuitem id="project_teamreport" name="Team Reports" action="project.project_teamreport_action" parent="project.menu_project_report"/>
     
 
 <!--<menuitem id="menuitem_id"
