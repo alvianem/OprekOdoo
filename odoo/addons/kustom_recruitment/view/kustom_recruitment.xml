@@ -4,7 +4,6 @@
             <field name="name">Request for Recruitment</field>
             <field name="res_model">rfr</field>
             <field name="view_mode">tree,form</field>
-			<field name="domain">[('employee_id', '=', active_id)]</field>
     </record>
 	
 	<record id="view_rfr_tree" model="ir.ui.view">
@@ -13,6 +12,7 @@
 		<field name="arch" type="xml">
 			<tree>
 				<field name='code_rfr' string='RFR Code'/>
+				<field name='user_prepared' string='User Prepared'/>
 				<field name='recruitment_types'/>
 				<field name='date'/>
 			</tree>
@@ -83,7 +83,7 @@
 						<separator string=""/>
 							<group string='Responsible User'>
 								<group>
-									<field name='user_prepared'/>
+									<field name='user_prepared' string='User Prepared'/>/>
 								</group>
 								<group>
 									<field name='head_prepared1' readonly='True' default='General Manager' string='Head Prepared'/>

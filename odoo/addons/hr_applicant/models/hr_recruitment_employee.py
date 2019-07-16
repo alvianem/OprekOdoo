@@ -34,25 +34,25 @@ class Employee(models.Model):
         for rec in self:
             rec.no_of_medical = len(rec.medical_ids.ids)
 
-    @api.depends('prev_occu_ids')
-    def _compute_no_of_prev_occu(self):
-        for rec in self:
-            rec.no_of_prev_occu = len(rec.prev_occu_ids.ids)
+    # @api.depends('prev_occu_ids')
+    # def _compute_no_of_prev_occu(self):
+        # for rec in self:
+            # rec.no_of_prev_occu = len(rec.prev_occu_ids.ids)
 
-    @api.depends('relative_ids')
-    def _compute_no_of_relative(self):
-        for rec in self:
-            rec.no_of_relative = len(rec.relative_ids.ids)
+    # @api.depends('relative_ids')
+    # def _compute_no_of_relative(self):
+        # for rec in self:
+            # rec.no_of_relative = len(rec.relative_ids.ids)
 
-    @api.depends('education_ids')
-    def _compute_no_of_education(self):
-        for rec in self:
-            rec.no_of_education = len(rec.education_ids.ids)
+    # @api.depends('education_ids')
+    # def _compute_no_of_education(self):
+        # for rec in self:
+            # rec.no_of_education = len(rec.education_ids.ids)
 
-    @api.depends('prev_travel_ids')
-    def _compute_no_of_prev_travel(self):
-        for rec in self:
-            rec.no_of_prev_travel = len(rec.prev_travel_ids.ids)
+    # @api.depends('prev_travel_ids')
+    # def _compute_no_of_prev_travel(self):
+        # for rec in self:
+            # rec.no_of_prev_travel = len(rec.prev_travel_ids.ids)
 
     @api.depends('lang_ids')
     def _compute_no_of_lang(self):

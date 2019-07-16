@@ -13,15 +13,16 @@ class rfr(models.Model):
     # _inherit = 'hr.applicant'
     _rec_name = 'code_rfr'
     
+    employee_id = fields.Many2one('hr.employee', string='Employee')
     sambungan2 = fields.Many2one('hr.applicant', 'Request For Recruitment')
     
     code_rfr = fields.Char(string='RFR Code')
     recruitment_types = fields.Selection([('internal','Internal'),('external','External')], string='Recruitment Types')
     employee_classification = fields.Selection([('permanent','Permanent'),('contract','Contract')], string='Employee Clasification')
     date = fields.Date()
-    unit = fields.Char()
+    unit = fields.Many2one('hr.department', related='employee_id.department_id', string='Unit / Departement', store=True)
     # cost_center = fields.Integer()
-    position = fields.Char()
+    position = fields.Many2one('hr.job', related='employee_id.job_id', string='Position', store=True)
     grade = fields.Selection([('jr','Junior'),('mid','Middle'),('sr','Senior'),('mn','Manager')], string='Grade')
     
     expect_joindate = fields.Date()
@@ -36,7 +37,7 @@ class rfr(models.Model):
     # description_job = fields.Text()
     reason_request = fields.Text()
     
-    user_prepared = fields.Many2one('hr.employee')
+    user_prepared = fields.Many2one('hr.employee', readonly='True', default=lambda self: self.env.uid)
     head_prepared1 = fields.Char(default='General Manager')
     head_prepared2 = fields.Char()
     director_prepared1 = fields.Char(default='CEO / (BOD1)')
