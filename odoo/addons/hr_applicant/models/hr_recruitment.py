@@ -68,26 +68,26 @@ class Applicant(models.Model):
     no_of_medical1 = fields.Integer('No of Medical Detials',
                                     compute='_compute_no_of_medical',
                                     readonly=True)
-    prev_occu_ids = fields.One2many('applicant.previous.occupation',
-                                    'applicant_id', 'Prev. Occupation Ref.')
-    no_of_prev_occu = fields.Integer('No of Prev. Occupation',
-                                     compute='_compute_no_of_prev_occu',
-                                     readonly=True)
-    relative_ids = fields.One2many('applicant.relative', 'applicant_id',
-                                   'Relative Ref.')
-    no_of_relative = fields.Integer('No of Relative',
-                                    compute='_compute_no_of_relative',
-                                    readonly=True)
-    education_ids = fields.One2many('applicant.education', 'applicant_id',
-                                    'Education Ref.')
-    no_of_education = fields.Integer('No of Education',
-                                     compute='_compute_no_of_education',
-                                     readonly=True)
-    prev_travel_ids = fields.One2many('applicant.previous.travel',
-                                      'applicant_id', 'Previous Travel Ref.')
-    no_of_prev_travel = fields.Integer('No of Previous Travel',
-                                       compute='_compute_no_of_prev_travel',
-                                       readonly=True)
+    # prev_occu_ids = fields.One2many('applicant.previous.occupation',
+                                    # 'applicant_id', 'Prev. Occupation Ref.')
+    # no_of_prev_occu = fields.Integer('No of Prev. Occupation',
+                                     # compute='_compute_no_of_prev_occu',
+                                     # readonly=True)
+    # relative_ids = fields.One2many('applicant.relative', 'applicant_id',
+                                   # 'Relative Ref.')
+    # no_of_relative = fields.Integer('No of Relative',
+                                    # compute='_compute_no_of_relative',
+                                    # readonly=True)
+    # education_ids = fields.One2many('applicant.education', 'applicant_id',
+                                    # 'Education Ref.')
+    # no_of_education = fields.Integer('No of Education',
+                                     # compute='_compute_no_of_education',
+                                     # readonly=True)
+    # prev_travel_ids = fields.One2many('applicant.previous.travel',
+                                      # 'applicant_id', 'Previous Travel Ref.')
+    # no_of_prev_travel = fields.Integer('No of Previous Travel',
+                                       # compute='_compute_no_of_prev_travel',
+                                       # readonly=True)
     lang_ids = fields.One2many('applicant.language', 'applicant_id',
                                'Language Ref.')
     no_of_lang = fields.Integer('No of Language',

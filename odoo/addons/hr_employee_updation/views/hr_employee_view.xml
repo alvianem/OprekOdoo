@@ -25,7 +25,7 @@
                     <!-- <field name="personal_mobile"/> -->
                 <!-- </field> -->
                 <field name="user_id" position="after">
-                    <field name="joining_date"/>
+                    <!-- <field name="joining_date"/> -->
                 </field>
                 <field name="country_id" position="after">
 					<field name="identification_id"/>

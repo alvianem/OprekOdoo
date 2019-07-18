@@ -1,7 +1,7 @@
 
 {
     "name": "Informasi Tambahan",
-    "summary": "Add an Information Status to projects",
+    "summary": "Add an Information Status to Employee",
     "version": "10.0.1.0.0",
     "category": "Employee",
     "website": "",

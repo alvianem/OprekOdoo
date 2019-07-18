@@ -22,17 +22,37 @@
                 <field name="linklinkedin"/>
             </field>
 			
-			<!-- <xpath expr="//field[@name='company_id']" position="after"> -->
-				<!-- <field name="tabelkarir"> -->
-					<!-- <tree editable="Top"> -->
-						<!-- <field name="jobposition"/> -->
-						<!-- <field name="tanggalawal"/> -->
-						<!-- <field name="tanggalakhir"/> -->
-					<!-- </tree> -->
-				<!-- </field> -->
-			<!-- </xpath> -->
+			<xpath expr="//group[@name='Status']" position="after">
+				<group name='J/RH' string='Job / Role History'>
+					<field name="tabelkarir" nolabel="1">
+						<tree editable="Top">
+							<field name="jobposition"/>
+							<field name="tanggalawal"/>
+							<field name="tanggalakhir"/>
+						</tree>
+					</field>
+				</group>
+			</xpath>
+			
+			<xpath expr="//group[@name='active_group']" position="before">
+				<group string='Work Duration'>
+					<group>
+						<field name="duration" string='Duration Days'/>
+					</group>
+					<group>
+						<field name="hasil_bagi" string='Duration Years'/>
+					</group>
+					<group>
+						<field name="join_date"/>
+					</group>
+					<group invisible='True'>
+						<field name="today_date"/>
+					</group>
+				</group>
+			</xpath>
+			
 		</field>
 	</record>
-				    	    
+
   </data>
 </odoo>

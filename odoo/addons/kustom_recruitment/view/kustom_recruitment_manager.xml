@@ -28,10 +28,10 @@
 		<field name="arch" type="xml">
 			<form editable='top'>
 				<header>
-					<button string="Confirm1" name="action_confirm" type="object"/>
-					<button string="Approve1" name="action_approve1" type="object"/>
-					<button string="Check" name="action_check" type="object"/>
-					<button string="Approve2" name="action_approve2" type="object"/>
+					<!-- <button string="Confirm1" name="action_confirm" type="object"/> -->
+					<!-- <button string="Approve1" name="action_approve1" type="object"/> -->
+					<!-- <button string="Check" name="action_check" type="object"/> -->
+					<!-- <button string="Approve2" name="action_approve2" type="object"/> -->
 					<!-- <button string="Validate" name="action_validate" type="object" -->
 						<!-- attrs="{'invisible': [('state', '!=', 'approved')]}"/> -->
 					<field name="state" widget="statusbar" statusbar_visible="draft,confirm,tocheck,check,approved"/>
