@@ -9,21 +9,58 @@
 		<field name="inherit_id" ref="hr.view_employee_form"/>
 		<field name="arch" type="xml">
 			
-			<field name="country_id" position="before">
-                <field name="homeaddress"/>
-	            <field name="housephone"/>
-            </field>
+			<xpath expr="//group[@name='personal_information']" position="after">
+				<group>
+					<group string='ID Card Address' colspan='1'>
+						<group colspan='2'>
+						<field name="homeaddress1" required='True'/>
+						</group>
+							<group>
+								<field name="province1" required='True'/>
+							</group>
+							<group>
+								<field name="city1" required='True'/>
+							</group>
+						<group>
+							<field name="postcode1" required='True'/>
+						</group>
+						<separator string=''/>
+						<group colspan='2'>
+							<field name="housephone1" required='True'/>
+						</group>
+					</group>
+					<group string='Current Address' colspan='1'>
+						<group colspan='2'>
+						<field name="homeaddress2" required='True'/>
+						</group>
+							<group>
+								<field name="province2" required='True'/>
+							</group>
+							<group>
+								<field name="city2" required='True'/>
+							</group>
+						<group>
+							<field name="postcode2" required='True'/>
+						</group>
+						<separator string=''/>
+						<group colspan='2'>
+							<field name="housephone2" required='True'/>
+						</group>
+					</group>
+				</group>
+            </xpath>
 			
-			<field name="marital" position="before">
-                <field name="religion"/>
-            </field>
+			<xpath expr="//field[@name='marital']" position="before">
+                <field name="religion" required='True'/>
+            </xpath>
 			
-			<field name="work_email" position="after">
+			<xpath expr="//field[@name='work_email']" position="after">
                 <field name="linklinkedin"/>
-            </field>
-			
+			</xpath>	
+				
 			<xpath expr="//group[@name='Status']" position="after">
-				<group name='J/RH' string='Job / Role History'>
+				<separator string=''/>
+				<group name='J/RH' string='Job / Role History' colspan='4'>
 					<field name="tabelkarir" nolabel="1">
 						<tree editable="Top">
 							<field name="jobposition"/>
@@ -34,7 +71,7 @@
 				</group>
 			</xpath>
 			
-			<xpath expr="//group[@name='active_group']" position="before">
+			<xpath expr="//group[@name='Status']" position="before">
 				<group string='Work Duration'>
 					<group>
 						<field name="duration" string='Duration Days'/>

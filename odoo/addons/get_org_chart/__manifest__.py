@@ -27,7 +27,7 @@
         # ============================================================
         # 'views/',
         'views/hr_employee_view.xml',
-        'views/webclient_templates.xml',
+        'views/webclient_templates.xml'
 
         # ============================================================
         # MENU

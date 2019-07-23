@@ -37,7 +37,7 @@ class rfr(models.Model):
     # description_job = fields.Text()
     reason_request = fields.Text()
     
-    user_prepared = fields.Many2one('hr.employee', readonly='True', default=lambda self: self.env.uid)
+    user_prepared = fields.Many2one('res.users', readonly='True', default=lambda self: self.env.uid)
     head_prepared1 = fields.Char(default='General Manager')
     head_prepared2 = fields.Char()
     director_prepared1 = fields.Char(default='CEO / (BOD1)')
@@ -93,7 +93,7 @@ class rfr(models.Model):
         for each in self:
             self.write({'head_prepared2': 'General Manager'})
             each.date_confirm = date.today()
-            
+    
     @api.multi
     def action_approve1(self):
         for rec in self:
@@ -117,7 +117,7 @@ class rfr(models.Model):
         # self.write({'check': True})
         
     @api.multi
-    def action_approve2(self):
+    def action_approve2_admin(self):
         for rec in self:
             if rec.check == True:
                 self.write({'approve2': True})
@@ -127,7 +127,6 @@ class rfr(models.Model):
                 each.date_approved2 = date.today()
         # self.write({'approve2': True})
 
-class employee(models.Model):
-    _inherit='hr.employee'
+
     
     

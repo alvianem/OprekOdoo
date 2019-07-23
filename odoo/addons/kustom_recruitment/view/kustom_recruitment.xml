@@ -1,7 +1,7 @@
 <odoo>
   	<data>
-	
-	<!-- VIEW HR / GENERAL MANAGER -->
+
+	<!-- BATAS KONFIGURASI ADMIN -->
 	<record id="act_rfr" model="ir.actions.act_window">
             <field name="name">Request for Recruitment</field>
             <field name="res_model">rfr</field>
@@ -16,24 +16,56 @@
 				<field name='code_rfr' string='RFR Code'/>
 				<field name='user_prepared' string='User Prepared'/>
 				<field name='recruitment_types'/>
-				<field name='date'/>
+				<field name='date' />
 			</tree>
 		</field>
 	</record>
 	
+	<!-- <record id="view_rfr_tree_manager" model="ir.ui.view"> -->
+		<!-- <field name="name">rfr.tampilan.tree.manager</field> -->
+		<!-- <field name="model">rfr</field> -->
+		<!-- <field name="groups" eval="[(4, ref('hr_recruitment.group_hr_recruitment_custom_manager'))]"/> -->
+		<!-- <field name="arch" type="xml"> -->
+			<!-- <tree> -->
+				<!-- <field name='code_rfr' string='RFR Code'/> -->
+				<!-- <field name='user_prepared' string='User Prepared'/> -->
+				<!-- <field name='recruitment_types'/> -->
+			<!-- </tree> -->
+		<!-- </field> -->
+	<!-- </record> -->
+	<!-- <record id="view_rfr_tree_manager" model="ir.ui.view"> -->
+		<!-- <field name="name">rfr.tampilan.tree.manager</field> -->
+		<!-- <field name="model">rfr</field> -->
+		<!-- <field name="groups_id" ref='hr_recruitment.group_hr_recruitment_custom_manager'/> -->
+		<!-- <field name="domain">[('hr_recruitment.group_hr_recruitment_custom_manager','in',context.get('uid').groups)]</field> -->
+		<!-- <field name="arch" type="xml"> -->
+			<!-- <tree> -->
+				<!-- <field name='code_rfr' string='RFR Code'/> -->
+				<!-- <field name='user_prepared' string='User Prepared'/> -->
+				<!-- <field name='recruitment_types'/> -->
+				<!-- <field name='date'/> -->
+			<!-- </tree> -->
+		<!-- </field> -->
+	<!-- </record> -->
+	
 	<record id="view_rfr_form" model="ir.ui.view">
 		<field name="name">rfr.tampilan.form</field>
 		<field name="model">rfr</field>
-		<!-- <field name="type">form</field> -->
 		<field name="arch" type="xml">
 			<form editable='top'>
 				<header>
-					<button string="Confirm1" name="action_confirm" type="object"/>
-					<button string="Approve1" name="action_approve1" type="object"/>
-					<button string="Check" name="action_check" type="object"/>
-					<button string="Approve2" name="action_approve2" type="object"/>
-					<!-- <button string="Validate" name="action_validate" type="object" -->
-						<!-- attrs="{'invisible': [('state', '!=', 'approved')]}"/> -->
+					<!-- <button string="Confirm" name="action_confirm" type="object" groups='hr_recruitment.group_hr_recruitment_custom_admin'/> -->
+					<button string="Confirm" name="action_confirm" type="object" groups='hr_recruitment.group_hr_recruitment_custom_general_manager' attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+					
+					<!-- <button string="Approve" name="action_approve1" type="object" groups='hr_recruitment.group_hr_recruitment_custom_admin'/> -->
+					<button string="Approve" name="action_approve1" type="object" groups='hr_recruitment.group_hr_recruitment_custom_ceo' attrs="{'invisible': [('state', '!=', 'confirm')]}"/>
+					
+					<!-- <button string="Check" name="action_check" type="object" groups='hr_recruitment.group_hr_recruitment_custom_admin'/> -->
+					<button string="Check" name="action_check" type="object" groups='hr_recruitment.group_hr_recruitment_custom_human_capital' attrs="{'invisible': [('state', '!=', 'tocheck')]}"/>
+					
+					<!-- <button string="Approve2" name="action_approve2_admin" type="object" groups='hr_recruitment.group_hr_recruitment_custom_admin'/> -->
+					<button string="Approve" name="action_approve2_admin" type="object" groups='hr_recruitment.group_hr_recruitment_custom_cfo' attrs="{'invisible': [('state', '!=', 'check')]}"/>
+					
 					<field name="state" widget="statusbar" statusbar_visible="draft,confirm,tocheck,check,approved"/>
 				</header>
 				
@@ -67,6 +99,7 @@
 									<field name='position'/>
 								</group>
 							</div>
+
 							<div>
 								<group>
 									<field name='expect_joindate' string='Expect Join Date'/>
@@ -136,10 +169,7 @@
 		</field>
 	</record>
 				    	    
-	  <menuitem id="menu_rfq" name="Request For Recruitment" parent="hr_recruitment.menu_hr_recruitment_root" action="act_rfr"/>
+	<menuitem id="menu_rfr" name="Request For Recruitment" parent="hr_recruitment.menu_hr_recruitment_root" action="act_rfr"/>
 	
-	
-
-		
 	</data>
 </odoo>

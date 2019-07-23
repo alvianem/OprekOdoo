@@ -1,15 +1,14 @@
 <odoo>
   	<data>
-	
-	<!-- VIEW HR / GENERAL MANAGER -->
-	<record id="act_rfr" model="ir.actions.act_window">
+
+	<record id="act_rfr_manager" model="ir.actions.act_window">
             <field name="name">Request for Recruitment</field>
             <field name="res_model">rfr</field>
             <field name="view_mode">tree,form</field>
     </record>
 	
-	<record id="view_rfr_tree" model="ir.ui.view">
-		<field name="name">rfr.tampilan.tree</field>
+	<record id="view_rfr_tree_manager" model="ir.ui.view">
+		<field name="name">rfr.tampilan.manager</field>
 		<field name="model">rfr</field>
 		<field name="arch" type="xml">
 			<tree>
@@ -21,19 +20,18 @@
 		</field>
 	</record>
 	
-	<record id="view_rfr_form" model="ir.ui.view">
-		<field name="name">rfr.tampilan.form</field>
+	<record id="view_rfr_form_manager" model="ir.ui.view">
+		<field name="name">rfr.tampilan.form.manager</field>
 		<field name="model">rfr</field>
-		<!-- <field name="type">form</field> -->
+		<field name="groups_id" eval="[(6, 0, [ref('hr_recruitment.group_hr_recruitment_custom_manager')])]"/>
 		<field name="arch" type="xml">
 			<form editable='top'>
 				<header>
-					<!-- <button string="Confirm1" name="action_confirm" type="object"/> -->
-					<!-- <button string="Approve1" name="action_approve1" type="object"/> -->
-					<!-- <button string="Check" name="action_check" type="object"/> -->
-					<!-- <button string="Approve2" name="action_approve2" type="object"/> -->
-					<!-- <button string="Validate" name="action_validate" type="object" -->
-						<!-- attrs="{'invisible': [('state', '!=', 'approved')]}"/> -->
+					<button string="Tes" name="tes" type="object"/>
+				
+					<button string="Confirm" name="action_confirm_manager" type="object"/>
+					<!-- <button string="Approve1" name="action_approve1_manager" type="object"/> -->
+					
 					<field name="state" widget="statusbar" statusbar_visible="draft,confirm,tocheck,check,approved"/>
 				</header>
 				
@@ -136,7 +134,7 @@
 		</field>
 	</record>
 				    	    
-	  <menuitem id="menu_rfq" name="Request For Recruitment" parent="hr_recruitment.menu_hr_recruitment_root" action="act_rfr"/>
+	  <menuitem id="menu_rfr_manager" groups='hr_recruitment.group_hr_recruitment_custom_manager'  name="Request For Recruitment" parent="hr_recruitment.menu_hr_recruitment_root" action="act_rfr_manager"/>
 	
 	
 

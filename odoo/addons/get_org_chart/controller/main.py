@@ -6,6 +6,8 @@ from collections import OrderedDict
 from openerp import http  # @UnresolvedImport
 from openerp.addons.website.controllers.main import Website
 from openerp.http import request  # @UnresolvedImport
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError, ValidationError
 
 FIELDS = ['id', 'parent_id', 'name', 'job_id', 'work_location',
           'work_email', 'work_phone', 'mobile_phone']
@@ -14,6 +16,8 @@ ADDITION = {
     'mobile_phone': "Mobile: %s"
 }
 
+# class employee(models.Model):
+    # _inherit='hr.employee'
 
 class Main(Website):
 

@@ -8,16 +8,33 @@
         <field name="inherit_id" ref="hr.view_employee_form" />
         <field name="arch" type="xml">
         
-            <xpath expr="//div[@class='oe_button_box']" position="inside">
-                <button class="oe_stat_button org-chart" special="cancel"
-                    icon="fa-list-ul" >
-                    <div class="o_stat_info">
-                        <span class="o_stat_text">Hierarchy</span>
-                    </div>
-                </button>
+            <!-- <xpath expr="//div[@class='oe_button_box']" position="inside"> -->
+                <!-- <button class="oe_stat_button org-chart" special="cancel" -->
+                    <!-- icon="fa-list-ul" > -->
+                    <!-- <div class="o_stat_info"> -->
+                        <!-- <span class="o_stat_text">Hierarchy</span> -->
+                    <!-- </div> -->
+                <!-- </button> -->
             
+            <!-- </xpath> -->
+			
+			<xpath expr="//form/sheet/notebook/page[@name='hr_settings']" position="after">
+				<page name="hr_skills" string="Organization Chart">
+					<group>
+						<button class="oe_stat_button org-chart" special="cancel" icon="fa-list-ul" style="width:268px">
+							<div class="o_stat_info">
+								<span class="o_stat_text">Organization Chart (press)</span>
+							</div>
+						</button>
+					</group>
+					
+					<group>
+						<div class="chart">
+							<span class="o_stat_text"></span>
+						</div>
+					</group>
+				</page>
             </xpath>
         </field>
     </record>
-
 </odoo>
