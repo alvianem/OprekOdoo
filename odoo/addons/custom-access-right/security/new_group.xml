@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<!-- access right berbentuk dropdown -->
+
+		<record model="res.groups" id="sale.group_project_ESA1">
+			<field name="name">ESA 1</field>
+			<field name="category_id" ref="base.module_category_sales_management"/>
+			<field name="users" eval="[(4, ref('base.user_root'))]"/>
+			<field name="implied_ids" eval="[(4, ref('sales_team.group_sale_manager'))]"/>
+		</record>
+
+		<record model="res.groups" id="sale.group_project_ESA2">
+			<field name="name">ESA 2</field>
+			<field name="category_id" ref="base.module_category_sales_management"/>
+			<field name="users" eval="[(4, ref('base.user_root'))]"/>
+			<field name="implied_ids" eval="[(4, ref('sales_team.group_sale_manager'))]"/>
+		</record>
+
+		<record model="res.groups" id="sale.group_project_ESA3">
+			<field name="name">ESA 3</field>
+			<field name="category_id" ref="base.module_category_sales_management"/>
+			<field name="users" eval="[(4, ref('base.user_root'))]"/>
+			<field name="implied_ids" eval="[(4, ref('sales_team.group_sale_manager'))]"/>
+		</record>
+		<!-- end of - access right berbentuk dropdown -->
+	</data>
+</odoo>
