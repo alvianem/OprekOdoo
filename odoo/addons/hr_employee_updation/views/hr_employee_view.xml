@@ -11,9 +11,9 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//page[@name='personal_information']/group" position="inside">
+                <xpath expr="//group[@name='personal_information']" position="after">
                     <group name="emergency_contact" colspan="4" string="Emergency Contact">
-                        <field name="emergency_contact">
+                        <field name="emergency_contact" required='True'>
                             <tree editable="bottom">
                                 <field name="number"/>
                                 <field name="relation"/>
@@ -28,9 +28,9 @@
                     <!-- <field name="joining_date"/> -->
                 </field>
                 <field name="country_id" position="after">
-					<field name="identification_id"/>
-                    <field name="id_expiry_date"  groups="hr.group_hr_user" attrs="{'invisible': [('identification_id', 'in', [None,False])]}"/>
-                    <field name="id_attachment_id" groups="hr.group_hr_user" widget="many2many_binary" class="oe_inline" attrs="{'invisible': [('identification_id', 'in', [None,False])]}"/>
+					<field name="identification_id" required='True'/>
+                    <!-- <field name="id_expiry_date"  groups="hr.group_hr_user" attrs="{'invisible': [('identification_id', 'in', [None,False])]}"/> -->
+                    <field name="id_attachment_id" required='True' groups="hr.group_hr_user" widget="many2many_binary" class="oe_inline" attrs="{'invisible': [('identification_id', 'in', [None,False])]}"/>
                     <!-- </group> -->
                     <!-- <group name="passport_id" string="Passport ID"> -->
                         <!-- <field name="passport_id"/> -->
@@ -39,20 +39,31 @@
                     <!-- </group>  -->
 				</field>
                 
-
-                <page name="hr_settings" position="after">
-                    <page name="family_info" string="Family Information" groups="hr.group_hr_user">
-                        <group string="Family">
-                            <field name="fam_ids" nolabel="1">
-                                <tree editable="bottom">
-                                    <field name="member_name"/>
-                                    <field name="relation"/>
-                                    <field name="member_contact"/>
-                                </tree>
-                            </field>
-                        </group>
-                    </page>
-                </page>
+				<xpath expr="//group[@name='personal_information']" position="after">
+                    <group string="Family" groups="hr.group_hr_user">
+                        <field name="fam_ids" nolabel="1">
+                            <tree editable="bottom">
+								<field name="member_name"/>
+								<field name="relation"/>
+								<field name="member_contact"/>
+							</tree>
+                        </field>
+                    </group>
+                </xpath>
+				
+                <!-- <page name="hr_settings" position="after"> -->
+                    <!-- <page name="family_info" string="Family Information" groups="hr.group_hr_user"> -->
+                        <!-- <group string="Family"> -->
+                            <!-- <field name="fam_ids" nolabel="1"> -->
+                                <!-- <tree editable="bottom"> -->
+                                    <!-- <field name="member_name"/> -->
+                                    <!-- <field name="relation"/> -->
+                                    <!-- <field name="member_contact"/> -->
+                                <!-- </tree> -->
+                            <!-- </field> -->
+                        <!-- </group> -->
+                    <!-- </page> -->
+                <!-- </page> -->
             </field>
         </record>
 

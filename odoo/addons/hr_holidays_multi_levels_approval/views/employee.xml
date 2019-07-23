@@ -8,7 +8,7 @@
 			<field name="inherit_id" ref="hr.view_employee_form" />
 			<field name="arch" type="xml">
 				<notebook>
-					<page string="Holidays approvers chain" groups="hr.group_hr_user">
+					<page string="Leaves Approvers" groups="hr.group_hr_user">
 						<button string="Set default chain" name="set_default_validation_chain" type="object" class="oe_highlight" help="Generate approvers chain based on management hierarchy"/>
 						<field name="holidays_approvers" context="{'dafault_employee': id}">
 							<tree  editable="bottom">

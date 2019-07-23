@@ -5,8 +5,19 @@ class InfoTambahanEmployee(models.Model):
     _inherit = "hr.employee"
     
     religion = fields.Selection([('islam','Islam'),('christian','Christian')], string='Religion')
-    homeaddress = fields.Text(string="Home Address")
-    housephone = fields.Char(string="Phone")
+    
+    homeaddress1 = fields.Text(string="Home Address")
+    province1 = fields.Char(string="Province")
+    city1 = fields.Char(string="City")
+    postcode1 = fields.Integer(string="Post Code")
+    housephone1 = fields.Integer(string="Phone")
+    
+    homeaddress2 = fields.Text(string="Home Address")
+    province2 = fields.Char(string="Province")
+    city2 = fields.Char(string="City")
+    postcode2 = fields.Integer(string="Post Code")
+    housephone2 = fields.Integer(string="Phone")
+    
     linklinkedin = fields.Html(string="Linkedin")
     
     tabelkarir = fields.One2many('tabel_karir', 'penghubung')

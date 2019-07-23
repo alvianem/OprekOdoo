@@ -19,7 +19,7 @@ odoo.define("get_org_chart.form_view", function(require) {
             var $new_div = $('<div id="people" ' + employee);
 
             var $peopleDiv = self.$el.find('#people');
-            var $formSheet = self.$el.find('.org_chart');
+            var $formSheet = self.$el.find('.chart');
             if (!$peopleDiv.length) {
                 $peopleDiv = $new_div;
                 $peopleDiv.appendTo($formSheet);

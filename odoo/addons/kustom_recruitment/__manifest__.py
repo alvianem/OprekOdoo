@@ -10,7 +10,16 @@
         "hr_applicant", "document"
     ],
     "data": [
-        "view/kustom_recruitment.xml"
+        'security/rfr_security.xml',
+        'security/ir.model.access.csv',
+        'view/kustom_recruitment.xml'
+        # 'view/kustom_recruitment_manager.xml'
+        # 'view/kustom_recruitment_generalmanager.xml'
+        # 'view/kustom_recruitment_ceo.xml'
+        # 'view/kustom_recruitment_humancapital.xml',
+        # 'view/kustom_recruitment_humancapital.xml',
+        # 'view/kustom_recruitment_cfo.xml'
+
     ],
     "installable": True,
 }

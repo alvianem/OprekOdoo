@@ -1,0 +1,141 @@
+<odoo>
+  	<data>
+	
+	<!-- VIEW HR / GENERAL MANAGER -->
+	<record id="act_rfr" model="ir.actions.act_window">
+            <field name="name">Request for Recruitment</field>
+            <field name="res_model">rfr</field>
+            <field name="view_mode">tree,form</field>
+    </record>
+	
+	<record id="view_rfr_tree_ceo" model="ir.ui.view">
+		<field name="name">rfr.tampilan.tree.ceo</field>
+		<field name="model">rfr</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name='code_rfr' string='RFR Code'/>
+				<field name='user_prepared' string='User Prepared'/>
+				<field name='recruitment_types'/>
+				<field name='date'/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="view_rfr_form_ceo" model="ir.ui.view">
+		<field name="name">rfr.tampilan.form.ceo</field>
+		<field name="model">rfr</field>
+		<field name="groups_id" eval="[(6, 0, [ref('hr_recruitment.group_hr_recruitment_custom_ceo')])]"/>
+		<field name="arch" type="xml">
+			<form editable='top'>
+				<header>
+					<button string="Check" name="action_check" type="object"/>
+					
+					<field name="state" widget="statusbar" statusbar_visible="draft,confirm,tocheck,check,approved"/>
+				</header>
+				
+				<sheet>
+						<group>
+						<separator string="Request for Recruitment (RFR)"/>
+						<separator string=""/>
+							<div>
+								<group>
+								<field name='code_rfr' required='True'/>
+								</group>
+							</div>
+							<separator string=""/>
+							<div>
+								<group>
+								<field name='recruitment_types' string='Recruitment Types'/>
+								</group>
+							</div>
+							<div>
+								<group>
+								<field name='employee_classification'/>
+								</group>
+							</div>
+							<separator string=""/>
+							<separator string=""/>
+							<div>
+								<group>
+									<field name='date'/>
+									<field name='unit'/>
+									<field name='grade'/>
+									<field name='position'/>
+								</group>
+							</div>
+							<div>
+								<group>
+									<field name='expect_joindate' string='Expect Join Date'/>
+									<field name='number_of_employee'/>
+									<field name='job_description'/>
+									<field name='job_attach' widget="many2many_binary" string="Doc. Job Description"/>
+								</group>
+							</div>
+						</group>
+						
+						<separator string=""/>
+							<group>
+								<field name='reason_request'/>
+							</group>
+						
+						<separator string=""/>
+							<group string='Responsible User'>
+								<group>
+									<field name='user_prepared' string='User Prepared'/>/>
+								</group>
+								<group>
+									<field name='head_prepared1' readonly='True' default='General Manager' string='Head Prepared'/>
+								</group>
+								<separator string=""/>
+								<group>
+									<field name='director_prepared1' readonly='True' string='Director Prepare'/>
+								</group>
+							</group>
+						
+						<separator string=""/>
+							<group string='Approbation'>
+								<group colspan='4'>
+									<field name='hr_comments' string='HR Comment'/>
+								</group>
+								<group>
+									<field name='manpower_plan'/>
+								</group>
+								<group>
+									<field name='budget_control'/>
+								</group>
+							</group>
+							<separator string=""/>
+							<notebook>
+								<page string="Approbations Status">
+									<group>
+										<group>
+											<field name='head_prepared2' readonly='True' string='Acknowledged by'/>
+											<field name="date_confirm" string="Confirm Date" readonly='True'/>
+										</group>
+										<group>
+											<field name='director_prepared2' readonly='True' string='Approved by'/>
+											<field name="date_approved1" string="Approved Date" readonly='True'/>
+										</group>
+										<group>
+											<field name='hr_checked' readonly='True' string='Checked by'/>
+											<field name="date_checked" string="Confirm Date" readonly='True'/>
+										</group>
+										<group>
+											<field name='bod2_approved' readonly='True' string='Final Approved by'/>
+											<field name="date_approved2" string="Final Approved Date" readonly='True'/>
+										</group>
+									</group>
+								</page>
+							</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+				    	    
+	  <menuitem id="menu_rfq" name="Request For Recruitment" parent="hr_recruitment.menu_hr_recruitment_root" action="act_rfr"/>
+	
+	
+
+		
+	</data>
+</odoo>

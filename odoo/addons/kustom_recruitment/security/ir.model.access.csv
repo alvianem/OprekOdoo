@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+rfr_manager,rfr.rfr,model_rfr,hr_recruitment.group_hr_recruitment_custom_manager,1,1,1,0
+rfr_general_manager,rfr.rfr,model_rfr,hr_recruitment.group_hr_recruitment_custom_general_manager,1,1,1,0
+rfr_ceo,rfr.rfr,model_rfr,hr_recruitment.group_hr_recruitment_custom_ceo,1,1,0,0
+rfr_cfo,rfr.rfr,model_rfr,hr_recruitment.group_hr_recruitment_custom_cfo,1,1,0,0
+rfr_human_capital,rfr.rfr,model_rfr,hr_recruitment.group_hr_recruitment_custom_human_capital,1,1,1,1
+rfr_admin,rfr.rfr,model_rfr,hr_recruitment.group_hr_recruitment_custom_admin,1,1,1,1
