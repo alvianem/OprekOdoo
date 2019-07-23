@@ -17,6 +17,15 @@
                 </button>
             
             </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="hierarchy" string="Organization Chart">
+                    <group>
+                        <div class="org_chart">
+                        
+                        </div>
+                    </group>
+                </page>
+            </xpath>
         </field>
     </record>
 

@@ -10,7 +10,7 @@
               'Tecnativa, '
               'Monk Software, '
               'Odoo Community Association (OCA)',
-    "category": "web",
+    "category": "ASYST - Project",
     "license": "AGPL-3",
     "application": False,
     "installable": True,
