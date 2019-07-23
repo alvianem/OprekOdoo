@@ -2,6 +2,9 @@
 
 
 <odoo>
+
+<!-- PROJECT -->
+
 <!-- form edit project information-->
     <record id="project_form" model="ir.ui.view">
         <field name="name">project.info.form</field>
@@ -10,8 +13,18 @@
         <field name="arch" type="xml">
             <xpath expr="/form/*" position="before">
                 <header>
-                    <button string="assign" type="object" name="action_follow"/>
-                    <field name="p_status" widget="statusbar" />
+                    <!-- <button string="assign" type="object" name="action_follow"/> -->
+                    <button string="Confirm IWO" type="object" name="propose_progressbar" attrs="{'invisible': [('p_status', '!=', '2iwo')]}" groups="project.group_project_MOPM2"/>
+                    <button string="Confirm Team" type="object" name="progress_progressbar" attrs="{'invisible': [('p_status', '!=', 'proposeteam')]}" groups="project.group_project_MOPM1"/>
+                    <button string="Proceed to Project Delivered" type="object" name="delivered_progressbar" attrs="{'invisible': [('p_status', '!=', '3progress')]}" groups="project.group_project_MOPM2"/>
+                    <button string="Close Project" type="object" name="closed_progressbar" attrs="{'invisible': [('p_status', '!=', '4delivered')]}" groups="project.group_project_MOPM2"/>
+                    <button string="Hold" type="object" name="onholdvisible_progressbar" attrs="{'invisible': [('p_status', 'in', ['1created', '6onhold', 'proposeteam'])]}" groups="project.group_project_MOPM2"/>
+                    <button string="Continue Project" type="object" name="continue_progressbar" attrs="{'invisible': [('p_status', '!=', '6onhold')]}" groups="project.group_project_MOPM2" confirm="Are you sure you want to CONTINUE this project?"/>
+                    <button string="Cancel" type="object" name="cancelvisible_progressbar" attrs="{'invisible': [('p_status', 'in', ['7cancelled', '1created', 'proposeteam'])]}" groups="project.group_project_MOPM2"/>
+                    <button string="Uncancel" type="object" name="uncancel_progressbar" attrs="{'invisible': [('p_status', '!=', '7cancelled')]}" groups="project.group_project_MOPM2"/>
+                    <!-- <button string="resetiwo" type="object" name="iwo_progressbar" groups="project.group_project_MOPM2"/> -->
+
+                    <field name="p_status" widget="statusbar" statusbar_visible="1created,2iwo,proposeteam,3progress,4delivered,5closed"/>
                 </header>
             </xpath>
             <xpath expr='//div[@name="options_active"]' position="attributes">
@@ -20,8 +33,8 @@
             <xpath expr='//field[@name="task_count"]' position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr='//field[@name="user_id"]' position="replace">
-                <!-- <field name="partner_idi" string="Followers"/> -->
+            <xpath expr='//field[@name="user_id"]' position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr='//field[@name="partner_id"]' position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -29,15 +42,15 @@
             <xpath expr="//group[@name='misc']/.." position="after">
                 <page name="status" string="Project Information">
                     <group>
-                        <field name="p_start_date" string="Start Date" />
-                        <field name="revise_start_date" string="Revise Start Date"/>
-                        <field name="p_end_date" string="End Date"/>
-                        <field name="revise_end_date" string="Revise End Date"/>
-                        <field name="type_project" string="Type Project"/>
+                        <field name="p_start_date" string="Start Date" attrs="{'required': True}"/>
+                        <field name="revise_start_date" string="Revise Start Date" attrs="{'required': True}"/>
+                        <field name="p_end_date" string="End Date" attrs="{'required': True}"/>
+                        <field name="revise_end_date" string="Revise End Date" attrs="{'required': True}"/>
+                        <field name="type_project" string="Type Project" attrs="{'required': True}"/>
                         <field name="customer_project" string="Customer"/>
-                        <field name="customer_group" string="Customer Group"/>
+                        <field name="customer_group" string="Customer Group" attrs="{'required': True}"/>
                         <field name="project_code" string="Project Code"/>
-                        <field name="pmo_in_charge" string="PMO in Charge"/>
+                        <field name="pmo_in_charge" string="PMO in Charge" attrs="{'required': True}"/>
                         <!--<field name="sales_code" string="Sales Code"/>-->
 
                         <!-- <field name="refers_to" string="refer"/> -->
@@ -57,46 +70,50 @@
             <xpath expr="//notebook" position="inside">
                 <page name="checklist" string="Project Checklist">
                     <group name="check">
-                        <group string="Request for IWO">
-                            <field name="iwodone" string="IWO"/>
-                            <field name="iwoattach" widget="many2many_binary"/>
-                            <!--<button string="Proceed to In Progress" type="object" name="progress_progressbar"/>-->
+                        <group string="Request for IWO" attrs="{'invisible': [('p_status', 'in', ['1created', '6onhold'])]}">
+                            
+                            <!-- <field name="iwodone" string="IWO" attrs="{'readonly': [('p_status', 'not in', '2iwo')]}"/> -->
+                            <field name="iwoattach" widget="many2many_binary" />
                     
                         </group>
-                        <group string="In Progress">
-                            <field name="charter" string="Project Charter"/>
+                        <group string="In Progress" attrs="{'invisible': [('p_status', 'in', ['1created', '2iwo', '6onhold', 'proposeteam'])]}">
+                            <!-- <field name="charter" string="Project Charter" attrs="{'readonly': [('p_status', 'not in', '3progress')]}"/> -->
                             <field name="charterattach" widget="many2many_binary"/>
-                            <field name="uat" string="UAT"/>
+                            <!-- <field name="uat" string="UAT" attrs="{'readonly': [('p_status', 'not in', '3progress')]}"/> -->
                             <field name="uatattach" widget="many2many_binary"/>
-                            <field name="kickoff" string="Kickoff Document"/>
+                           <!--  <field name="kickoff" string="Kickoff Document" attrs="{'readonly': [('p_status', 'not in', '3progress')]}"/> -->
                             <field name="kickoffattach" widget="many2many_binary"/>
-                            <!--<button string="Proceed to Project Delivered" type="object" name="delivered_progressbar"/>-->
+                            
                     
                         </group>
-                        <group string="Delivered">
-                            <field name="bast" string="BAST"/>
+                        <group string="Delivered" attrs="{'invisible': [('p_status', 'in', ['1created', '2iwo', '3progress', '6onhold', 'proposeteam'])]}">
+                            <!-- <field name="bast" string="BAST" attrs="{'readonly': [('p_status', 'not in', '4delivered')]}"/> -->
                             <field name="bastattach" widget="many2many_binary"/>
-                            <field name="handover" string="Hand Over Document"/>
+                            <!-- <field name="handover" string="Hand Over Document" attrs="{'readonly': [('p_status', 'not in', '4delivered')]}"/> -->
                             <field name="handoverattach" widget="many2many_binary"/>
                             <!--<button string="Proceed to Project Closed" type="object" name="closed_progressbar"/>-->
                     
                         </group>
-                        <group string="Closed">
-                            <field name="closed" string="Project Closed"/>
+                        <group string="Closed" attrs="{'invisible': [('p_status', 'in', ['1created', '2iwo', '3progress', '6onhold', 'proposeteam'])]}">
+                            <!-- <field name="closed" string="Project Closed" attrs="{'readonly': [('p_status', 'not in', '4delivered')]}"/> -->
                             <field name="closedattach" widget="many2many_binary"/>
+
                             
                     
                         </group>
-                        <group string="On Hold">
-                            <field name="suratonhold" string="On Hold Notice"/>
+                        <group string="On Hold" attrs="{'invisible': [('onholdvisible', '=', False)]}">>
+                            <field name="onholdvisible" string="On Hold visible"/>
                             <field name="suratonholdattach" widget="many2many_binary"/>
-                            <!--<button string="Validate On Hold" type="object" name="onhold_progressbar"/>-->
+                            <button string="HOLD PROJECT" type="object" name="onhold_progressbar"  groups="project.group_project_MOPM2" confirm="Are you sure you want to HOLD this project?"/>
+
+
                     
                         </group>
-                        <group string="Cancelled">
-                            <field name="suratcancel" string="Cancel Notice"/>
+                        <group string="Cancelled" attrs="{'invisible': [('cancelvisible', '=', False)]}">>
+                            <field name="cancelvisible" string="Cancel visible"/>
                             <field name="suratcancelattach" widget="many2many_binary"/>
-                            <!--<button string="Validate Cancel" type="object" name="cancelled_progressbar"/>-->
+                            <button string="CANCEL PROJECT" type="object" name="cancelled_progressbar" groups="project.group_project_MOPM2" confirm="Are you sure you want to CANCEL this project?"/>
+
                         </group>
                     </group>
                 </page>
@@ -123,6 +140,9 @@
     <field name="arch" type="xml">
         <xpath expr="//field[@name='privacy_visibility']" position="attributes">
             <attribute name="attrs">{'readonly':True}</attribute>
+        </xpath>
+        <xpath expr='//field[@name="user_id"]' position="attributes">
+            <attribute name="invisible">1</attribute>
         </xpath>
         <xpath expr="//field[@name='name']" position="attributes">
             <attribute name="attrs">{'readonly':True}</attribute>
@@ -160,7 +180,7 @@
         <xpath expr="//field[@name='description']" position="attributes">
             <attribute name="attrs">{'readonly':True}</attribute>
         </xpath>
-        <xpath expr="//field[@name='iwodone']" position="attributes">
+        <!-- <xpath expr="//field[@name='iwodone']" position="attributes">
             <attribute name="attrs">{'readonly':True}</attribute>
         </xpath>
         <xpath expr="//field[@name='iwoattach']" position="attributes">
@@ -213,7 +233,7 @@
         </xpath>
         <xpath expr="//field[@name='suratcancelattach']" position="attributes">
             <attribute name="attrs">{'readonly':True}</attribute>
-        </xpath>                            
+        </xpath>   -->                          
     </field>
 </record>
 
@@ -280,13 +300,13 @@
                     <field name="p_status" string="Project Status"/>
                     
                 </xpath>
-                <xpath expr='//field[@name="user_id"]' position="replace">
+                <xpath expr='//field[@name="user_id"]' position="attributes">
+                    <attribute name="invisible">1</attribute>
                 </xpath>
                 <!-- xpath field user_id di parent tree -->
                 <xpath expr='//tree' position="inside">
                     <field name="customer_project" string="Customer"/>
                     <field name="customer_group" string="Customer Group"/>
-                    
                 </xpath>
                 <xpath expr='//field[@name="partner_id"]' position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -359,8 +379,9 @@
             </field>
         </record>
 
+<!-- PROJECT TEAM -->
 
-<!--PROJECT TEAM ADD-->
+<!--PROJECT TEAM IN PROJECT-->
     <record id="project_project_inherit_form_view" model="ir.ui.view">
         <field name="name">project.project.inherit.form.view</field>
         <field name="model">project.project</field>
@@ -399,24 +420,26 @@
                     </field>
                 </group> -->
                 <group string="Team Project">
-                    <field name="teamdone" string="Team Done" groups="project.group_project_MOPM1"/>
-                    <field name="teamo2mp">
-                        <tree editable="top">
-                            <field name="userem2o"/>
-                            <!-- <field name="employeem2o"/> -->
-                            <field name="status_assign"/>
-                            <field name="start_assign"/>
-                            <field name="end_assign"/>
-                            <button string="Assign" type="object" name="assign_person" class="oe_highlight"/>
-                            <button string="Unassign" type="object" name="unassign_person" class="oe_highlight"/>
-                        </tree>
-                    </field>
+                    <!-- <field name="teamdone" string="Team Done" groups="project.group_project_MOPM1"/> -->
+                    <group colspan="4">
+                        <field name="teamo2mp">
+                            <tree editable="top">
+                                <field name="userem2o"/>
+                                <!-- <field name="employeem2o"/> -->
+                                <field name="status_assign"/>
+                                <field name="start_assign"/>
+                                <field name="end_assign"/>
+                                <button string="Assign" type="object" name="assign_person" class="oe_highlight"/>
+                                <button string="Unassign" type="object" name="unassign_person" class="oe_highlight"/>
+                            </tree>
+                        </field>
+                    </group>
                 </group>
             </group>
         </field>
     </record>
 
-<!--PROJECT HISTORY IN EMPLOYEE-->
+<!--PROJECT TEAM HISTORY IN EMPLOYEE-->
     <record id="employee_employee_form_view" model="ir.ui.view">
         <field name="name">user.project.form.view</field>
         <field name="model">hr.employee</field>
@@ -439,8 +462,8 @@
                         </group>
                     </group> -->
                     <group>
-                        <group string="Project team">
-                            <field name="teamo2me" />   
+                        <group string="Project History" colspan="4">
+                            <field name="teamo2me" string="Project History"/>   
                             <field name="countproject"/>
                             <field name="currentproject"/>
                         </group>
@@ -480,7 +503,7 @@
             <field name="view_type">form</field>
             <field name="inherit_id" ref="project.view_project"/>
         </record> -->
-<!--PROJECT TEAM TREE-->
+<!--PROJECT TEAM TREE VIEW-->
     <record id="view_project_team_tree" model="ir.ui.view">
             <field name="name">project.team.tree.view</field>
             <field name="model">project.team</field>
@@ -497,7 +520,7 @@
                 </tree>
             </field>
     </record>
-<!--PROJECT TEAM FORM-->
+<!--PROJECT TEAM FORM VIEW-->
     <record id="view_project_team_form" model="ir.ui.view">
             <field name="name">project.team.form.view</field>
             <field name="model">project.team</field>
@@ -530,7 +553,7 @@
             </field>
         </record>
 
-<!--PROJCET TEAM GRAPH-->
+<!--PROJECT TEAM GRAPH-->
         <record id="view_project_team_graph" model="ir.ui.view">
             <field name="name">project.team.graph</field>
             <field name="model">project.team</field>
@@ -541,6 +564,30 @@
                 </graph>
             </field>
         </record>
+
+<!-- PROJECT TEAM GROUP USER VIEW -->
+<!-- <record id="project_team_tree_user" model="ir.ui.view">
+    <field name="name">project.team.tree.user</field>
+    <field name="model">project.team</field>
+    <field name="inherit_id" ref="project.view_project_team_tree"/>
+    <field name="groups_id" eval="[(6, 0, [ref('project.group_project_user')])]"/>
+    <field name="arch" type="xml">
+
+    </field>
+</record> -->
+
+<!-- PROJECT TEAM GROUP MANAGER VIEW -->
+<!-- <record id="project_team_tree_user" model="ir.ui.view">
+    <field name="name">project.team.tree.user</field>
+    <field name="model">project.team</field>
+    <field name="inherit_id" ref="project.view_project_team_tree"/>
+    <field name="groups_id" eval="[(6, 0, [ref('project.group_project_user')])]"/>
+    <field name="arch" type="xml">
+
+    </field>
+</record> -->
+
+<!-- SALES -->
 
 <!--SALE ORDER INHERIT TREE-->
     <record id="sale_order_convert_view" model="ir.ui.view">
@@ -564,6 +611,9 @@
                 <button name="action_review" states="draft" string="PMO Review" type="object"/>
                 <button name="action_done_review" states="review" string="PMO Reviewed" type="object"/>
                 <button name="action_confirm" states="reviewed" string="Confirm Sale" class="o_sale_confirm" type="object"/>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//notebook" position="inside">
                 <page string="Project Information">
@@ -603,6 +653,53 @@
                 </form>
             </field>
     </record> -->
+
+<!-- SALE ORDER VIEW MOPM2 -->
+    <record id="sale_order_view_user" model="ir.ui.view">
+        <field name="name">sale.order.view.user</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="groups_id" eval="[(6, 0, [ref('project.group_project_MOPM2')])]"/>
+        <field name="arch" type="xml">
+            
+                    
+            <xpath expr="//button[@name='print_quotation']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_quotation_send']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_done']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='note']" position="attributes">
+                <attribute name="attrs">{'readonly':True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                <attribute name="attrs">{'readonly':True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="attrs">{'readonly':True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='team_id']" position="attributes">
+                <attribute name="attrs">{'readonly':True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='client_order_ref']" position="attributes">
+                <attribute name="attrs">{'readonly':True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='fiscal_position_id']" position="attributes">
+                <attribute name="attrs">{'readonly':True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='message_follower_ids']" position="attributes">
+                <attribute name="attrs">{'readonly':True}</attribute>
+            </xpath>
+
+        </field>
+    </record>
 
 <!-- action tombol ubah view -->
     <record model="ir.actions.act_window" id="project_list_action">
@@ -655,3 +752,6 @@
           sequence="<integer>"/> -->
 
 </odoo>
+
+
+

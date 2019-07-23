@@ -9,9 +9,9 @@
         "project", "sale", "web_timeline", "document", "hr", "mail"
     ],
     "data": [
-        "views/project_view.xml",
         "security/project_security.xml",
-        "security/ir.model.access.csv"
+        "security/ir.model.access.csv",
+        "views/project_view.xml"
     ],
     "installable": True,
 }

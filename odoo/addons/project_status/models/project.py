@@ -9,8 +9,8 @@ class ProjectProject(models.Model):
     p_end_date = fields.Date(string='Project End Date', track_visibility='onchange', store=True)
     revise_end_date = fields.Date(string='Revise End Date', track_visibility='onchange', store=True)
     deltadate = fields.Integer(string="Selisih Deadline", compute='_itung_deadline', store=True)
-    customer_project = fields.Many2one('res.partner', string="Customer", related='analytic_account_id.partner_id', track_visibility='onchange', store=True)
-    customer_group = fields.Selection([('asyst', 'ASYST'),('ga_group', 'GA Group'),('non_ga_group', 'NON GA Group')], string="Customer Group", track_visibility='onchange', store=True)
+    customer_project = fields.Many2one(readonly=False, related='saleproject_o2m.customersale', track_visibility='onchange', store=True)
+    customer_group = fields.Selection([('asyst', 'ASYST'),('garuda', 'GA'),('ga_group', 'GA Group'),('non_ga_group', 'NON GA Group')], string="Customer Group", track_visibility='onchange', store=True)
     type_project = fields.Selection([('internal','Internal'),('external','External')], string='Type Project', track_visibility='onchange', store=True)
     p_status = fields.Selection([
         ('1created','Created'),
@@ -48,6 +48,9 @@ class ProjectProject(models.Model):
     suratcancel = fields.Boolean(string = 'Cancel Notice', default = False)
     
     closed = fields.Boolean(string = 'Closed', default = False)
+
+    onholdvisible = fields.Boolean(string = 'On Hold Visibility', default = False)
+    cancelvisible = fields.Boolean(string = 'Cancel Visibility', default = False)
 
     iwoattach= fields.Many2many(comodel_name="ir.attachment", 
                                 relation="m2m_ir_iwo_rel", 
@@ -160,7 +163,7 @@ class ProjectProject(models.Model):
                     rec.p_status='6onhold'
                 elif rec.suratcancel == True:
                     rec.p_status='7cancelled'
-            elif not rec.salesidnya:
+            if not rec.salesidnya:
                 rec.p_status='1created'
                 if rec.salesidnya:
                     rec.p_status='2iwo'
@@ -196,6 +199,62 @@ class ProjectProject(models.Model):
             if rec.partner_idi not in rec.message_partner_ids:
                 rec.message_subscribe([rec.partner_idi.id])
         return True
+
+    # @api.multi
+    # def iwo_progressbar(self):
+    #     self.write({'p_status': '1iwo'})
+    
+    @api.multi
+    def iwo_progressbar(self):
+        self.write({'p_status': '2iwo'})
+
+    @api.multi
+    def propose_progressbar(self):
+        if self.iwoattach:
+            self.write({'iwodone': 'True'})
+
+    @api.multi
+    def progress_progressbar(self):
+        self.write({'teamdone': 'True'})
+    
+    @api.multi
+    def delivered_progressbar(self):
+        if self.uatattach:
+            self.write({'uat': 'True'})
+    
+    @api.multi
+    def closed_progressbar(self):
+        if self.closedattach and self.bastattach and self.handoverattach:
+            self.write({'closed': 'True'})
+            self.write({'bast': 'True'})
+            self.write({'handover': 'True'})
+    
+    @api.multi
+    def onhold_progressbar(self):
+        if self.suratonholdattach and self.onholdvisible == True:
+            self.write({'suratonhold': 'True'})
+    
+    @api.multi
+    def cancelled_progressbar(self):
+        if self.suratcancelattach and self.cancelvisible == True:
+            self.write({'suratcancel': 'True'})
+    
+    @api.multi
+    def onholdvisible_progressbar(self):
+        self.onholdvisible = True
+
+    @api.multi
+    def cancelvisible_progressbar(self):
+        self.cancelvisible = True
+
+    @api.multi
+    def continue_progressbar(self):
+        self.suratonhold = False
+
+    @api.multi
+    def uncancel_progressbar(self):
+        self.suratcancel = False
+
 
 class HrEmployeeInherit(models.Model):
     _inherit = 'hr.employee'
@@ -233,6 +292,10 @@ class ResUsersInherit(models.Model):
 class ProjectTeam(models.Model):
     _name = 'project.team'
 
+    _sql_constraints = [ ('unique_user', 
+        'unique(userem2o, projectm2o)', 
+        'User harus unique!\nPlease, select a different user!')]
+
     # employeeo2m = fields.One2many('hr.employee', 'teamm2o', string="Employee team")
     # user_id = fields.Many2one(related='employeeo2m.user_id')
     partnerm2o = fields.Many2one('res.partner', string="related partner", related='userem2o.partner_id')
@@ -248,9 +311,8 @@ class ProjectTeam(models.Model):
     def assign_person(self):
         # partner = self.partnerm2o
         # message_partner_proj = self.projectm2o.message_partner_ids
-        if not self.start_assign:
-            self.start_assign = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            self.status_assign = 'assigned'
+        self.start_assign = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        self.status_assign = 'assigned'
             # self.env['project.project'].action_follow()
             # self.write({'projectm2o.partner_idi': self.partnerm2o})
             # for rec in self:
@@ -260,9 +322,8 @@ class ProjectTeam(models.Model):
 
     @api.multi
     def unassign_person(self):
-        if not self.end_assign:
-            self.end_assign = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            self.status_assign = 'unassigned'
+        self.end_assign = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        self.status_assign = 'unassigned'
 
     # @api.multi
     # def assign_person(self):
@@ -288,17 +349,12 @@ class ProjectSaleInherit(models.Model):
     _inherit = 'sale.order'
 
     # projectconvert = fields.Boolean(string = "Convert to Project", compute="convert_project")
-    state = fields.Selection(selection_add=[('review', 'PMO Review'),('reviewed', 'PMO Reviewed')])
+    state = fields.Selection(selection_add=[
+        ('review', 'PMO Review'),
+        ('reviewed', 'PMO Reviewed'),
+        ('invoice', 'Ready to Invoice')
+        ])
     projectsale_o2ms = fields.One2many('project.sale', 'salem2os', string='Project salem2os')
-
-    # @api.multi
-    # @api.depends('project_project_id')
-    # def convert_project(self):
-    #     for rec in self:
-    #         if rec.project_project_id:
-    #             rec.projectconvert = True
-    #         else:
-    #             rec.projectconvert = False
 
     @api.multi
     def action_review(self):
@@ -314,3 +370,5 @@ class ProjectSale(models.Model):
 
     projectm2os = fields.Many2one('project.project', string="Projects")
     salem2os = fields.Many2one('sale.order', string="Sales")
+    customersale = fields.Many2one(related='salem2os.partner_id')
+    projectstate = fields.Selection(related='projectm2os.p_status')
