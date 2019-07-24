@@ -4,14 +4,9 @@ from odoo import api, fields, models
 class sale_discount(models.Model):
     _inherit = 'sale.order'
 
-    state = fields.Selection([
-        ('draft', 'Quotation'),
-        ('sent', 'Quotation Sent'),
-        ('waiting', 'Waiting Approval'),
-        ('sale', 'Sales Order'),
-        ('done', 'Locked'),
-        ('cancel', 'Cancelled'),
-        ], string='Status', readonly=True, copy=False, index=True, track_visibility='onchange', default='draft')
+    state = fields.Selection(selection_add=[
+        ('waiting', 'Waiting Approval')
+        ])
 
     @api.multi
     def action_confirm(self):

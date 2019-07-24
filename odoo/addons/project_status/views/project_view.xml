@@ -423,14 +423,14 @@
                     <!-- <field name="teamdone" string="Team Done" groups="project.group_project_MOPM1"/> -->
                     <group colspan="4">
                         <field name="teamo2mp">
-                            <tree editable="top">
+                            <tree editable="bottom">
                                 <field name="userem2o"/>
                                 <!-- <field name="employeem2o"/> -->
                                 <field name="status_assign"/>
                                 <field name="start_assign"/>
                                 <field name="end_assign"/>
-                                <button string="Assign" type="object" name="assign_person" class="oe_highlight"/>
-                                <button string="Unassign" type="object" name="unassign_person" class="oe_highlight"/>
+                                <button string="Assign" type="object" name="assign_person" class="oe_highlight" attrs="{'invisible': ['|',('status_assign', '=', 'assigned'),('status_assign', '=', 'unassigned')]}"/>
+                                <button string="Unassign" type="object" name="unassign_person" class="oe_highlight" attrs="{'invisible': [('status_assign', '!=', 'assigned')]}"/>
                             </tree>
                         </field>
                     </group>
@@ -508,15 +508,16 @@
             <field name="name">project.team.tree.view</field>
             <field name="model">project.team</field>
             <field name="arch" type="xml">
-                <tree editable="top">
+                <tree editable="bottom">
                     <field name="userem2o"/>
                     <field name="projectm2o"/>
                     <!-- <field name="employeem2o"/> -->
                     <field name="status_assign"/>
                     <field name="start_assign"/>
                     <field name="end_assign"/>
-                    <button string="Assign" type="object" name="assign_person"/>
-                    <button string="Unassign" type="object" name="unassign_person"/>
+                    <button string="Assign" type="object" name="assign_person" attrs="{'invisible': ['|',('status_assign', '=', 'assigned'),('status_assign', '=', 'unassigned')]}"/>
+                    <button string="Unassign" type="object" name="unassign_person" attrs="{'invisible': [('status_assign', '!=', 'assigned')]}"/>
+                    
                 </tree>
             </field>
     </record>
@@ -534,8 +535,9 @@
                             <field name="status_assign"/>
                             <field name="start_assign"/>
                             <field name="end_assign"/>
-                            <button string="Assign" type="object" name="assign_person" class="oe_highlight"/>
-                            <button string="Unassign" type="object" name="unassign_person" class="oe_highlight"/>
+                            <button string="Assign" type="object" name="assign_person" attrs="{'invisible': ['|',('status_assign', '=', 'assigned'),('status_assign', '=', 'unassigned')]}"/>
+                            <button string="Unassign" type="object" name="unassign_person" attrs="{'invisible': [('status_assign', '!=', 'assigned')]}"/>
+                            
                         </group>
                     </sheet>
                 </form>
@@ -611,15 +613,20 @@
                 <button name="action_review" states="draft" string="PMO Review" type="object"/>
                 <button name="action_done_review" states="review" string="PMO Reviewed" type="object"/>
                 <button name="action_confirm" states="reviewed" string="Confirm Sale" class="o_sale_confirm" type="object"/>
+                
             </xpath>
-            <xpath expr="//button[@name='action_confirm']" position="attributes">
+            <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+            <!-- <xpath expr="//button[2]" position="attributes">
+                <attribute name="invisible">['|',('invoice_status', '!=', 'no'), ('state', '!=', 'invoice')</attribute>
+            </xpath> -->
             <xpath expr="//notebook" position="inside">
                 <page string="Project Information">
                     <group>
                         <field name="projectsale_o2ms" string="Related Project">
                             <field name="projectm2os"/>
+                            <field name="projectstate"/>
                         </field>
                     </group>
                 </page>
@@ -634,6 +641,7 @@
             <field name="arch" type="xml">
                 <tree editable="top">
                     <field name="projectm2os"/>
+                    <field name="projectstate"/>
                 </tree>
             </field>
     </record>

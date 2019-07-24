@@ -228,6 +228,7 @@ class ProjectProject(models.Model):
             self.write({'closed': 'True'})
             self.write({'bast': 'True'})
             self.write({'handover': 'True'})
+
     
     @api.multi
     def onhold_progressbar(self):
@@ -294,7 +295,7 @@ class ProjectTeam(models.Model):
 
     _sql_constraints = [ ('unique_user', 
         'unique(userem2o, projectm2o)', 
-        'User harus unique!\nPlease, select a different user!')]
+        'User has been assigned to this project!\nPlease, select a different user!')]
 
     # employeeo2m = fields.One2many('hr.employee', 'teamm2o', string="Employee team")
     # user_id = fields.Many2one(related='employeeo2m.user_id')
@@ -325,6 +326,21 @@ class ProjectTeam(models.Model):
         self.end_assign = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         self.status_assign = 'unassigned'
 
+    @api.multi
+    @api.depends('start_assign')
+    def assignbol(self):
+        for rec in self:
+            if rec.start_assign:
+                rec.assignbool = True
+
+    @api.multi
+    @api.depends('end_assign')
+    def unassignbol(self):
+        for rec in self:
+            if rec.end_assign:
+                rec.unassignbool = True
+
+
     # @api.multi
     # def assign_person(self):
     #     if not self.start_assign:
@@ -351,11 +367,12 @@ class ProjectSaleInherit(models.Model):
     # projectconvert = fields.Boolean(string = "Convert to Project", compute="convert_project")
     state = fields.Selection(selection_add=[
         ('review', 'PMO Review'),
-        ('reviewed', 'PMO Reviewed'),
-        ('invoice', 'Ready to Invoice')
+        ('reviewed', 'PMO Reviewed')
+        # ('invoice', 'Ready to Invoice')
         ])
     projectsale_o2ms = fields.One2many('project.sale', 'salem2os', string='Project salem2os')
-
+    statusproject = fields.Selection(related='projectsale_o2ms.projectstate')
+    
     @api.multi
     def action_review(self):
         return self.write({'state': 'review'})
@@ -364,6 +381,10 @@ class ProjectSaleInherit(models.Model):
     def action_done_review(self):
         return self.write({'state': 'reviewed'})
 
+    # @api.multi
+    # def action_ready_invoice(self):
+    #     return self.write({'state': 'invoice'})
+
 
 class ProjectSale(models.Model):
     _name = 'project.sale'
@@ -371,4 +392,4 @@ class ProjectSale(models.Model):
     projectm2os = fields.Many2one('project.project', string="Projects")
     salem2os = fields.Many2one('sale.order', string="Sales")
     customersale = fields.Many2one(related='salem2os.partner_id')
-    projectstate = fields.Selection(related='projectm2os.p_status')
+    projectstate = fields.Selection(related='projectm2os.p_status', readonly=True)
