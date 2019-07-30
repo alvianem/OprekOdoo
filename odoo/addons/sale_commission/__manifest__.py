@@ -13,6 +13,7 @@
         'account',
         'product',
         'sale',
+        'crm',
     ],
     'data': [
         'security/ir.model.access.csv',

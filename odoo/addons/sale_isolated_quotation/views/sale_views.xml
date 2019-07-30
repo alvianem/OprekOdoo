@@ -16,7 +16,7 @@
                       states="draft"
                       class="oe_highlight"
                       type="object"
-                      string="Convert to Order"/>
+                      string="Convert to Order" groups="sale.group_project_ESA1"/>
                     <button name="action_cancel"
                       states="draft" type="object"
                       string="Cancel"/>

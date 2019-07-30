@@ -10,7 +10,7 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     agreement_id = fields.Many2one(
-        'agreement', string='Agreement', ondelete='restrict',
+        'agreement', string='Contract', ondelete='restrict',
         track_visibility='onchange', readonly=True,
         states={'draft': [('readonly', False)], 'sent': [('readonly', False)]})
 

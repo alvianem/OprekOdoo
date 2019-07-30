@@ -30,7 +30,7 @@ class SaleTag(models.Model):
         return self.env['res.partner.category'].browse(self._context.get('category_id'))
 
     sale_tag = fields.Many2many('res.partner.category', column1='partner_id',
-                                column2='category_id', string='Sales Tag', default=_default_category)
+                                column2='category_id', string='Category', default=_default_category)
 
 
 class AccountInvoice(models.Model):
@@ -38,7 +38,7 @@ class AccountInvoice(models.Model):
 
     check_sale_tag = fields.Boolean()
     sale_tag = fields.Many2many('res.partner.category', column1='partner_id',
-                                column2='category_id', string='Sales Tag', compute='get_sales_tag')
+                                column2='category_id', string='Category', compute='get_sales_tag')
 
     @api.one
     @api.depends('user_id')

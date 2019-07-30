@@ -6,16 +6,16 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                <xpath expr="//page[2]" position="after">
-		  <page string="Product Tasks">
+		  <page string="Documents Checklist">
                       <field name="task_history_ids">
                           <tree string="Task Detail" editable="top">
                               <field name="sale_task_id" string ="Tasks" required="1"/>
-                              <field name="done" string = "Done"/>
+                              <field name="done" string = "Done" groups="sale.group_project_ESA3"/>
                           </tree>
                           <form string="Task Detail">
                               <group>
                                   <field name="sale_task_id" string ="Tasks"/>
-                                  <field name="done" string = "Done"/>
+                                  <field name="done" string = "Done" groups="sale.group_project_ESA3"/>
                               </group>
                           </form>
                       </field>

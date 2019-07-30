@@ -79,7 +79,7 @@ class CrmTargetAchievement(models.Model):
                 # this is just a user, not a team lead
                 target += self.env.user.target_sales_invoiced
                 cr.execute("select sum(amount_untaxed) as total from account_invoice "
-                           " where state in ('open', 'paid') and ai.type='out_invoice' "
+                           " where state in ('open', 'paid') and type='out_invoice' "
                            " and date_invoice >= %s and user_id=%s", (begning, self._uid))
                 invoices = cr.dictfetchall()
 
