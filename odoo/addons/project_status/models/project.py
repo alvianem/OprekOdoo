@@ -4,12 +4,14 @@ from odoo import fields, models, api, _
 class ProjectProject(models.Model):
     _inherit = "project.project"
 
+    user_id = fields.Many2one('res.users', string='Project Manager', default='None')
     p_start_date = fields.Date(string="Project Start Date", track_visibility='onchange', store=True)
     revise_start_date = fields.Date(string='Revise Start Date', track_visibility='onchange', store=True)
     p_end_date = fields.Date(string='Project End Date', track_visibility='onchange', store=True)
     revise_end_date = fields.Date(string='Revise End Date', track_visibility='onchange', store=True)
     deltadate = fields.Integer(string="Selisih Deadline", compute='_itung_deadline', store=True)
-    customer_project = fields.Many2one(readonly=False, related='saleproject_o2m.customersale', track_visibility='onchange', store=True)
+    customer_project = fields.Many2one('res.partner', string="Customer Project", track_visibility='onchange', store=True)
+    # customer_projectrel = fields.Many2one(readonly=False, related='saleproject_o2m.customersale', track_visibility='onchange', store=True)
     customer_group = fields.Selection([('asyst', 'ASYST'),('garuda', 'GA'),('ga_group', 'GA Group'),('non_ga_group', 'NON GA Group')], string="Customer Group", track_visibility='onchange', store=True)
     type_project = fields.Selection([('internal','Internal'),('external','External')], string='Type Project', track_visibility='onchange', store=True)
     p_status = fields.Selection([
@@ -21,15 +23,16 @@ class ProjectProject(models.Model):
         ('5closed','Closed'),
         ('6onhold','On Hold'),
         ('7cancelled','Cancelled')],
-        compute='_statuschange', 
+        # compute='_statuschange', 
         string='Project Status', 
-        default = '1created',store=True)
-    project_no = fields.Integer(string='Project No', related='id', store=False)
-    project_code = fields.Text(string='Project Code', compute='_project_code_concat', store=True)
-    pmo_in_charge = fields.Many2one('res.users', string='PMO in Charge', default=lambda self: self.env.uid, store=True)
+        default = '1created', store=True, track_visibility='onchange')
+    project_idrel = fields.Integer(string='Project ID', related='id')
+    project_code = fields.Text(string='Project Code', compute='_project_code_concat')
+    project_no = fields.Text(string='Project No', related='project_code', store=True)
+    pmo_in_charge = fields.Many2one('res.users', string='PMO in Charge', default=lambda self: self.env.uid, store=True, track_visibility='onchange')
     description = fields.Html()
 
-    partner_idi = fields.Many2one('res.partner', 'partnerr')
+    # partner_idi = fields.Many2one('res.partner', 'partnerr')
     # user_idi = fields.Many2one('res.users', 'userr', related='teamo2mp.userem2o')
 # related='teamo2mp.userem2o'
     teamdone = fields.Boolean(string = 'Team Done', default = False)
@@ -108,6 +111,96 @@ class ProjectProject(models.Model):
     saleproject_o2m = fields.One2many('project.sale', 'projectm2os', string="Sale Projects")
     salesidnya = fields.Many2one(string='Sales No', readonly=True, related='saleproject_o2m.salem2os',store=True)
 
+    iwodate = fields.Date(string='Project Request For IWO Date', store=True)
+    proposeteamdate = fields.Date(string='Project Propose Team Date', store=True)
+    progressdate = fields.Date(string='Project In Progress Date', store=True)
+    deliverdate = fields.Date(string='Project Deliver Date', store=True)
+    closedate = fields.Date(string='Project Closed Date', store=True)
+    holddate = fields.Date(string='Project Hold Date', store=True)
+    unholddate = fields.Date(string='Project Unhold Date', store=True)
+    canceldate =fields.Date(string='Project Cancelled Date', store=True)
+
+    # lamacreate = fields.Integer(string="Lama Waktu Created", compute='_itung_create', store=True)
+    # lamaiwo = fields.Integer(string="Lama Waktu Request for IWO", compute='_itung_iwo', store=True)
+    # lamaproposeteam = fields.Integer(string="Lama Waktu Propose Team", compute='_itung_propose', store=True)
+    # lamaprogress = fields.Integer(string="Lama Waktu Progress", compute='_itung_progress', store=True)
+    # lamadeliver = fields.Integer(string="Lama Waktu Deliver", compute='_itung_deliver', store=True)
+    # lamahold = fields.Integer(string="Lama Waktu On Hold", compute='_itung_hold', store=True)
+    # lamacancel = fields.Integer(string="Lama Waktu Cancel")
+
+    @api.multi
+    @api.depends('create_date', 'iwodate')
+    def _itung_create(self):
+        for each in self:
+            d1=datetime.strptime(str(each.create_date),'%Y-%m-%d') 
+            d2=datetime.strptime(str(each.iwodate),'%Y-%m-%d')
+            d3=d2-d1
+            if int(d3.days) < 0:
+                each.lamacreate= int(0)
+            else:
+                each.lamacreate=int(d3.days)
+
+    # @api.multi
+    # @api.depends('iwodate', 'proposeteamdate')
+    # def _itung_iwo(self):
+    #     for each in self:
+    #         d1=datetime.strptime(str(each.iwodate),'%Y-%m-%d') 
+    #         d2=datetime.strptime(str(each.proposeteamdate),'%Y-%m-%d')
+    #         d3=d2-d1
+    #         if int(d3.days) < 0:
+    #             each.lamaiwo= int(0)
+    #         else:
+    #             each.lamaiwo=int(d3.days)
+
+    # @api.multi
+    # @api.depends('proposeteamdate', 'progressdate')
+    # def _itung_propose(self):
+    #     for each in self:
+    #         d1=datetime.strptime(str(each.proposeteamdate),'%Y-%m-%d') 
+    #         d2=datetime.strptime(str(each.progressdate),'%Y-%m-%d')
+    #         d3=d2-d1
+    #         if int(d3.days) < 0:
+    #             each.lamaproposeteam= int(0)
+    #         else:
+    #             each.lamaproposeteam=int(d3.days)
+
+    # @api.multi
+    # @api.depends('progressdate', 'deliverdate')
+    # def _itung_progress(self):
+    #     for each in self:
+    #         d1=datetime.strptime(str(each.progressdate),'%Y-%m-%d') 
+    #         d2=datetime.strptime(str(each.deliverdate),'%Y-%m-%d')
+    #         d3=d2-d1
+    #         if int(d3.days) < 0:
+    #             each.lamaprogress= int(0)
+    #         else:
+    #             each.lamaprogress=int(d3.days)
+
+    # @api.multi
+    # @api.depends('deliverdate', 'closedate')
+    # def _itung_deliver(self):
+    #     for each in self:
+    #         d1=datetime.strptime(str(each.deliverdate),'%Y-%m-%d') 
+    #         d2=datetime.strptime(str(each.closedate),'%Y-%m-%d')
+    #         d3=d2-d1
+    #         if int(d3.days) < 0:
+    #             each.lamadeliver= int(0)
+    #         else:
+    #             each.lamadeliver=int(d3.days)
+
+    # @api.multi
+    # @api.depends('holddate', 'unholddate')
+    # def _itung_hold(self):
+    #     for each in self:
+    #         d1=datetime.strptime(str(each.holddate),'%Y-%m-%d') 
+    #         d2=datetime.strptime(str(each.unholddate),'%Y-%m-%d')
+    #         d3=d2-d1
+    #         if int(d3.days) < 0:
+    #             each.lamahold= int(0)
+    #         else:
+    #             each.lamahold=int(d3.days)
+
+
     # user_id = fields.Many2one('res.users',
     #     string='Assigned to',
     #     default=lambda self: self.env.uid,
@@ -117,6 +210,11 @@ class ProjectProject(models.Model):
     # def _datenow(self):
     #     for each in self:
     #         each.datenow = date.today()
+    @api.model
+    @api.depends('customer_projectrel')
+    def default_cust(self):
+        cust = self.customer_projectrel
+        return cust
 
     @api.multi
     @api.depends('revise_end_date', 'deltadate')
@@ -132,17 +230,18 @@ class ProjectProject(models.Model):
                 else:
                     each.deltadate=int(d3.days)
                 
-    @api.depends('project_no')
+    @api.depends('project_idrel')
     def _project_code_concat(self):
         for rec in self:
             code="PMO"
-            rec.project_code = code + str(rec.project_no)
+            rec.project_code = code + str(rec.project_idrel)
     
     @api.depends('salesidnya', 'teamdone', 'iwodone', 'uat', 'closed', 'bast', 'handover', 'suratcancel', 'suratonhold')
     def _statuschange(self):
         for rec in self:
             if rec.salesidnya:
                 rec.p_status='2iwo'
+                rec.iwodate = date.today()
                 if rec.iwodone == True:
                     rec.p_status='proposeteam'
                     if rec.teamdone == True:
@@ -165,8 +264,10 @@ class ProjectProject(models.Model):
                     rec.p_status='7cancelled'
             if not rec.salesidnya:
                 rec.p_status='1created'
+                rec.createdate = date.today()
                 if rec.salesidnya:
                     rec.p_status='2iwo'
+                    rec.iwodate = date.today()
                     if rec.iwodone == True:
                         rec.p_status='proposeteam'
                         if rec.teamdone == True:
@@ -192,53 +293,63 @@ class ProjectProject(models.Model):
                 elif rec.suratcancel == True:
                     rec.p_status='7cancelled'
 
-    @api.multi
-    def action_follow(self):
-        # fetch the partner's id and subscribe the partner to the sale order
-        for rec in self:
-            if rec.partner_idi not in rec.message_partner_ids:
-                rec.message_subscribe([rec.partner_idi.id])
-        return True
+    # @api.multi
+    # def action_follow(self):
+    #     # fetch the partner's id and subscribe the partner to the sale order
+    #     for rec in self:
+    #         if rec.partner_idi not in rec.message_partner_ids:
+    #             rec.message_subscribe([rec.partner_idi.id])
+    #     return True
 
     # @api.multi
     # def iwo_progressbar(self):
     #     self.write({'p_status': '1iwo'})
     
     @api.multi
+    def createdate(self):
+        self.createddate = date.today()
+
+    @api.multi
     def iwo_progressbar(self):
-        self.write({'p_status': '2iwo'})
+        if self.salesidnya:
+            self.write({'p_status': '2iwo'})
+            self.iwodate = date.today()
 
     @api.multi
     def propose_progressbar(self):
         if self.iwoattach:
-            self.write({'iwodone': 'True'})
+            self.write({'p_status': 'proposeteam'})
+            self.proposeteamdate = date.today()
 
     @api.multi
     def progress_progressbar(self):
-        self.write({'teamdone': 'True'})
+        self.write({'p_status': '3progress'})
+        self.progressdate = date.today()
     
     @api.multi
     def delivered_progressbar(self):
         if self.uatattach:
-            self.write({'uat': 'True'})
+            self.write({'p_status': '4delivered'})
+            self.deliverdate = date.today()
     
     @api.multi
     def closed_progressbar(self):
         if self.closedattach and self.bastattach and self.handoverattach:
-            self.write({'closed': 'True'})
-            self.write({'bast': 'True'})
-            self.write({'handover': 'True'})
+            self.write({'p_status': '5closed'})
+            self.closedate = date.today()
 
     
     @api.multi
     def onhold_progressbar(self):
         if self.suratonholdattach and self.onholdvisible == True:
-            self.write({'suratonhold': 'True'})
+            self.write({'p_status': '6onhold'})
+            self.holddate = date.today()
     
     @api.multi
     def cancelled_progressbar(self):
         if self.suratcancelattach and self.cancelvisible == True:
-            self.write({'suratcancel': 'True'})
+            self.write({'p_status': '7cancelled'})
+            self.canceldate = date.today()
     
     @api.multi
     def onholdvisible_progressbar(self):
@@ -251,6 +362,7 @@ class ProjectProject(models.Model):
     @api.multi
     def continue_progressbar(self):
         self.suratonhold = False
+        self.unholddate = date.today()
 
     @api.multi
     def uncancel_progressbar(self):
@@ -282,7 +394,7 @@ class HrEmployeeInherit(models.Model):
         for employee in self:
             user = employee.user_id
             if user:
-                current = self.env['project.team'].sudo().search(['&',('userem2o','=',user.id),('status_assign','=','assigned')])
+                current = self.env['project.team'].sudo().search(['&',('userem2o','=',user.id),('status_assign','=','assigned'),('projectstate','not in',['5closed', '7cancelled', '6onhold'])])
                 employee.currentproject = str(len(current))
 
 class ResUsersInherit(models.Model):
@@ -299,14 +411,15 @@ class ProjectTeam(models.Model):
 
     # employeeo2m = fields.One2many('hr.employee', 'teamm2o', string="Employee team")
     # user_id = fields.Many2one(related='employeeo2m.user_id')
-    partnerm2o = fields.Many2one('res.partner', string="related partner", related='userem2o.partner_id')
+    # partnerm2o = fields.Many2one('res.partner', string="related partner", related='userem2o.partner_id')
     userem2o = fields.Many2one('res.users', string="Users")
     projectm2o = fields.Many2one('project.project', string="Projects")
     # employeem2o = fields.Many2one('hr.employee', string="Employees")
     start_assign = fields.Datetime(string="Start Assigned Date", readonly=True)
     end_assign = fields.Datetime(string="End Assigned Date", readonly=True)
     status_assign = fields.Selection([('assigned','Assigned'),('unassigned','Unassigned')], string="Status", readonly=True)
-    message_partner = fields.Many2many(related="projectm2o.message_partner_ids")
+    # percentage = fields.Float(string="Capacity Percentage")
+    projectstate = fields.Selection(related='projectm2o.p_status', readonly=True)
 
     @api.multi
     def assign_person(self):
@@ -393,3 +506,10 @@ class ProjectSale(models.Model):
     salem2os = fields.Many2one('sale.order', string="Sales")
     customersale = fields.Many2one(related='salem2os.partner_id')
     projectstate = fields.Selection(related='projectm2os.p_status', readonly=True)
+
+    @api.multi
+    def start_project(self):
+        start = self.env['project.project'].search([('id', '=', self.projectm2os.ids)])
+        start.write({'p_status': '2iwo'})
+
+    

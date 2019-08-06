@@ -5,7 +5,7 @@
 {
     'name': 'HR Attendance Auto Close',
     'version': '10.0.1.0.0',
-    'category': 'Human Resources',
+    'category': 'ASYST - Human Capital',
     'summary': 'Close stale Attendances',
     'website': 'https://github.com/OCA/hr',
     'author': 'Odoo Community Association (OCA)',

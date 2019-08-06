@@ -8,45 +8,27 @@
             <field name="view_mode">tree,form</field>
     </record>
 	
+	<record id="seq_rfr" model="ir.sequence">
+		<field name="name">Sequence RFR</field>
+		<field name="code">seq_rfr</field>
+		<!-- <field name="prefix">Test</field> -->
+		<field name="padding">3</field>
+		<field name="company_id" eval="False"/>
+	</record>
+	
 	<record id="view_rfr_tree" model="ir.ui.view">
 		<field name="name">rfr.tampilan.tree</field>
 		<field name="model">rfr</field>
 		<field name="arch" type="xml">
-			<tree>
-				<field name='code_rfr' string='RFR Code'/>
+			<tree colors="red:state in ('refusegm','refusebod1'); #00cc00:state=='approved'" >
+				<field name='name' string='RFR Code'/>
 				<field name='user_prepared' string='User Prepared'/>
 				<field name='recruitment_types'/>
-				<field name='date' />
+				<field name='date'/>
+				<field name='state'/>
 			</tree>
 		</field>
 	</record>
-	
-	<!-- <record id="view_rfr_tree_manager" model="ir.ui.view"> -->
-		<!-- <field name="name">rfr.tampilan.tree.manager</field> -->
-		<!-- <field name="model">rfr</field> -->
-		<!-- <field name="groups" eval="[(4, ref('hr_recruitment.group_hr_recruitment_custom_manager'))]"/> -->
-		<!-- <field name="arch" type="xml"> -->
-			<!-- <tree> -->
-				<!-- <field name='code_rfr' string='RFR Code'/> -->
-				<!-- <field name='user_prepared' string='User Prepared'/> -->
-				<!-- <field name='recruitment_types'/> -->
-			<!-- </tree> -->
-		<!-- </field> -->
-	<!-- </record> -->
-	<!-- <record id="view_rfr_tree_manager" model="ir.ui.view"> -->
-		<!-- <field name="name">rfr.tampilan.tree.manager</field> -->
-		<!-- <field name="model">rfr</field> -->
-		<!-- <field name="groups_id" ref='hr_recruitment.group_hr_recruitment_custom_manager'/> -->
-		<!-- <field name="domain">[('hr_recruitment.group_hr_recruitment_custom_manager','in',context.get('uid').groups)]</field> -->
-		<!-- <field name="arch" type="xml"> -->
-			<!-- <tree> -->
-				<!-- <field name='code_rfr' string='RFR Code'/> -->
-				<!-- <field name='user_prepared' string='User Prepared'/> -->
-				<!-- <field name='recruitment_types'/> -->
-				<!-- <field name='date'/> -->
-			<!-- </tree> -->
-		<!-- </field> -->
-	<!-- </record> -->
 	
 	<record id="view_rfr_form" model="ir.ui.view">
 		<field name="name">rfr.tampilan.form</field>
@@ -56,15 +38,23 @@
 				<header>
 					<!-- <button string="Confirm" name="action_confirm" type="object" groups='hr_recruitment.group_hr_recruitment_custom_admin'/> -->
 					<button string="Confirm" name="action_confirm" type="object" groups='hr_recruitment.group_hr_recruitment_custom_general_manager' attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+					<button string="Refuse" name="action_refusegm" type="object" groups='hr_recruitment.group_hr_recruitment_custom_general_manager' attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+					<button string="Cancel" name="action_cancelgm" type="object" groups='hr_recruitment.group_hr_recruitment_custom_general_manager' attrs="{'invisible': [('state', 'not in', ['confirm', 'refusegm'])]}"/>
 					
 					<!-- <button string="Approve" name="action_approve1" type="object" groups='hr_recruitment.group_hr_recruitment_custom_admin'/> -->
 					<button string="Approve" name="action_approve1" type="object" groups='hr_recruitment.group_hr_recruitment_custom_ceo' attrs="{'invisible': [('state', '!=', 'confirm')]}"/>
+					<button string="Refuse" name="action_refusebod1" type="object" groups='hr_recruitment.group_hr_recruitment_custom_ceo' attrs="{'invisible': [('state', '!=', 'confirm')]}"/>
+					<button string="Cancel2" name="action_cancelbod1" type="object" groups='hr_recruitment.group_hr_recruitment_custom_ceo' attrs="{'invisible': [('state', 'not in', ['tocheck', 'refusebod1'])]}"/>
 					
 					<!-- <button string="Check" name="action_check" type="object" groups='hr_recruitment.group_hr_recruitment_custom_admin'/> -->
 					<button string="Check" name="action_check" type="object" groups='hr_recruitment.group_hr_recruitment_custom_human_capital' attrs="{'invisible': [('state', '!=', 'tocheck')]}"/>
+					<button string="Refuse" name="action_refusehc" type="object" groups='hr_recruitment.group_hr_recruitment_custom_human_capital' attrs="{'invisible': [('state', '!=', 'tocheck')]}"/>
+					<button string="Cancel3" name="action_cancelhc" type="object" groups='hr_recruitment.group_hr_recruitment_custom_human_capital' attrs="{'invisible': [('state', 'not in', ['check', 'refusehc'])]}"/>
 					
 					<!-- <button string="Approve2" name="action_approve2_admin" type="object" groups='hr_recruitment.group_hr_recruitment_custom_admin'/> -->
 					<button string="Approve" name="action_approve2_admin" type="object" groups='hr_recruitment.group_hr_recruitment_custom_cfo' attrs="{'invisible': [('state', '!=', 'check')]}"/>
+					<button string="Refuse" name="action_refusebod2" type="object" groups='hr_recruitment.group_hr_recruitment_custom_cfo' attrs="{'invisible': [('state', '!=', 'check')]}"/>
+					<button string="Cancel4" name="action_cancelbod2" type="object" groups='hr_recruitment.group_hr_recruitment_custom_cfo' attrs="{'invisible': [('state', 'not in', ['approved', 'refusebod2'])]}"/>
 					
 					<field name="state" widget="statusbar" statusbar_visible="draft,confirm,tocheck,check,approved"/>
 				</header>
@@ -75,7 +65,7 @@
 						<separator string=""/>
 							<div>
 								<group>
-								<field name='code_rfr' required='True'/>
+								<field name='name' readonly='1' required='True'/>
 								</group>
 							</div>
 							<separator string=""/>
@@ -93,7 +83,7 @@
 							<separator string=""/>
 							<div>
 								<group>
-									<field name='date'/>
+									<field name='date' readonly='True' required='True'/>
 									<field name='unit'/>
 									<field name='grade'/>
 									<field name='position'/>
@@ -141,25 +131,54 @@
 									<field name='budget_control'/>
 								</group>
 							</group>
+							
+						<separator string=""/>
+							<group string='Notes' groups='hr_recruitment.group_hr_recruitment_custom_general_manager, 
+															hr_recruitment.group_hr_recruitment_custom_ceo,
+															hr_recruitment.group_hr_recruitment_custom_human_capital,
+															hr_recruitment.group_hr_recruitment_custom_cfo'>
+															
+								<group colspan='4' groups='hr_recruitment.group_hr_recruitment_custom_general_manager'>
+									<field name='head_prepared2_note' string='General Manager Note'/>
+								</group>
+								<group colspan='4' groups='hr_recruitment.group_hr_recruitment_custom_ceo'>
+									<field name='director_prepared2_note' string='BOD 1 Note'/>
+								</group>
+								<group colspan='4' groups='hr_recruitment.group_hr_recruitment_custom_human_capital'>
+									<field name='hr_checked_note' string='Human Capital Note'/>
+								</group>
+								<group colspan='4' groups='hr_recruitment.group_hr_recruitment_custom_cfo'>
+									<field name='bod2_approved_note' string='BOD 2 Note'/>
+								</group>
+							</group>
+						
 							<separator string=""/>
 							<notebook>
 								<page string="Approbations Status">
 									<group>
 										<group>
 											<field name='head_prepared2' readonly='True' string='Acknowledged by'/>
-											<field name="date_confirm" string="Confirm Date" readonly='True'/>
+											<field name="date_confirm" string="Confirmed Date" readonly='True'/>
+											<field name="date_refuse1" string="Refuse Date" readonly='True' attrs="{'invisible': [('state', '!=', 'refusegm')]}"/>
+											<field name="note1" string="Note" readonly='True'/>
 										</group>
 										<group>
 											<field name='director_prepared2' readonly='True' string='Approved by'/>
 											<field name="date_approved1" string="Approved Date" readonly='True'/>
+											<field name="date_refuse2" string="Refuse Date" readonly='True' attrs="{'invisible': [('state', '!=', 'refusebod1')]}"/>
+											<field name="note2" string="Note" readonly='True'/>
 										</group>
 										<group>
 											<field name='hr_checked' readonly='True' string='Checked by'/>
-											<field name="date_checked" string="Confirm Date" readonly='True'/>
+											<field name="date_checked" string="Checked Date" readonly='True'/>
+											<field name="date_refuse3" string="Refuse Date" readonly='True' attrs="{'invisible': [('state', '!=', 'refusehc')]}"/>
+											<field name="note3" string="Note" readonly='True'/>
 										</group>
 										<group>
 											<field name='bod2_approved' readonly='True' string='Final Approved by'/>
 											<field name="date_approved2" string="Final Approved Date" readonly='True'/>
+											<field name="date_refuse4" string="Refuse Date" readonly='True' attrs="{'invisible': [('state', '!=', 'refusebod2')]}"/>
+											<field name="note4" string="Note" readonly='True'/>
 										</group>
 									</group>
 								</page>
@@ -168,7 +187,7 @@
 			</form>
 		</field>
 	</record>
-				    	    
+	
 	<menuitem id="menu_rfr" name="Request For Recruitment" parent="hr_recruitment.menu_hr_recruitment_root" action="act_rfr"/>
 	
 	</data>

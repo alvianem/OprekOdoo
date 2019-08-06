@@ -25,7 +25,7 @@
     'version': '10.0.1.1.0',
     'summary': """Adding Advanced Fields In Employee Master""",
     'description': 'This module helps you to add more information in employee records.',
-    'category': 'Generic Modules/Human Resources',
+    'category': 'ASYST - Human Capital',
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',
     'website': "https://www.openhrms.com",

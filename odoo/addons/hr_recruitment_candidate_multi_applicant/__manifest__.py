@@ -4,7 +4,7 @@
 {'name': 'Hr Recruitment Candidate Multi Applicant',
  'summary': 'Applications',
  'version': '10.0.1.0.0',
- 'category': 'Human Resources',
+ 'category': 'ASYST - Human Capital',
  'author': 'Camptocamp SA,Odoo Community Association (OCA)',
  'license': 'AGPL-3',
  'depends': ['hr_recruitment'],

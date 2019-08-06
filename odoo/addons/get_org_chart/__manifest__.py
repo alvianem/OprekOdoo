@@ -2,7 +2,7 @@
 {
     'name': 'Organization Chart',
     'version': '1.0',
-    'category': 'OdooBro Apps',
+    'category': 'ASYST - Human Capital',
     'author': 'OdooBro - odoobro.contact@gmail.com',
     'website': 'odoobro.com',
     'license': 'AGPL-3',

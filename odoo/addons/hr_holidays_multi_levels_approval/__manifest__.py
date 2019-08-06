@@ -6,7 +6,7 @@
     "version" : "10.3",
     'license': 'AGPL-3',
     "author" : "Baamtu Senegal",
-    "category": "Generic Modules/Human Resources",
+    "category": "ASYST - Human Capital",
     'website': 'http://www.baamtu.com/',
     'images': ['static/description/banner.jpg'],
     'depends' : ['hr', 'hr_holidays'],

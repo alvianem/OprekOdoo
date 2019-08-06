@@ -10,29 +10,30 @@
                     <sheet>
                         <group>
                             <field name="medical_examination" tabindex="1" Placeholder="Enter Medical Examination" required="1" />
-                            <field name="vital_sign" tabindex="2" Placeholder="Enter Vital Sign" required="1" />
+                            <field name="vital_sign" tabindex="2" Placeholder="Enter Vital Sign"/>
                             <field name="date" Placeholder="Enter Date" tabindex="3" required="1" />
-                            <field name="doc_comment" tabindex="4" Placeholder="Enter Doctor's Comment" />
+                            <field name="doc_comment" tabindex="4" Placeholder="Enter Doctor's Comment"/>
+							<field name="medical_doc" widget="many2many_binary" string="Medical Documents" />
                             <field name="employee_id" invisible="1" />
                         </group>
                         <group col="4" colspan="4" string="Details">
                             <label for="blood_name" />
                             <div>
-                                <field name="blood_name" tabindex="5" placeholder="Enter Blood Type" required="1" />
-                                <field name="blood_type" tabindex="5" required="1" />
+                                <field name="blood_name" tabindex="5" placeholder="Enter Blood Type"/>
+                                <field name="blood_type" tabindex="5"/>
                             </div>
-                            <field name="head_face_scalp" tabindex="6" placeholder="Enter Head, Face, Scalp" required="1" />
-                            <field name="nose_sinuses" tabindex="7" placeholder="Enter Nose/Sinuses" required="1" />
-                            <field name="mouth_throat" tabindex="8" placeholder="Enter Mouth/Throat" required="1" />
-                            <field name="ears_tms" tabindex="9" placeholder="Enter Ears/TMs" required="1" />
-                            <field name="eyes_pupils_ocular" tabindex="10" placeholder="Enter Eyes/Pupils/Ocular Motility" required="1" />
-                            <field name="heart_vascular_system" tabindex="11" placeholder="Enter Heart/Vascular System" required="1" />
-                            <field name="lungs" placeholder="Enter Lungs" tabindex="12" required="1" />
-                            <field name="abdomen_hernia" placeholder="Enter Abdomen/Hernia" tabindex="13" required="1" />
-                            <field name="msk_strengh" placeholder="Enter Head, Face, Scalp" required="1" tabindex="14" />
-                            <field name="neurological" placeholder="Enter Neurological (Reflexes, Sensation)" required="1" tabindex="15" />
+                            <field name="head_face_scalp" tabindex="6" placeholder="Enter Head, Face, Scalp"/>
+                            <field name="nose_sinuses" tabindex="7" placeholder="Enter Nose/Sinuses"/>
+                            <field name="mouth_throat" tabindex="8" placeholder="Enter Mouth/Throat"/>
+                            <field name="ears_tms" tabindex="9" placeholder="Enter Ears/TMs"/>
+                            <field name="eyes_pupils_ocular" tabindex="10" placeholder="Enter Eyes/Pupils/Ocular Motility"/>
+                            <field name="heart_vascular_system" tabindex="11" placeholder="Enter Heart/Vascular System"/>
+                            <field name="lungs" placeholder="Enter Lungs" tabindex="12"/>
+                            <field name="abdomen_hernia" placeholder="Enter Abdomen/Hernia" tabindex="13"/>
+                            <field name="msk_strengh" placeholder="Enter Head, Face, Scalp" tabindex="14" />
+                            <field name="neurological" placeholder="Enter Neurological (Reflexes, Sensation)" tabindex="15" />
                             <field name="glasses_needed" tabindex="18" />
-                            <field name="urine_drug_serene" placeholder="Enter Urine Drug Serene" required="1" tabindex="19" />
+                            <field name="urine_drug_serene" placeholder="Enter Urine Drug Serene" tabindex="19" />
                             <field name="fit_for_full_duty" tabindex="20" />
                         </group>
                         <group col="4" colspan="4" string="Medical History">

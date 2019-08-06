@@ -11,31 +11,19 @@
 							<separator string="Technical Skills" />
 							<field name="techskill_ids">
 								<tree editable="Top">
-									<field name='competency_tech_types' string='Competency Types'/>
+									<field name='competency_tech_types' string='Competency Types' readonly='True'/>
 									<field name='competency_tech' string='Competency' required="True"/>
 									<field name='category_competency_tech' string='Competency Category'/>
 									<field name='levels_tech' string='Levels'/>	
 								</tree>
-								<!-- <form> -->
-									<!-- <group col="4"> -->
-										<!-- <field name="tech_id"/> -->
-										<!-- <field name="levels" /> -->
-									<!-- </group> -->
-								<!-- </form> -->
 							</field>
 							<separator string="Non Technical Skills" />
 							<field name="nontechskill_ids">
 								<tree editable='top'>
 									<field name='competency_nontech' string='Competency' required="True"/>
-									<field name='category_competency_nontech' string='Competency Category'/>
+									<field name='category_competency_nontech' string='Competency Category' readonly='True'/>
 									<field name='levels_nontech' string='Levels'/>	
 								</tree>
-								<!-- <form> -->
-									<!-- <group col="4"> -->
-										<!-- <field name="nontech_id"/> -->
-										<!-- <field name="levels" /> -->
-									<!-- </group> -->
-								<!-- </form> -->
 							</field>
 						</page>
 						<page name="hr_qualification" string="Qualifications">
@@ -46,7 +34,7 @@
 									<field name="institute_id" />
 									<field name="score" />
 									<field name="qualified_year" />
-									<field name="doc" />
+									<field name="doc" widget="many2many_binary"/>
 								</tree>
 								<form>
 									<group col="4">
@@ -54,7 +42,7 @@
 										<field name="institute_id" />
 										<field name="score" />
 										<field name="qualified_year" />
-										<field name="doc" />
+										<field name="doc" widget="many2many_binary"/>
 									</group>
 								</form>
 							</field>
@@ -65,7 +53,7 @@
 									<field name="levels" />
 									<field name="year" />
 									<field name="yearend"/>
-									<field name="doc" />
+									<field name="doc" widget="many2many_binary"/>
 								</tree>
 								<form>
 									<group col="4">
@@ -73,7 +61,7 @@
 										<field name="levels" />
 										<field name="year" />
 										<field name="yearend"/>
-										<field name="doc" />
+										<field name="doc" widget="many2many_binary"/>
 									</group>
 								</form>
 							</field>
@@ -122,6 +110,95 @@
 			</field>
 		</record>
 		
+		<!-- Tree view of Technical Competency Applicant -->
+		<record id="view_tech_tech2_tree" model="ir.ui.view">
+			<field name="name">view.tech.tech2.tree</field>
+			<field name="model">tech.tech</field>
+			<field name="arch" type="xml">
+				<tree create="false" delete="false">
+					<field name="employee_id" string='Employee Id' required="True"/>
+					<field name="applicant_id" string="Applicant Id" readonly="True"/>
+					<field name="competency_tech_types"/>
+					<field name="competency_tech"/>
+					<field name="category_competency_tech" string='Category Competency'/>
+					<field name="levels_tech" string='Levels'/>
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Form view of Technical Competency Applicant -->
+		<record id="view_tech_tech2_form" model="ir.ui.view">
+			<field name="name">view.tech.tech2.form</field>
+			<field name="model">tech.tech</field>
+			<field name="arch" type="xml">
+				<form create="false" delete="false">
+					<group>
+						<field name="employee_id" string='Employee Id' required="True"/>
+						<field name="applicant_id" string="Applicant Id" readonly="True"/>
+						<field name="competency_tech_types"/>
+						<field name="competency_tech"/>
+						<field name="category_competency_tech" string='Category Competency' required="True"/>
+						<field name="levels_tech" string='Levels' required="True"/>
+					</group>
+				</form>
+			</field>
+		</record>
+    
+    <!-- Action of Technical Competency Applicant -->
+    <record id="action_tech_applicant" model="ir.actions.act_window">
+        <field name="name">Technical Competency</field>
+        <field name="res_model">tech.tech</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_type">form</field>
+    </record>
+	
+			<!-- Tree view of Technical Competency Applicant -->
+		<record id="view_nontech_nontech2_tree" model="ir.ui.view">
+			<field name="name">view.nontech.nontech2.tree</field>
+			<field name="model">nontech.nontech</field>
+			<field name="arch" type="xml">
+				<tree create="false" delete="false">
+					<field name="employee_id" string='Employee Id' required="True"/>
+					<field name="applicant_id" string="Applicant Id" readonly="True"/>
+					<field name="competency_nontech"/>
+					<field name="category_competency_nontech" string='Category Competency'/>
+					<field name="levels_nontech" string='Levels'/>
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Form view of Technical Competency Applicant -->
+		<record id="view_nontech_nontech2_form" model="ir.ui.view">
+			<field name="name">view.nontech.nontech2.form</field>
+			<field name="model">nontech.nontech</field>
+			<field name="arch" type="xml">
+				<form create="false" delete="false">
+					<group>
+						<field name="employee_id" string='Employee Id' required="True"/>
+						<field name="applicant_id" string="Applicant Id" readonly="True"/>
+						<field name="competency_nontech"/>
+						<field name="category_competency_nontech" string='Category Competency'/>
+						<field name="levels_nontech" string='Levels'/>
+					</group>
+				</form>
+			</field>
+		</record>
+    
+		<!-- Action of Technical Competency Applicant -->
+		<record id="action_nontech_applicant" model="ir.actions.act_window">
+			<field name="name">Behavior Competency</field>
+			<field name="res_model">nontech.nontech</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_type">form</field>
+		</record>
+		
+		<!-- Menu item for Competency Applicant -->
+		<menuitem
+            id="hr_menu_competency_applicant"
+            name="Competency Applicant"
+            parent="hr_recruitment.menu_hr_recruitment_root"
+            sequence="91"
+            groups="hr.group_hr_manager"/>		
 		
 		<!-- Menu of Qualifications -->
         <menuitem id="qualifications_menu" parent="hr_recruitment.menu_hr_recruitment_configuration" 
@@ -142,14 +219,14 @@
         action="action_emp_cert" groups="hr.group_hr_manager,hr.group_hr_user"/>
         
         <!-- Menu item for Skills -->
-        <menuitem id="skills_menu" parent="hr_recruitment.menu_hr_recruitment_configuration" 
-        name="Skills" sequence="4" groups="hr.group_hr_manager,hr.group_hr_user"/>
+        <!-- <menuitem id="skills_menu" parent="hr_recruitment.menu_hr_recruitment_configuration"  -->
+        <!-- name="Skills" sequence="4" groups="hr.group_hr_manager,hr.group_hr_user"/> -->
         
         <!-- Menu for Non-Technical Skills -->
-        <menuitem id="nontech_skills_menu" parent="skills_menu"
-        action="action_nontech_skills" groups="hr.group_hr_manager,hr.group_hr_user"/> 
+        <menuitem id="nontech_competency_menu" parent="hr_menu_competency_applicant"
+        action="action_nontech_applicant" groups="hr.group_hr_manager,hr.group_hr_user" sequence="2"/> 
         
         <!-- Menu for Technical Skills -->
-        <menuitem id="tech_skills_menu" parent="skills_menu" action="action_tech_skills"
-         groups="hr.group_hr_manager,hr.group_hr_user"/>   
+        <menuitem id="tech_competency_menu" parent="hr_menu_competency_applicant" action="action_tech_applicant"
+         groups="hr.group_hr_manager,hr.group_hr_user" sequence="1"/>   
 </odoo>

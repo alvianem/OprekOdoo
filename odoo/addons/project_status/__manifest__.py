@@ -6,7 +6,7 @@
     "website": "",
     "license": "AGPL-3",
     "depends": [
-        "project", "sale", "web_timeline", "document", "hr", "mail"
+        "project", "sale", "web_timeline", "hr", "board", "sale_invoice_tag_pass", "sale_crm", "sale_stock"
     ],
     "data": [
         "security/project_security.xml",

@@ -6,7 +6,7 @@
 {
     'name': 'HR Attendance Reason',
     'version': '10.0.1.0.0',
-    'category': 'Human Resources',
+    'category': 'ASYST - Human Capital',
     'website': 'https://github.com/OCA/hr',
     'author': 'Odoo S.A.,'
               'Odoo Community Association (OCA)',

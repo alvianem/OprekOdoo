@@ -25,7 +25,7 @@
     'version': '10.0.1.0.0',
     'summary': """Open HRMS Dashboard""",
     'description': """Open HRMS Dashboard""",
-    'category': 'Human Resource',
+    'category': 'ASYST - Human Capital',
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',

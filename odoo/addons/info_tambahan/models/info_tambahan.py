@@ -4,19 +4,19 @@ from odoo import models, fields, api, _
 class InfoTambahanEmployee(models.Model):
     _inherit = "hr.employee"
     
-    religion = fields.Selection([('islam','Islam'),('christian','Christian')], string='Religion')
+    religion = fields.Selection([('islam','Islam'),('christian','Christian'),('hindu','Hindu'),('budha','Budha'),('confucius','Confucius')], string='Religion')
     
     homeaddress1 = fields.Text(string="Home Address")
     province1 = fields.Char(string="Province")
     city1 = fields.Char(string="City")
-    postcode1 = fields.Integer(string="Post Code")
-    housephone1 = fields.Integer(string="Phone")
+    postcode1 = fields.Char(string="Post Code")
+    housephone1 = fields.Char(string="Phone")
     
     homeaddress2 = fields.Text(string="Home Address")
     province2 = fields.Char(string="Province")
     city2 = fields.Char(string="City")
-    postcode2 = fields.Integer(string="Post Code")
-    housephone2 = fields.Integer(string="Phone")
+    postcode2 = fields.Char(string="Post Code")
+    housephone2 = fields.Char(string="Phone")
     
     linklinkedin = fields.Html(string="Linkedin")
     
@@ -29,6 +29,8 @@ class InfoTambahanEmployee(models.Model):
     hasil_bagi =  fields.Float(string='Duration Years', compute='_itung_hasil_bagi')
     maka = fields.Char(string="maka", compute="_itung_hasil_bagi")
     
+    department_id = fields.Many2one('hr.department', string='Department', store=True)
+
     @api.multi
     def _itung_durasi(self):
         for each in self:
@@ -58,3 +60,14 @@ class TableCareerHistory (models.Model):
     tanggalawal = fields.Date(string="Start Date")
     tanggalakhir = fields.Date(string="End Date")
     penghubung = fields.Many2one('hr.employee')
+
+class UserInherit (models.Model):
+    _inherit = "res.users"
+    
+    active = fields.Boolean(default=True, compute='_employee_active', store=True)
+
+    @api.depends('employee_ids.active')
+    def _employee_active(self):
+        for rec in self:
+            if rec.employee_ids.active==True:
+                rec.active=True

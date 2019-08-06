@@ -27,7 +27,7 @@ from odoo.exceptions import Warning
 
 class HrEmployeeDocument(models.Model):
     _name = 'hr.employee.document'
-    _description = 'HR Employee Documents'
+    # _description = 'HR Employee Documents'
 
     def mail_reminder(self):
         now = datetime.now() + timedelta(days=1)
@@ -56,14 +56,20 @@ class HrEmployeeDocument(models.Model):
                     raise Warning('Your Document Is Expired.')
 
     name = fields.Char(string='Document Number', required=True, copy=False)
-    document_name = fields.Many2one('employee.checklist', string='Document', required=True)
+    # document_name = fields.Many2one('employee.checklist', string='Document', required=True)
+    document_name = fields.Char(string='Document', required=True)
     description = fields.Text(string='Description', copy=False)
+    doc_type = fields.Many2one('doc.type', required=True)
     expiry_date = fields.Date(string='Expiry Date', copy=False)
     employee_ref = fields.Many2one('hr.employee', invisible=1, copy=False)
     doc_attachment_id = fields.Many2many('ir.attachment', 'doc_attach_rel', 'doc_id', 'attach_id3', string="Attachment",
                                          help='You can attach the copy of your document', copy=False)
     issue_date = fields.Date(string='Issue Date', default=fields.datetime.now(), copy=False)
 
+class DocumentType(models.Model):
+    _name = 'doc.type'
+    
+    name = fields.Char()
 
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'

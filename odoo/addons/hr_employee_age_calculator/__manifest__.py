@@ -7,7 +7,7 @@
     "version": "10.0.1.0.0",
     "author": "Lucky Kurniawan",
     "website": "https://github.com/kurniawanlucky/Odoo10.0",
-    "category": "Human Resources",
+    "category": "ASYST - Human Capital",
     "depends": ['hr'],
     "data": [
         'views/hr_employee_views.xml',

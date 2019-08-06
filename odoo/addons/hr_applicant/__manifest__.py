@@ -21,7 +21,7 @@
 {
     'name': 'Applicant Process',
     'version': '10.0.0.1.0',
-    'category': 'Human Resources',
+    'category': 'ASYST - Human Capital',
     'sequence': 90,
     'summary': 'Applicant and Employee Subsections, Training',
     "author": "Serpent Consulting Services Pvt. Ltd.",

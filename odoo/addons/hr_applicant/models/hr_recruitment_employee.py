@@ -101,6 +101,11 @@ class EmployeeMedicalDetails(models.Model):
     date = fields.Date('Date', default=fields.Date.context_today,
                        readonly=True)
     doc_comment = fields.Char('Doctor’s Comments')
+    medical_doc = fields.Many2many(comodel_name="ir.attachment", 
+                                relation="m2m_ir_medical_doc_rel", 
+                                column1="m2m_id",
+                                column2="attachment_id",
+                                string="Medical Documents")
 
     head_face_scalp = fields.Selection([('Abnormal', 'Abnormal'),
                                         ('Normal', 'Normal')],

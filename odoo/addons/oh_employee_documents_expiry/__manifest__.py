@@ -25,7 +25,7 @@
     'version': '10.0.1.0',
     'summary': """Manages Employee Documents With Expiry Notifications.""",
     'description': """OH Addon: Manages Employee Related Documents with Expiry Notifications.""",
-    'category': 'Generic Modules/Human Resources',
+    'category': 'ASYST - Human Capital',
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',
@@ -33,7 +33,7 @@
     'depends': ['base', 'hr'],
     'data': [
         'security/ir.model.access.csv',
-        'views/employee_check_list_view.xml',
+        # 'views/employee_check_list_view.xml',
         'views/employee_document_view.xml',
     ],
     'demo': ['data/data.xml'],

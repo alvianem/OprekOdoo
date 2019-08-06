@@ -2,7 +2,7 @@
 
 {
     'name': 'Employee Skills and Qualifications',
-    'category': 'Human Resources',
+    'category': 'ASYST - Human Capital',
     'version': '10.0.1.0.0',
     'summary': 'This module will adds a configuration for skills and qualification of employee.',
     'website': 'http://www.aktivsoftware.com',

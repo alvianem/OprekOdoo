@@ -32,7 +32,7 @@
     'author': "Hilar AK",
     'company': "",
     'website': "",
-    'category': "Generic Modules/Human Resources",
+    'category': "ASYST - Human Capital",
     'depends': [
         "base",
         "hr_holidays"
